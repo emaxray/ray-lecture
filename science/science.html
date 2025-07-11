@@ -3235,6 +3235,10 @@ function showNextChallenge() {
     }
     
     const challenge = challenges[challengeIndex];
+    // Initialize attempts if not already set
+    if (!challenge.attempts) {
+        challenge.attempts = 0;
+    }
     adventureState.currentChallenge = {challenge, index: challengeIndex};
     
     // Count correctly answered questions
@@ -3354,6 +3358,9 @@ function submitAnswer(answerIndex) {
         }, 2500);
         
     } else {
+        // Wrong answer - increment attempts
+        challenge.attempts++;
+        
         // Wrong answer - enemy counter-attacks!
         setTimeout(() => {
             // Start enemy attack animation
@@ -3396,6 +3403,25 @@ function submitAnswer(answerIndex) {
             updateStudentHealth(member);
         }
         
+        // Check if this was the 3rd wrong attempt
+        if (challenge.attempts >= 3) {
+            // Deal 1 damage to all alive party members
+            adventureState.party.forEach(partyMember => {
+                if (partyMember.hp > 0) {
+                    partyMember.hp--;
+                    if (partyMember.hp <= 0) {
+                        adventureState.fallenHeroes.push(partyMember.name);
+                    }
+                }
+            });
+            
+            showToast(`⚡ The question proved too difficult! All students take 1 damage!`);
+            displayParty();
+            
+            // Reset attempts for this question
+            challenge.attempts = 0;
+        }
+        
         // Show feedback in answer area
         const answerOptions = document.getElementById('answerOptions');
         answerOptions.innerHTML = `
@@ -3404,7 +3430,7 @@ function submitAnswer(answerIndex) {
                     ❌ Miss! The enemy strikes back!
                 </p>
                 ${member && member.hp > 0 ? `<p style="color: #ffab00;">${member.name} has ${member.hp} HP left!</p>` : ''}
-                <p style="color: #ffab00; font-size: 16px; margin-top: 10px;">You can try this question again!</p>
+                <p style="color: #ffab00; font-size: 16px; margin-top: 10px;">You can try this question again! (Attempt ${challenge.attempts}/3)</p>
                 <button class="action-button primary" onclick="continueAdventure()" style="margin-top: 20px;">
                     Try Again →
                 </button>
@@ -3582,11 +3608,21 @@ function completeStage() {
     
     // NO REVIVALS - Heroes stay dead!
     
+    // Clear answer options area
+    document.getElementById('answerOptions').innerHTML = '';
+    
     document.getElementById('battleActions').innerHTML = `
         <button class="action-button primary" onclick="${stageNum === 5 ? 'showVictory()' : 'returnToMap()'}">
             ${stageNum === 5 ? 'Claim Victory!' : 'Continue Journey →'}
         </button>
     `;
+    
+    // Auto-continue after 5 seconds if not final stage
+    if (stageNum < 5 && enemyDefeated) {
+        setTimeout(() => {
+            returnToMap();
+        }, 5000);
+    }
     
     // Update progress
     document.getElementById('stagesComplete').textContent = `${adventureState.stagesCompleted.length}/5 Stages`;
