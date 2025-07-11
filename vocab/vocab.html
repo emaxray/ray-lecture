@@ -166,6 +166,10 @@
             width: 60px;
         }
         
+        .sidebar-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
         /* Sidebar Overlay */
         .sidebar-overlay {
             position: fixed;
@@ -201,6 +205,18 @@
             transform: translateX(-300px);
         }
         
+        .left-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
         .left-sidebar.expanded {
             transform: translateX(0);
         }
@@ -211,6 +227,19 @@
             align-items: center;
             padding: 20px;
             border-bottom: 1px solid #8b6914;
+            position: relative;
+        }
+        
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            animation: shimmer 3s ease-in-out infinite;
         }
         
         .close-btn {
@@ -313,6 +342,85 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             border-bottom: 1px solid #8b6914;
             padding-bottom: 15px;
+        }
+        
+        /* Section subtitles for better organization */
+        .section-subtitle {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .section-subtitle::before,
+        .section-subtitle::after {
+            content: "◆";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #8b6914;
+        }
+        
+        .section-subtitle::before {
+            left: 0;
+        }
+        
+        .section-subtitle::after {
+            right: 0;
+        }
+        
+        /* Decorative divider between sections */
+        .divider-ornament {
+            width: 100%;
+            height: 30px;
+            margin: 20px 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5;
+        }
+        
+        /* Shared section styling */
+        .add-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 0;
+        }
+        
+        /* Shared dropdown styling */
+        .dropdown-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .dropdown-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
         }
         
         /* Add Student Section */
@@ -606,6 +714,26 @@
             position: relative;
         }
         
+        .page-title::before,
+        .page-title::after {
+            content: "✦";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: #d4af37;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        .page-title::before {
+            left: -50px;
+        }
+        
+        .page-title::after {
+            right: -50px;
+            animation-delay: 1.5s;
+        }
+        
         @keyframes glow {
             from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
             to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
@@ -618,6 +746,24 @@
             color: #b8860b;
             position: relative;
             padding: 0 80px;
+        }
+        
+        .subtitle::before,
+        .subtitle::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+        }
+        
+        .subtitle::before {
+            left: 0;
+        }
+        
+        .subtitle::after {
+            right: 0;
         }
         
         /* Week Grid - Optimized for iPad Mini */
@@ -843,6 +989,37 @@
         }
         
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .weeks-grid {
+                gap: 20px;
+            }
+            
+            .right-sidebar {
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .right-sidebar.expanded {
+                transform: translateX(0);
+                right: 0;
+                left: auto;
+            }
+            
+            .sidebar-toggle {
+                width: 60px;
+                height: 140px;
+                font-size: 18px;
+            }
+            
+            .student-item {
+                margin: 20px 0;
+            }
+            
+            .sidebar-buttons {
+                gap: 15px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 margin: 0 60px;
@@ -887,6 +1064,16 @@
             50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
             100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
         }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2) rotate(180deg); }
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
     </style>
 </head>
 <body>
@@ -899,12 +1086,6 @@
     <div class="corner-ornament corner-bottom-left"></div>
     <div class="corner-ornament corner-bottom-right"></div>
     
-    <!-- Floating particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
-    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">◆</div>
-    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
-    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
-    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
     
     <!-- Sidebar Toggle Buttons -->
     <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
@@ -920,16 +1101,17 @@
             <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
         </div>
         <div class="sidebar-content">
-            <a href="/index.html" class="nav-item">Library Hall</a>
-            <a href="/vocab/vocab.html" class="nav-item active">Vocabulary</a>
+            <a href="/index.html" class="nav-item">Library</a>
+            <a href="/vocab/vocab.html" class="nav-item active">Vocab</a>
             <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
-            <a href="/listening/listening.html" class="nav-item">Listening</a>
-            <a href="/debate/debate.html" class="nav-item">Debate</a>
-            <a href="/essay/essay.html" class="nav-item">Essay</a>
             <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
             <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
             <a href="/ted/ted-hub.html" class="nav-item">TED</a>
             <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/review/review.html" class="nav-item">Review</a>
             <a href="/timer/timer.html" class="nav-item">Timer</a>
             <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
         </div>
@@ -944,20 +1126,55 @@
         <div class="sidebar-content">
             <h2 class="points-title">Daily Treasury</h2>
             
-            <!-- Add Student Section -->
-            <div class="add-student-section">
-                <select id="studentSelect" class="student-select">
-                    <option value="">Select a scholar...</option>
+            <!-- Section Title for Class Selection -->
+            <h3 class="section-subtitle">Quick Add by Class</h3>
+            
+            <!-- Class Selection Section -->
+            <div class="add-section add-class-section">
+                <select class="dropdown-select class-select" id="classSelect">
+                    <option value="">Select a class...</option>
+                    <option value="m1">Monday 1 (m1)</option>
+                    <option value="m2">Monday 2 (m2)</option>
+                    <option value="tu1">Tuesday 1 (tu1)</option>
+                    <option value="tu2">Tuesday 2 (tu2)</option>
+                    <option value="w1">Wednesday 1 (w1)</option>
+                    <option value="w2">Wednesday 2 (w2)</option>
+                    <option value="th1">Thursday 1 (th1)</option>
+                    <option value="th2">Thursday 2 (th2)</option>
+                    <option value="s1">Saturday 1 (s1)</option>
+                    <option value="s2">Saturday 2 (s2)</option>
                 </select>
-                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+                <button class="add-student-to-daily" onclick="addClassToDaily()">Add Entire Class</button>
             </div>
             
+            <div class="divider-ornament"></div>
+            
+            <!-- Section Title for Individual Students -->
+            <h3 class="section-subtitle">Add Individual Student</h3>
+            
+            <!-- Individual Student Selection -->
+            <div class="add-section add-student-section">
+                <select class="dropdown-select student-select" id="studentSelect">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Daily Points</button>
+            </div>
+            
+            <div class="divider-ornament"></div>
+            
+            <!-- Section Title for Active Students -->
+            <h3 class="section-subtitle">Today's Scholars</h3>
+            
             <!-- Daily Students List -->
-            <div id="dailyStudentsList"></div>
+            <div id="dailyStudentsList">
+                <div class="empty-state">No scholars in today's class yet.<br>Add students from the options above.</div>
+            </div>
             
             <!-- Action Buttons -->
             <div class="sidebar-buttons">
-                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+                <button class="action-btn" onclick="resetDailyTreasury()">Reset All Points</button>
+                <button class="action-btn save-btn" onclick="saveToConquest()">Save to Conquest</button>
+                <button class="action-btn">Export Data</button>
             </div>
         </div>
     </div>
@@ -1007,23 +1224,82 @@
         
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            loadConquestStudents();
+            // Re-initialize from localStorage to ensure sync
+            dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+            dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+            
+            populateStudentDropdown();
             renderDailyStudents();
             renderWeekCards();
+            createParticles();
         });
+        
+        // Close sidebars when clicking on a nav item
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', closeSidebars);
+        });
+        
+        // Handle touch events for better tablet experience
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const leftSidebar = document.getElementById('leftSidebar');
+            const rightSidebar = document.getElementById('rightSidebar');
+            
+            // Swipe right to open left sidebar
+            if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+                leftSidebar.classList.add('expanded');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+            
+            // Swipe left to open right sidebar
+            if (touchStartX - touchEndX > swipeThreshold && touchStartX > window.innerWidth - 50) {
+                rightSidebar.classList.add('expanded');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+        }
+        
+        // Add floating particles
+        function createParticles() {
+            const particleCount = 20;
+            const particleSymbols = ['✦', '◆', '❋', '✧'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.innerHTML = particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+                particle.style.color = '#d4af37';
+                particle.style.fontSize = Math.random() * 10 + 10 + 'px';
+                document.body.appendChild(particle);
+            }
+        }
         
         // Global variables
         let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
         let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
         
-        // Team colors
-        const teamColors = {
-            'prettyEggplant': '#ba68c8',
-            'jiggleBoggle': '#81c784',
-            'bomi': '#ffd54f',
-            'handsomeJoon': '#ff6b6b',
-            'pinkie': '#f06292',
-            'geniusIrene': '#4fc3f7'
+        // Team info with colors
+        const teamInfo = {
+            jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+            pinkie: { name: "Pinkie", color: "#f06292" },
+            handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+            bomi: { name: "Bomi", color: "#ffd54f" },
+            geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+            prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" }
         };
         
         // Render week cards
@@ -1117,25 +1393,47 @@
             document.getElementById('sidebarOverlay').classList.remove('active');
         }
         
-        // Load students from Conquest
-        function loadConquestStudents() {
+        // Load all students from Conquest data
+        function loadAllStudentsFromConquest() {
             const conquestData = localStorage.getItem('conquestTeamData');
-            if (!conquestData) return;
-            
-            const teams = JSON.parse(conquestData);
+            if (conquestData) {
+                const teamData = JSON.parse(conquestData);
+                const students = [];
+                
+                // Extract all students from teams
+                Object.entries(teamData).forEach(([teamKey, team]) => {
+                    team.students.forEach(student => {
+                        if (student.name !== 'Donation') {
+                            students.push({
+                                name: student.name,
+                                team: teamKey,
+                                classes: student.classes || []
+                            });
+                        }
+                    });
+                });
+                
+                // Sort alphabetically
+                return students.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            return [];
+        }
+        
+        // Populate student dropdown
+        function populateStudentDropdown() {
             const select = document.getElementById('studentSelect');
             select.innerHTML = '<option value="">Select a scholar...</option>';
             
-            Object.entries(teams).forEach(([teamKey, team]) => {
-                if (team.students) {
-                    team.students.forEach(student => {
-                        const option = document.createElement('option');
-                        option.value = student.name;
-                        option.textContent = `${student.name} (${team.name})`;
-                        option.dataset.teamName = team.name;
-                        option.dataset.teamKey = teamKey;
-                        select.appendChild(option);
-                    });
+            const allStudents = loadAllStudentsFromConquest();
+            
+            allStudents.forEach(student => {
+                // Only show students not already in daily list
+                if (!dailyStudents.includes(student.name)) {
+                    const option = document.createElement('option');
+                    option.value = student.name;
+                    option.dataset.team = student.team;
+                    option.textContent = student.name;
+                    select.appendChild(option);
                 }
             });
         }
@@ -1143,76 +1441,164 @@
         // Add student to daily treasury
         function addStudentToDaily() {
             const select = document.getElementById('studentSelect');
-            const selectedOption = select.options[select.selectedIndex];
+            const studentName = select.value;
             
-            if (!selectedOption || !selectedOption.value) {
-                showToast('Please select a scholar');
+            if (studentName && !dailyStudents.includes(studentName)) {
+                dailyStudents.push(studentName);
+                dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+                
+                // Save to localStorage
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                // Refresh display
+                renderDailyStudents();
+                populateStudentDropdown();
+                
+                // Reset dropdown
+                select.value = '';
+            }
+        }
+        
+        // Function to add entire class to daily list
+        function addClassToDaily() {
+            const select = document.getElementById('classSelect');
+            const className = select.value;
+            
+            if (!className) {
+                showToast('Please select a class first!');
                 return;
             }
             
-            const studentName = selectedOption.value;
-            
-            if (dailyStudents.includes(studentName)) {
-                showToast('Scholar already in today\'s class');
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No student data found!');
                 return;
             }
             
-            dailyStudents.push(studentName);
-            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            const teamData = JSON.parse(conquestData);
+            let addedCount = 0;
+            let skippedCount = 0;
+            let totalStudentsChecked = 0;
             
-            renderDailyStudents();
+            // Loop through all teams and students
+            Object.entries(teamData).forEach(([teamKey, team]) => {
+                if (!team.students) {
+                    return;
+                }
+                
+                team.students.forEach(student => {
+                    totalStudentsChecked++;
+                    
+                    // Skip if no classes array
+                    if (!student.classes) {
+                        return;
+                    }
+                    
+                    // Check if student is in the selected class
+                    const isInClass = student.classes.some(c => {
+                        return c.toLowerCase() === className.toLowerCase();
+                    });
+                    
+                    if (isInClass && student.name !== 'Donation') {
+                        if (!dailyStudents.includes(student.name)) {
+                            dailyStudents.push(student.name);
+                            dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                            addedCount++;
+                        } else {
+                            skippedCount++;
+                        }
+                    }
+                });
+            });
+            
+            // Save and update display
+            if (addedCount > 0) {
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+            
+            // Reset dropdown
             select.value = '';
-            showToast(`${studentName} added to today's class`);
+            
+            // Show result message
+            if (addedCount > 0 && skippedCount > 0) {
+                showToast(`✨ Added ${addedCount} students! (${skippedCount} already in class)`);
+            } else if (addedCount > 0) {
+                showToast(`✨ Added ${addedCount} students to today's class!`);
+            } else if (skippedCount > 0) {
+                showToast('All students from this class are already added!');
+            } else {
+                showToast(`No students found for ${className.toUpperCase()}`);
+            }
         }
         
         // Remove student from daily treasury
         function removeStudentFromDaily(studentName) {
-            dailyStudents = dailyStudents.filter(name => name !== studentName);
-            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
-            
-            delete dailyTreasury[studentName];
-            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
-            
-            renderDailyStudents();
-            showToast(`${studentName} removed from today's class`);
+            const index = dailyStudents.indexOf(studentName);
+            if (index > -1) {
+                dailyStudents.splice(index, 1);
+                delete dailyTreasury[studentName];
+                
+                // Save to localStorage
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                // Refresh display
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+        }
+        
+        // Get student's team
+        function getStudentTeam(studentName) {
+            const allStudents = loadAllStudentsFromConquest();
+            const student = allStudents.find(s => s.name === studentName);
+            return student ? student.team : null;
+        }
+        
+        // Reset daily treasury
+        function resetDailyTreasury() {
+            if (confirm('Are you sure you want to clear today\'s class? This will remove all students and their daily points!')) {
+                // Clear the data
+                dailyStudents = [];
+                dailyTreasury = {};
+                
+                // Clear from localStorage
+                localStorage.removeItem('dailyStudents');
+                localStorage.removeItem('dailyTreasury');
+                
+                // Force a refresh of the display
+                renderDailyStudents();
+                populateStudentDropdown();
+                
+                showToast('Daily treasury cleared!');
+            }
         }
         
         // Render daily students list
         function renderDailyStudents() {
             const container = document.getElementById('dailyStudentsList');
+            container.innerHTML = '';
             
             if (dailyStudents.length === 0) {
-                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet</div>';
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the options above.</div>';
                 return;
             }
             
-            container.innerHTML = '';
-            
             dailyStudents.forEach(studentName => {
-                const conquestData = localStorage.getItem('conquestTeamData');
-                let team = null;
-                let teamKey = null;
-                
-                if (conquestData) {
-                    const teams = JSON.parse(conquestData);
-                    for (const [key, teamData] of Object.entries(teams)) {
-                        const student = teamData.students?.find(s => s.name === studentName);
-                        if (student) {
-                            team = teamData;
-                            teamKey = key;
-                            break;
-                        }
-                    }
-                }
-                
-                const teamColor = teamColors[teamKey] || '#d4af37';
+                const teamKey = getStudentTeam(studentName);
+                const team = teamInfo[teamKey];
                 
                 const item = document.createElement('div');
                 item.className = 'student-item';
+                
                 item.innerHTML = `
                     <div class="student-info">
                         <span class="student-name">${studentName}</span>
-                        ${team ? `<span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor}; background: ${teamColor}20;">${team.name}</span>` : ''}
+                        ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ''}
                     </div>
                     <div class="coin-display">
                         <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
@@ -1254,37 +1640,43 @@
         function saveToConquest() {
             const conquestData = localStorage.getItem('conquestTeamData');
             if (!conquestData) {
-                showToast('No Conquest data found! Please set up teams first.');
+                showToast('No Conquest data found!');
                 return;
             }
             
-            const teams = JSON.parse(conquestData);
+            const teamData = JSON.parse(conquestData);
             let totalPointsAdded = 0;
             
-            // Add points to each student
-            Object.entries(dailyTreasury).forEach(([studentName, points]) => {
-                for (const teamKey in teams) {
-                    const team = teams[teamKey];
-                    const student = team.students?.find(s => s.name === studentName);
-                    if (student) {
-                        student.points = (student.points || 0) + points;
-                        totalPointsAdded += points;
-                        break;
+            // Update each student's points in their team
+            Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+                if (dailyPoints > 0) {
+                    // Find which team the student belongs to
+                    for (const [teamKey, team] of Object.entries(teamData)) {
+                        const studentIndex = team.students.findIndex(s => s.name === studentName);
+                        if (studentIndex !== -1) {
+                            // Add daily points to existing points
+                            teamData[teamKey].students[studentIndex].points += dailyPoints;
+                            totalPointsAdded += dailyPoints;
+                            break;
+                        }
                     }
                 }
             });
             
             // Save updated conquest data
-            localStorage.setItem('conquestTeamData', JSON.stringify(teams));
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
             
-            // Clear daily treasury
-            localStorage.removeItem('dailyStudents');
-            localStorage.removeItem('dailyTreasury');
+            // Reset daily data
             dailyStudents = [];
             dailyTreasury = {};
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
             
+            // Refresh display
             renderDailyStudents();
-            showToast(`Treasury saved! ${totalPointsAdded} gold coins transferred to Conquest.`);
+            populateStudentDropdown();
+            
+            showToast(`✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`);
         }
         
         // Show toast notification

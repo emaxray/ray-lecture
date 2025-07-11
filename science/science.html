@@ -1412,7 +1412,7 @@
     }
 
     .enemy-sprite {
-        font-size: 100px;
+        font-size: 160px;
         margin-bottom: 20px;
         animation: enemyFloat 3s ease-in-out infinite;
     }
@@ -1672,6 +1672,188 @@
     margin: 20px 0;
     text-align: center;
 }
+
+/* Pokemon-Style Battle Layout Additions */
+.battle-screen.pokemon-style {
+    padding: 0;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.battle-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.battle-question-area {
+    background: rgba(139, 105, 20, 0.3);
+    border-bottom: 2px solid #8b6914;
+    padding: 30px 40px;
+    text-align: center;
+    flex-shrink: 0;
+    height: 200px;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.battle-question {
+    font-size: 32px;
+    color: #ffd700;
+    font-family: 'Cinzel', serif;
+    line-height: 1.4;
+    max-width: 900px;
+    margin: 0 auto;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.battle-arena {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enemy-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.answer-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.empty-space {
+    /* Empty top-left quadrant */
+}
+
+.student-display {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.student-sprite {
+    font-size: 120px;
+    margin-bottom: 10px;
+    animation: studentBounce 2s ease-in-out infinite;
+}
+
+@keyframes studentBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Battle Animations */
+@keyframes studentAttack {
+    0% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(40px) translateY(-30px); }
+    50% { transform: translateX(80px) translateY(-60px); }
+    75% { transform: translateX(40px) translateY(-30px); }
+    100% { transform: translateX(0) translateY(0); }
+}
+
+@keyframes enemyShake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-5px); }
+    20% { transform: translateX(5px); }
+    30% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    50% { transform: translateX(-3px); }
+    60% { transform: translateX(3px); }
+    70% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+    90% { transform: translateX(-1px); }
+}
+
+@keyframes enemyAttack {
+    0% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(-40px) translateY(30px); }
+    50% { transform: translateX(-80px) translateY(60px); }
+    75% { transform: translateX(-40px) translateY(30px); }
+    100% { transform: translateX(0) translateY(0); }
+}
+
+@keyframes studentHurt {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-3px); }
+    20% { transform: translateX(3px); }
+    30% { transform: translateX(-3px); }
+    40% { transform: translateX(3px); }
+    50% { transform: translateX(-2px); }
+    60% { transform: translateX(2px); }
+    70% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    90% { transform: translateX(-1px); }
+}
+
+/* Animation Classes */
+.student-sprite.attacking {
+    animation: studentAttack 1s ease-in-out;
+}
+
+.enemy-sprite.taking-damage {
+    animation: enemyShake 1s ease-in-out;
+}
+
+.enemy-sprite.attacking {
+    animation: enemyAttack 1s ease-in-out;
+}
+
+.student-sprite.taking-damage {
+    animation: studentHurt 0.8s ease-in-out;
+}
+
+.student-name {
+    font-size: 24px;
+    color: #d4af37;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.answer-options {
+    background: rgba(26, 20, 16, 0.8);
+    border: 2px solid #8b6914;
+    border-radius: 10px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.answer-options .challenge-option {
+    margin-bottom: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.answer-options .challenge-option:last-child {
+    margin-bottom: 0;
+}
     </style>
 </head>
 <body>
@@ -1851,28 +2033,55 @@
         </div>
     </div>
 
-    <!-- Battle Screen -->
-    <div class="battle-screen" id="battleScreen">
-        <h2 class="battle-title" id="battleTitle">Stage Title</h2>
-        
-        <!-- Enemy Display -->
-        <div class="enemy-display" id="enemyDisplay">
-            <div class="enemy-sprite" id="enemySprite">🌱</div>
-            <div class="enemy-name" id="enemyName">Enemy Name</div>
-            <div class="health-bar-container">
-                <div class="health-bar enemy" id="enemyHealthBar" style="width: 100%"></div>
-                <div class="health-text" id="enemyHealthText">100/100 HP</div>
+    <!-- Battle Screen - Pokemon Style -->
+    <div class="battle-screen pokemon-style" id="battleScreen">
+        <div class="battle-container">
+            <!-- Question Area - Top -->
+            <div class="battle-question-area">
+                <h2 class="battle-title" id="battleTitle">Stage Title</h2>
+                <div class="battle-question" id="battleQuestion">Question will appear here</div>
             </div>
-        </div>
-
-        <!-- Challenge Content -->
-        <div id="challengeContent">
-            <!-- Dynamic content loads here -->
-        </div>
-
-        <!-- Action Buttons -->
-        <div style="text-align: center;" id="battleActions">
-            <!-- Battle actions load here -->
+            
+            <!-- Battle Arena - Main Area -->
+            <div class="battle-arena">
+                <!-- Top Left: Empty Space -->
+                <div class="empty-space"></div>
+                
+                <!-- Top Right: Enemy -->
+                <div class="enemy-side">
+                    <div class="enemy-display" id="enemyDisplay">
+                        <div class="enemy-sprite" id="enemySprite">🌱</div>
+                        <div class="enemy-name" id="enemyName">Enemy Name</div>
+                        <div class="health-bar-container">
+                            <div class="health-bar enemy" id="enemyHealthBar" style="width: 100%"></div>
+                            <div class="health-text" id="enemyHealthText">100/100 HP</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Left: Student -->
+                <div class="student-side">
+                    <div class="student-display" id="studentDisplay">
+                        <div class="student-sprite" id="studentSprite">🧑‍🎓</div>
+                        <div class="student-name" id="currentStudentName">Student Name</div>
+                        <div class="health-bar-container">
+                            <div class="health-bar party" id="studentHealthBar" style="width: 100%"></div>
+                            <div class="health-text" id="studentHealthText">3/3 HP</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Right: Answer Options -->
+                <div class="answer-side">
+                    <div class="answer-options" id="answerOptions">
+                        <!-- Options will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Old Content Areas (Hidden) -->
+            <div id="challengeContent" style="display: none;"></div>
+            <div id="battleActions" style="display: none;"></div>
         </div>
     </div>
 
@@ -2374,7 +2583,9 @@ let adventureState = {
     totalPoints: 0,
     currentEnemy: null,
     currentChallenge: null,
-    fallenHeroes: []
+    fallenHeroes: [],
+    studentQueue: [],
+    currentQueueIndex: 0
 };
 
 // Stage Data
@@ -2799,7 +3010,74 @@ function loadPartyMembers() {
         maxHp: 3
     }));
     
+    // Create shuffled student queue
+    shuffleStudentQueue();
+    
     displayParty();
+}
+
+// Shuffle students into random order queue
+function shuffleStudentQueue() {
+    // Get all alive students
+    const aliveStudents = adventureState.party
+        .filter(m => m.hp > 0)
+        .map(m => m.name);
+    
+    // Shuffle array using Fisher-Yates algorithm
+    const shuffled = [...aliveStudents];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    
+    adventureState.studentQueue = shuffled;
+    adventureState.currentQueueIndex = 0;
+}
+
+// Get next student in queue
+function getNextStudent() {
+    // Filter out fallen heroes from queue
+    adventureState.studentQueue = adventureState.studentQueue.filter(name => {
+        const member = adventureState.party.find(m => m.name === name);
+        return member && member.hp > 0;
+    });
+    
+    // If queue is empty or we've gone through everyone, reshuffle
+    if (adventureState.studentQueue.length === 0 || 
+        adventureState.currentQueueIndex >= adventureState.studentQueue.length) {
+        shuffleStudentQueue();
+    }
+    
+    // Get current student and increment index
+    const studentName = adventureState.studentQueue[adventureState.currentQueueIndex];
+    adventureState.currentQueueIndex++;
+    
+    return studentName;
+}
+
+// Get random student emoji
+function getStudentEmoji() {
+    const emojis = ['🧑‍🎓', '👨‍🎓', '👩‍🎓', '🧙‍♂️', '🧙‍♀️', '🦸‍♂️', '🦸‍♀️', '🧝‍♂️', '🧝‍♀️'];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+// Update student health display
+function updateStudentHealth(member) {
+    if (!member) return;
+    
+    const healthPercent = (member.hp / member.maxHp) * 100;
+    document.getElementById('studentHealthBar').style.width = `${healthPercent}%`;
+    document.getElementById('studentHealthText').textContent = `${member.hp}/${member.maxHp} HP`;
+    
+    // Change color based on health
+    const healthBar = document.getElementById('studentHealthBar');
+    if (healthPercent <= 33) {
+        healthBar.style.background = 'linear-gradient(90deg, #b71c1c, #ef5350)';
+    } else if (healthPercent <= 66) {
+        healthBar.style.background = 'linear-gradient(90deg, #f57c00, #ffb74d)';
+    } else {
+        healthBar.style.background = 'linear-gradient(90deg, #2e7d32, #81c784)';
+    }
 }
 
 // Display party members
@@ -2878,24 +3156,32 @@ function enterStage(stageNum) {
 
 // Show boss intro
 function showBossIntro() {
-    const content = document.getElementById('challengeContent');
-    content.innerHTML = `
-        <div class="knowledge-scroll">
-            <div class="scroll-title">⚠️ FINAL BOSS ENCOUNTER ⚠️</div>
-            <div class="scroll-content">
-                <p><strong>The Chlorophyll Dragon awaits!</strong></p>
-                <p>This ancient guardian protects the deepest secrets of the plant kingdom.</p>
-                <p>Only the most knowledgeable adventurers can defeat it!</p>
-                <p><em>Each correct answer deals massive damage!</em></p>
-            </div>
+    // Update question area with boss intro
+    document.getElementById('battleQuestion').innerHTML = `
+        <div style="font-size: 24px; color: #ffd700; margin-bottom: 10px;">
+            ⚠️ FINAL BOSS ENCOUNTER ⚠️
+        </div>
+        <div>The Chlorophyll Dragon awaits! This ancient guardian protects the deepest secrets of the plant kingdom.</div>
+    `;
+    
+    // Show intro in answer area (now bottom right)
+    const answerOptions = document.getElementById('answerOptions');
+    answerOptions.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <p style="font-size: 18px; color: #d4af37; margin-bottom: 20px;">
+                Only the most knowledgeable adventurers can defeat it!
+            </p>
+            <p style="color: #81c784; margin-bottom: 20px;">
+                <em>Each correct answer deals massive damage!</em>
+            </p>
+            <button class="action-button primary" onclick="showNextChallenge()" style="font-size: 20px; padding: 15px 30px;">
+                Challenge the Dragon!
+            </button>
         </div>
     `;
     
-    document.getElementById('battleActions').innerHTML = `
-        <button class="action-button primary" onclick="showNextChallenge()">
-            Challenge the Dragon!
-        </button>
-    `;
+    // Dim student display for intro (they're now on the left)
+    document.getElementById('studentDisplay').style.opacity = '0.5';
 }
 
 // Show next challenge
@@ -2925,114 +3211,133 @@ function showNextChallenge() {
         return;
     }
     
-    // Find next unanswered challenge
+    // Check if all challenges are correctly answered
+    const allCorrect = challenges.every(c => c.correctlyAnswered === true);
+    
+    if (allCorrect) {
+        // Stage complete - all questions answered correctly
+        completeStage();
+        return;
+    }
+    
+    // Find next challenge that hasn't been correctly answered
     let challengeIndex = -1;
     for (let i = 0; i < challenges.length; i++) {
-        if (!challenges[i].answered) {
+        if (!challenges[i].correctlyAnswered) {
             challengeIndex = i;
             break;
         }
     }
     
+    // If somehow no index found, use first incorrect one
     if (challengeIndex === -1) {
-        // Stage complete
-        completeStage();
-        return;
+        challengeIndex = 0;
     }
     
     const challenge = challenges[challengeIndex];
     adventureState.currentChallenge = {challenge, index: challengeIndex};
     
-    const content = document.getElementById('challengeContent');
-    content.innerHTML = `
-        <div class="challenge-display">
-            <div class="challenge-question">${challenge.question}</div>
-            <div class="student-selector">
-                <div class="selector-title">Choose an Adventurer to Answer!</div>
-                <div class="party-members">
-    ${adventureState.party.map(member => {
-        const isDead = member.hp <= 0;
-        return `
-            <div class="party-member ${isDead ? 'fallen' : ''}" 
-                 onclick="${isDead ? '' : `selectAnswerer('${member.name}')`}">
-                ${member.name} ${isDead ? '💀' : `(${member.hp} HP)`}
-            </div>
-        `;
-    }).join('')}
-</div>
-            </div>
-            <div class="challenge-options">
-                ${challenge.options.map((option, index) => `
-                    <div class="challenge-option disabled" onclick="submitAnswer(${index})">
-                        ${option}
-                    </div>
-                `).join('')}
-            </div>
-            <div id="challengeFeedback"></div>
+    // Count correctly answered questions
+    const correctCount = challenges.filter(c => c.correctlyAnswered).length;
+    const totalCount = challenges.length;
+    
+    // Auto-assign next student
+    const nextStudent = getNextStudent();
+    adventureState.selectedStudent = nextStudent;
+    
+    // Get current student data
+    const currentMember = adventureState.party.find(m => m.name === nextStudent);
+    
+    // Show toast for auto-assigned student
+    showToast(`🎯 ${nextStudent}'s turn to answer!`);
+    
+    // Update Pokemon-style display
+    // Update question in top area
+    document.getElementById('battleQuestion').innerHTML = `
+        <div style="margin-bottom: 10px; color: #81c784;">
+            Progress: ${correctCount}/${totalCount} Questions Correct
+            ${challenge.correctlyAnswered ? ' ✅ (Already Solved)' : ''}
         </div>
+        <div>${challenge.question}</div>
     `;
     
+    // Update student display
+    document.getElementById('studentDisplay').style.opacity = '1';
+    document.getElementById('currentStudentName').textContent = nextStudent;
+    document.getElementById('studentSprite').textContent = getStudentEmoji();
+    updateStudentHealth(currentMember);
+    
+    // Update answer options
+    const answerOptions = document.getElementById('answerOptions');
+    answerOptions.innerHTML = `
+        ${challenge.options.map((option, index) => `
+            <div class="challenge-option" onclick="submitAnswer(${index})">
+                ${option}
+            </div>
+        `).join('')}
+    `;
+    
+    // Clear old content
+    document.getElementById('challengeContent').innerHTML = '';
     document.getElementById('battleActions').innerHTML = '';
 }
 
-// Select answerer
-function selectAnswerer(studentName) {
-    const member = adventureState.party.find(m => m.name === studentName);
-    if (!member || member.hp <= 0) {
-        showToast('This hero has fallen! Choose another adventurer.');
-        return;
-    }
-    
-    // FIXED: Set the selected student
-    adventureState.selectedStudent = studentName;
-    
-    // Update visual feedback
-    document.querySelectorAll('.party-member').forEach(member => {
-        member.classList.remove('answering');
-        if (member.textContent.includes(studentName)) {
-            member.classList.add('answering');
-        }
-    });
-    
-    // Enable answer options
-    document.querySelectorAll('.challenge-option').forEach(option => {
-        option.classList.remove('disabled');
-    });
-    
-    showToast(`${studentName} steps forward to answer!`);
-}
+// No longer needed - students are auto-assigned in showNextChallenge()
 
 // Submit answer
 function submitAnswer(answerIndex) {
-    if (!adventureState.selectedStudent) {
-        showToast('Choose an adventurer first!');
-        return;
-    }
+    // Student is auto-assigned, no need to check
     
     const {challenge, index} = adventureState.currentChallenge;
     const correct = answerIndex === challenge.correct;
     
-    // Mark as answered
-    stages[adventureState.currentStage].challenges[index].answered = true;
-    
-    // Disable options
+    // Disable options temporarily
     document.querySelectorAll('.challenge-option').forEach(option => {
         option.classList.add('disabled');
     });
     
+    // Start student attack animation
+    const studentSprite = document.getElementById('studentSprite');
+    studentSprite.classList.add('attacking');
+    
+    // Remove animation after it completes
+    setTimeout(() => {
+        studentSprite.classList.remove('attacking');
+    }, 1000);
+    
     if (correct) {
-        // Deal damage
-        dealDamage(challenge.damage);
+        // Trigger enemy damage animation after student attacks
+        setTimeout(() => {
+            const enemySprite = document.getElementById('enemySprite');
+            enemySprite.classList.add('taking-damage');
+            
+            // Remove animation after it completes
+            setTimeout(() => {
+                enemySprite.classList.remove('taking-damage');
+            }, 1000);
+        }, 500); // Start enemy shake halfway through student attack
+        // Mark this challenge as correctly answered
+        stages[adventureState.currentStage].challenges[index].correctlyAnswered = true;
+        
+        // Deal damage only if this is the first correct answer for this question
+        if (!challenge.damageDealt) {
+            dealDamage(challenge.damage);
+            stages[adventureState.currentStage].challenges[index].damageDealt = true;
+        }
         
         // Award points
         const points = 10; // Always 10 points now
         awardPoints(adventureState.selectedStudent, points);
         
-        // Show feedback
-        document.getElementById('challengeFeedback').innerHTML = `
-            <div class="knowledge-scroll" style="margin-top: 20px;">
-                <div class="scroll-title">✅ Critical Hit! -${challenge.damage} HP!</div>
-                <div class="scroll-content">${challenge.explanation}</div>
+        // Show correct feedback in answer area
+        const answerOptions = document.getElementById('answerOptions');
+        answerOptions.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <p style="color: #81c784; font-size: 20px; margin-bottom: 10px;">
+                    ✅ Critical Hit! -${challenge.damage} HP!
+                </p>
+                <p style="color: #d4af37; margin-bottom: 15px;">${challenge.explanation}</p>
+                <p style="color: #81c784;">${adventureState.currentEnemy.hp <= 0 ? 'Monster defeated!' : 'Moving to next question...'}</p>
             </div>
         `;
         
@@ -3043,7 +3348,36 @@ function submitAnswer(answerIndex) {
             }
         });
         
+        // Auto-continue after 2.5 seconds
+        setTimeout(() => {
+            continueAdventure();
+        }, 2500);
+        
     } else {
+        // Wrong answer - enemy counter-attacks!
+        setTimeout(() => {
+            // Start enemy attack animation
+            const enemySprite = document.getElementById('enemySprite');
+            enemySprite.classList.add('attacking');
+            
+            // Remove enemy attack animation after it completes
+            setTimeout(() => {
+                enemySprite.classList.remove('attacking');
+            }, 1000);
+            
+            // Start student hurt animation halfway through enemy attack
+            setTimeout(() => {
+                const studentSprite = document.getElementById('studentSprite');
+                studentSprite.classList.add('taking-damage');
+                
+                // Remove student hurt animation after it completes
+                setTimeout(() => {
+                    studentSprite.classList.remove('taking-damage');
+                }, 800);
+            }, 500); // Student gets hurt halfway through enemy attack
+            
+        }, 1000); // Start enemy counter-attack after student's failed attack
+        
         // Find the student and reduce HP
         const member = adventureState.party.find(m => m.name === adventureState.selectedStudent);
         if (member) {
@@ -3058,24 +3392,27 @@ function submitAnswer(answerIndex) {
             
             // Update party display
             displayParty();
+            // Update student health bar in Pokemon view
+            updateStudentHealth(member);
         }
         
-        document.getElementById('challengeFeedback').innerHTML = `
-            <p style="color: #ef5350; text-align: center; font-size: 20px; margin-top: 20px;">
-                ❌ Miss! The enemy strikes back!
-                ${member && member.hp > 0 ? `<br>${member.name} has ${member.hp} HP left!` : ''}
-            </p>
+        // Show feedback in answer area
+        const answerOptions = document.getElementById('answerOptions');
+        answerOptions.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <p style="color: #ef5350; font-size: 20px; margin-bottom: 10px;">
+                    ❌ Miss! The enemy strikes back!
+                </p>
+                ${member && member.hp > 0 ? `<p style="color: #ffab00;">${member.name} has ${member.hp} HP left!</p>` : ''}
+                <p style="color: #ffab00; font-size: 16px; margin-top: 10px;">You can try this question again!</p>
+                <button class="action-button primary" onclick="continueAdventure()" style="margin-top: 20px;">
+                    Try Again →
+                </button>
+            </div>
         `;
     }
     
-    // Continue button
-    setTimeout(() => {
-        document.getElementById('battleActions').innerHTML = `
-            <button class="action-button primary" onclick="continueAdventure()">
-                Continue Battle →
-            </button>
-        `;
-    }, 1500);
+    // Logic is now handled above in the if/else blocks
 }
 
 // Deal damage to enemy
@@ -3147,6 +3484,14 @@ function continueAdventure() {
         member.classList.remove('answering', 'correct');
     });
     
+    // Check if all students are dead
+    const aliveStudents = adventureState.party.filter(m => m.hp > 0);
+    if (aliveStudents.length === 0) {
+        gameOver();
+        return;
+    }
+    
+    // Check if enemy is defeated
     if (adventureState.currentEnemy.hp <= 0) {
         completeStage();
     } else {
@@ -3169,12 +3514,44 @@ function completeStage() {
     const content = document.getElementById('challengeContent');
     
     if (enemyDefeated) {
+        // Award points to surviving students
+        const stageRewards = {
+            1: 10,
+            2: 15,
+            3: 20,
+            4: 25,
+            5: 30
+        };
+        const rewardPoints = stageRewards[stageNum];
+        const survivingMembers = adventureState.party.filter(m => m.hp > 0);
+        
+        // Update each surviving member's points
+        survivingMembers.forEach(member => {
+            member.points += rewardPoints;
+            // Update the treasury
+            if (dailyTreasury[member.name]) {
+                dailyTreasury[member.name] += rewardPoints;
+            } else {
+                dailyTreasury[member.name] = rewardPoints;
+            }
+        });
+        
+        // Save to localStorage
+        localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        
         content.innerHTML = `
             <div class="knowledge-scroll">
                 <div class="scroll-title">🎉 Stage Complete! 🎉</div>
                 <div class="scroll-content">
                     <p><strong>${stages[stageNum].enemy.name} Defeated!</strong></p>
                     <p>Your party has proven their knowledge!</p>
+                    <p style="color: #ffd700; font-size: 18px; margin-top: 15px;">
+                        🏅 ${rewardPoints} points awarded to each surviving hero! 🏅
+                    </p>
+                    <p style="color: #81c784;">
+                        ${survivingMembers.length} survivor${survivingMembers.length !== 1 ? 's' : ''}: 
+                        ${survivingMembers.map(m => m.name).join(', ')}
+                    </p>
                     ${stageNum === 5 ? '<p style="font-size: 24px; color: #ffd700;">🏆 YOU ARE THE CHAMPIONS! 🏆</p>' : ''}
                 </div>
             </div>
@@ -3221,6 +3598,37 @@ function completeStage() {
     }
 }
 
+// Game Over - all students died
+function gameOver() {
+    const content = document.getElementById('challengeContent');
+    
+    content.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <h2 style="color: #ff6b6b; font-size: 48px; margin-bottom: 30px;">💀 DEFEAT 💀</h2>
+            <p style="color: #ffab00; font-size: 24px; margin-bottom: 20px;">
+                All students have fallen in battle!
+            </p>
+            <p style="color: #d4af37; font-size: 18px; margin-bottom: 30px;">
+                The ${adventureState.currentEnemy.name} has proven too powerful for your party.
+            </p>
+            <div style="margin: 30px 0;">
+                <p style="color: #8b6914; font-size: 16px;">Study harder and try again!</p>
+            </div>
+            <button class="action-button primary" onclick="returnToMap()" style="font-size: 20px; padding: 15px 30px; margin: 10px;">
+                Return to Map
+            </button>
+            <button class="action-button" onclick="saveAndReturn()" style="font-size: 20px; padding: 15px 30px; margin: 10px;">
+                End Adventure
+            </button>
+        </div>
+    `;
+    
+    // Clear battle actions
+    document.getElementById('battleActions').innerHTML = '';
+    
+    showToast('💀 All students have fallen! Game Over!');
+}
+
 // Return to map
 function returnToMap() {
     document.getElementById('battleScreen').style.display = 'none';
@@ -3228,7 +3636,11 @@ function returnToMap() {
     
     // Reset challenge answers for replay
     const stage = stages[adventureState.currentStage];
-    stage.challenges.forEach(c => delete c.answered);
+    stage.challenges.forEach(c => {
+        delete c.answered;
+        delete c.correctlyAnswered;
+        delete c.damageDealt;
+    });
 }
 
 // Show victory screen
@@ -3239,15 +3651,25 @@ function showVictory() {
     // Calculate stats
     const topScorer = adventureState.party.reduce((a, b) => a.points > b.points ? a : b);
     
+    // Calculate stage rewards earned
+    const survivingHeroes = adventureState.party.filter(m => m.hp > 0);
+    const maxPossibleRewards = 10 + 15 + 20 + 25 + 30; // 100 total
+    
     document.getElementById('victoryStats').innerHTML = `
         <p style="font-size: 20px; margin-bottom: 20px;">The Plant Dragon has been defeated!</p>
         <p><strong>Party Statistics:</strong></p>
         <p>🎯 Total Damage Dealt: ${adventureState.totalDamage}</p>
         <p>⭐ Total Points Earned: ${adventureState.totalPoints}</p>
+        <p>🏅 Stage Rewards: Each survivor earned ${maxPossibleRewards} points!</p>
+        <p>💚 Surviving Heroes: ${survivingHeroes.length}/${adventureState.party.length}</p>
         <p>👑 MVP: ${topScorer.name} (${topScorer.points} points)</p>
         <hr style="margin: 20px 0; border-color: #8b6914;">
         <p><strong>Individual Scores:</strong></p>
-        ${adventureState.party.map(m => `<p>${m.name}: ${m.points} points</p>`).join('')}
+        ${adventureState.party.map(m => `
+            <p>${m.name}: ${m.points} points ${m.hp <= 0 ? '💀' : '✅'}</p>
+        `).join('')}
+        <hr style="margin: 20px 0; border-color: #8b6914;">
+        <p style="color: #ffd700;"><strong>Treasury Updated!</strong> Points have been saved.</p>
     `;
 }
 

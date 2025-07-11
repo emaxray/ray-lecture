@@ -24,6 +24,7 @@
                 radial-gradient(ellipse at bottom, #1a0f0a, transparent);
             overflow-x: hidden;
             position: relative;
+            font-size: 12px;
         }
         
         /* Candlelight effect overlay */
@@ -137,11 +138,11 @@
             justify-content: center;
             writing-mode: vertical-rl;
             text-orientation: mixed;
-            font-family: 'Cinzel', serif;
+            font-family: "Cinzel", serif;
             font-size: 16px;
             transition: all 0.3s ease;
             z-index: 99;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         
         .left-toggle {
@@ -161,9 +162,8 @@
         }
         
         .sidebar-toggle:hover {
-            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            width: 60px;
+            background: rgba(139, 105, 20, 0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
         
         /* Sidebar Overlay */
@@ -171,125 +171,42 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 90;
+            display: none;
+            z-index: 98;
         }
         
         .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
+            display: block;
         }
         
-        /* Left Sidebar */
+        /* Sidebars */
         .left-sidebar {
-            width: 300px;
+            width: 250px;
             background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
             border-right: 2px solid #8b6914;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
             position: fixed;
             left: 0;
             top: 0;
             height: 100vh;
-            overflow-y: auto;
             transition: transform 0.3s ease;
-            z-index: 100;
-            transform: translateX(-300px);
+            z-index: 200;
+            transform: translateX(-250px);
         }
         
         .left-sidebar.expanded {
             transform: translateX(0);
         }
         
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #8b6914;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: #f4e4bc;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            color: #d4af37;
-            transform: scale(1.1);
-        }
-        
-        .sidebar-content {
-            padding: 20px;
-        }
-        
-        .nav-item {
-            display: block;
-            padding: 15px 20px;
-            margin: 5px 0;
-            background: rgba(139, 105, 20, 0.2);
-            border: 1px solid #8b6914;
-            color: #f4e4bc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 14px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-item::before {
-            content: '◆';
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: all 0.3s ease;
-            color: #8b2020;
-        }
-        
-        .nav-item:hover::before {
-            opacity: 1;
-        }
-        
-        .nav-item:hover {
-            background: rgba(212, 175, 55, 0.3);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            transform: translateX(5px);
-            border-color: #d4af37;
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
-            border-color: #f4e4bc;
-            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
-        }
-        
-        .sidebar-title {
-            font-family: 'Cinzel', serif;
-            font-size: 20px;
-            color: #f4e4bc;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            flex: 1;
-        }
-        
-        /* Right Sidebar */
         .right-sidebar {
             width: 350px;
             background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
             border-left: 2px solid #8b6914;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
             position: fixed;
             right: 0;
             top: 0;
@@ -304,18 +221,87 @@
             transform: translateX(0);
         }
         
-        .points-title {
-            font-family: 'Cinzel', serif;
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #f4e4bc;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            border-bottom: 1px solid #8b6914;
-            padding-bottom: 15px;
+        /* Sidebar Header */
+        .sidebar-header {
+            background: rgba(139, 105, 20, 0.2);
+            border-bottom: 2px solid #8b6914;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        /* Add Student Section */
+        .sidebar-title, .points-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            color: #d4af37;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        /* Sidebar Content */
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        /* Navigation Items */
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: "◆";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #f4e4bc;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        /* Student Management Styles */
         .add-student-section {
             background: rgba(139, 105, 20, 0.2);
             border: 1px solid #8b6914;
@@ -353,167 +339,155 @@
         
         .add-student-to-daily {
             width: 100%;
-            padding: 18px;
+            padding: 15px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
             border: 2px solid #d4af37;
             color: #f4e4bc;
             font-family: 'Cinzel', serif;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            min-height: 55px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .add-student-to-daily:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.3) 100%);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
         }
         
         /* Daily Students List */
         #dailyStudentsList {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
         }
         
         .student-item {
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
-            border: 2px solid #8b6914;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
             border-radius: 5px;
             padding: 15px;
-            position: relative;
-            cursor: pointer;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .student-item:hover {
-            background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
-            border-color: #d4af37;
-            transform: translateX(-2px);
+            background: rgba(139, 105, 20, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
         
         .student-info {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            gap: 10px;
         }
         
         .student-name {
             font-size: 16px;
-            font-weight: bold;
             color: #f4e4bc;
         }
         
         .team-badge {
-            font-size: 11px;
-            padding: 3px 8px;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
             border: 1px solid;
-            border-radius: 3px;
-            font-weight: normal;
-            animation: subtleGlow 2s ease-in-out infinite;
-        }
-        
-        @keyframes subtleGlow {
-            0%, 100% { 
-                filter: brightness(1) drop-shadow(0 0 3px currentColor); 
-            }
-            50% { 
-                filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
-            }
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
         }
         
         .coin-display {
             display: flex;
             align-items: center;
             gap: 10px;
-            justify-content: space-between;
         }
         
         .points-btn {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
-            border: 2px solid #8b6914;
-            color: #ffd700;
+            border: 1px solid #d4af37;
+            color: #f4e4bc;
             padding: 8px 16px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            position: relative;
-            font-family: 'Cinzel', serif;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+            gap: 5px;
         }
         
         .points-btn:hover {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
             transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
         .points-value {
-            min-width: 30px;
-            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
         }
         
         .coin-icon {
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
-                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
-                0 0 10px rgba(255, 215, 0, 0.4);
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             position: relative;
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            font-weight: bold;
-            color: #8b4513;
         }
         
         .coin-icon::after {
-            content: '₹';
+            content: '\u20b9';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 7px;
         }
         
         .remove-student {
-            background: rgba(139, 0, 0, 0.4);
-            border: 1px solid #8b0000;
+            background: rgba(139, 32, 32, 0.3);
+            border: 1px solid #8b2020;
             color: #ff6b6b;
             width: 30px;
             height: 30px;
-            border-radius: 5px;
+            border-radius: 50%;
             cursor: pointer;
             font-size: 18px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
         
         .remove-student:hover {
-            background: rgba(139, 0, 0, 0.6);
+            background: rgba(139, 32, 32, 0.5);
             transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
         }
         
-        /* Sidebar Buttons */
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: #8b6914;
+            font-style: italic;
+            padding: 40px 20px;
+            opacity: 0.7;
+        }
+        
+        /* Action Buttons */
         .sidebar-buttons {
             margin-top: 30px;
             display: flex;
@@ -524,20 +498,22 @@
         .action-btn {
             padding: 15px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #d4af37;
+            border: 2px solid #8b6914;
             color: #f4e4bc;
             font-family: 'Cinzel', serif;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .action-btn:hover {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
         }
         
         .save-btn {
@@ -547,47 +523,162 @@
         
         .save-btn:hover {
             background: linear-gradient(135deg, rgba(46, 125, 50, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+            box-shadow: 0 0 15px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #2a1810 0%, #3a2010 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 300;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .library-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+            letter-spacing: 3px;
+        }
+        
+        .library-title::before,
+        .library-title::after {
+            content: "✦";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: #d4af37;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        .library-title::before {
+            left: -50px;
+        }
+        
+        .library-title::after {
+            right: -50px;
+            animation-delay: 1.5s;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        .subtitle::before,
+        .subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+        }
+        
+        .subtitle::before {
+            left: 0;
+        }
+        
+        .subtitle::after {
+            right: 0;
+        }
+        
+        /* Control Section */
+        .control-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transform: translateY(-2px);
         }
         
         /* Timer Display */
         .timer-display {
             position: fixed;
-            top: 20px;
+            top: 80px;
             right: 20px;
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
-            border: 3px solid #d4af37;
-            border-radius: 15px;
-            padding: 25px;
-            display: none;
-            z-index: 200;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            background: rgba(26, 20, 16, 0.95);
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            z-index: 50;
             min-width: 200px;
         }
         
         .timer-display.active {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            opacity: 1;
+            transform: scale(1);
         }
         
         .timer-time {
             font-family: 'Cinzel', serif;
-            font-size: 48px;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            font-size: 36px;
+            color: #d4af37;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
         }
         
         .timer-controls {
@@ -598,96 +689,29 @@
         
         .timer-btn {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #8b6914;
+            border: 1px solid #8b6914;
             color: #f4e4bc;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: 'Cinzel', serif;
-            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
         }
         
         .timer-btn:hover {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 80px 20px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0 70px;
-            position: relative;
-            z-index: 2;
-            max-width: 1000px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        
-        .library-title {
-            font-family: 'Cinzel', serif;
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 10px;
-            color: #f4e4bc;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-            animation: glow 2s ease-in-out infinite alternate;
-            position: relative;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
-            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
-        }
-        
-        .subtitle {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #b8860b;
-            position: relative;
-            padding: 0 80px;
-        }
-        
-        /* Control Buttons */
-        .control-section {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .control-btn {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #d4af37;
-            color: #f4e4bc;
-            padding: 15px 35px;
-            border-radius: 5px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Cinzel', serif;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        
-        .control-btn:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
         }
         
         /* Answer Section */
         .answer-section {
+            background: rgba(26, 20, 16, 0.8);
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 40px;
             display: none;
-            width: 100%;
             animation: fadeIn 0.5s ease;
         }
         
@@ -696,374 +720,216 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        /* Section Headers */
-        .section-header {
-            background: linear-gradient(135deg, #3a2418 0%, #2a1810 50%, #4a3428 100%);
-            border: 1px solid #d4af37;
-            border-radius: 20px;
-            padding: 12px;
-            margin-bottom: 15px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
         
-        .section-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.3;
+                transform: translateY(-50%) scale(0.8) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: translateY(-50%) scale(1.2) rotate(180deg);
+            }
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 20px;
-            color: #f4e4bc;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Answer Item */
-        .answer-item {
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
-            border: 1px solid #8b6914;
-            border-radius: 15px;
-            padding: 12px 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-        }
-        
-        .answer-item:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-            border-color: #d4af37;
-        }
-        
-        .answer-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
-            color: #1a0f0a;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            border-radius: 50%;
-            text-align: center;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 14px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        
-        .vocab-word {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 8px;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-        
-        /* Choices Grid */
-        .choices-grid {
-            display: grid;
-            gap: 6px;
-            margin-top: 6px;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            justify-content: center;
-        }
-        
-        .choice {
-            padding: 6px 10px;
-            border: 2px solid #8b6914;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            background: rgba(26, 15, 10, 0.5);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        
-        .choice.correct {
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.4) 0%, rgba(56, 142, 60, 0.3) 100%);
-            border-color: #4caf50;
-            color: #a5d6a7;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
-        }
-        
-        .choice.incorrect {
-            background: linear-gradient(135deg, rgba(183, 28, 28, 0.3) 0%, rgba(198, 40, 40, 0.2) 100%);
-            border-color: #c62828;
-            color: #ef9a9a;
-        }
-        
-        .choice-number {
-            display: inline-block;
-            width: 26px;
-            height: 26px;
-            background: linear-gradient(135deg, #8b6914 0%, #d4af37 100%);
-            color: #1a0f0a;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 26px;
-            font-weight: bold;
-            font-size: 12px;
-            margin-right: 6px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
-        }
-        
-        .choice.correct .choice-number {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            color: #f4e4bc;
-        }
-        
-        .choice.incorrect .choice-number {
-            background: linear-gradient(135deg, #c62828 0%, #ef5350 100%);
-            color: #f4e4bc;
-        }
-        
-        /* Sentence Answer */
-        .sentence-answer {
-            font-size: 17px;
-            line-height: 1.6;
-            text-align: center;
-            margin-bottom: 10px;
-            color: #f4e4bc;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-        
-        .blank-word {
-            color: #4caf50;
-            font-weight: bold;
-            text-decoration: underline;
-            text-decoration-style: wavy;
-            text-underline-offset: 3px;
-            padding: 0 4px;
-        }
-        
-        /* Spelling Answer */
-        .spelling-answer {
-            font-size: 28px;
-            color: #4caf50;
-            text-align: center;
-            font-weight: bold;
-            font-family: 'Cinzel', serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(56, 142, 60, 0.1) 100%);
-            border-radius: 10px;
-            border: 2px solid #4caf50;
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #b8860b;
-            font-style: italic;
-        }
-        
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
-            border: 2px solid #d4af37;
-            color: #f4e4bc;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-        
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        /* Animation Keyframes */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
         }
         
         @keyframes goldenGlow {
             0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
-            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
             100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
         }
         
-        /* Dark Red Accent Elements */
-        .accent-red {
-            color: #8b2020;
+        /* Section subtitles for better organization */
+        .section-subtitle {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            position: relative;
+            padding: 0 20px;
         }
         
-        .border-accent-red {
-            border-color: #8b2020 !important;
+        .section-subtitle::before,
+        .section-subtitle::after {
+            content: "◆";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #8b6914;
         }
         
-        .bg-accent-red {
+        .section-subtitle::before {
+            left: 0;
+        }
+        
+        .section-subtitle::after {
+            right: 0;
+        }
+        
+        /* Decorative divider between sections */
+        .divider-ornament {
+            width: 100%;
+            height: 30px;
+            margin: 20px 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5;
+        }
+        
+        /* Shared section styling */
+        .add-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 0;
+        }
+        
+        /* Shared dropdown styling */
+        .dropdown-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .dropdown-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, rgba(139, 105, 20, 0.3) 0%, rgba(212, 175, 55, 0.2) 100%);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 28px;
+            color: #d4af37;
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .answer-item {
+            background: rgba(139, 105, 20, 0.1);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .answer-item:hover {
+            background: rgba(139, 105, 20, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .answer-number {
+            display: inline-block;
+            background: #8b6914;
+            color: #1a1410;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .vocab-word {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #d4af37;
+            margin-bottom: 15px;
+            display: inline-block;
+            font-weight: 600;
+        }
+        
+        .choices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .choice {
+            padding: 10px 15px;
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .choice.correct {
+            background: rgba(46, 125, 50, 0.3);
+            border-color: #2e7d32;
+            color: #81c784;
+        }
+        
+        .choice.incorrect {
             background: rgba(139, 32, 32, 0.2);
+            border-color: #8b2020;
+            color: #ff8a80;
         }
         
-        /* Special hover state with red glow */
-        .red-glow:hover {
-            box-shadow: 0 0 20px rgba(139, 32, 32, 0.6);
-        }
-        @media (max-width: 834px) {
-            .main-content {
-                padding: 70px 15px 30px;
-                margin: 0 60px;
-            }
-            
-            .library-title {
-                font-size: 36px;
-            }
-            
-            .subtitle {
-                font-size: 16px;
-                padding: 0 40px;
-            }
-            
-            .section-title {
-                font-size: 24px;
-            }
-            
-            .answer-item {
-                padding: 20px;
-            }
-            
-            .vocab-word {
-                font-size: 22px;
-            }
-            
-            .choice {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-            
-            .control-btn {
-                padding: 12px 25px;
-                font-size: 16px;
-            }
-            
-            .timer-time {
-                font-size: 40px;
-            }
+        .choice-number {
+            font-weight: bold;
+            margin-right: 5px;
         }
         
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-content {
-                margin: 0 60px;
-                padding: 60px 10px 20px;
+                padding: 60px 20px 20px;
             }
             
             .library-title {
-                font-size: 32px;
-            }
-            
-            .subtitle {
-                font-size: 14px;
-                padding: 0 20px;
-            }
-            
-            /* Further compact styling for iPad mini */
-            .answer-item {
-                padding: 8px 10px;
-                margin-bottom: 8px;
-            }
-            
-            .answer-number {
-                width: 24px;
-                height: 24px;
-                line-height: 24px;
-                font-size: 12px;
-                margin-right: 8px;
-            }
-            
-            .vocab-word {
-                font-size: 16px;
-                margin-bottom: 6px;
-            }
-            
-            .choices-grid {
-                gap: 4px;
-                margin-top: 4px;
-                grid-template-columns: 1fr;
-            }
-            
-            .choice {
-                padding: 5px 8px;
-                font-size: 12px;
-                gap: 8px;
-            }
-            
-            .choice-number {
-                width: 22px;
-                height: 22px;
-                line-height: 22px;
-                font-size: 11px;
-                margin-right: 5px;
-            }
-            
-            .section-header {
-                padding: 10px;
-                margin-bottom: 12px;
-            }
-            
-            .section-title {
-                font-size: 18px;
-            }
-            
-            .sentence-answer {
-                font-size: 14px;
-                padding: 8px;
-            }
-            
-            .spelling-answer {
-                font-size: 20px;
-                padding: 12px;
-            }
-            
-            .control-btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-            
-            .timer-display {
-                padding: 15px;
-                min-width: 160px;
-            }
-            
-            .timer-time {
                 font-size: 32px;
                 margin-bottom: 15px;
             }
@@ -1073,77 +939,168 @@
                 max-width: 350px;
             }
         }
+        
+        /* Section subtitle styling */
+        .section-subtitle {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            color: #d4af37;
+            text-align: center;
+            margin: 25px 0 15px 0;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Divider ornament between sections */
+        .divider-ornament {
+            height: 30px;
+            margin: 20px 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5;
+        }
+        
+        /* Shared section styling for add-class-section and add-student-section */
+        .add-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 0;
+        }
+        
+        /* Shared dropdown styling for class-select and student-select */
+        .dropdown-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .dropdown-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
-    <!-- Back Button -->
-    <a href="/vocab/vocab.html" class="back-button">Back</a>
-    
-    <!-- Decorative corner ornaments -->
+   <!-- 🎨 DECORATIVE ELEMENTS -->
     <div class="corner-ornament corner-top-left"></div>
     <div class="corner-ornament corner-top-right"></div>
     <div class="corner-ornament corner-bottom-left"></div>
     <div class="corner-ornament corner-bottom-right"></div>
-    
-    <!-- Floating particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
-    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">◆</div>
-    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
-    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
-    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
-    
+
+    <!-- back button NAVIGATION -->
+  <button class="back-button" onclick="goBack()">Back</button> 
+
+    <!-- 📱 SIDEBAR SYSTEM -->
     <!-- Sidebar Toggle Buttons -->
-    <button class="sidebar-toggle left-toggle" id="leftToggleBtn">Subjects</button>
-    <button class="sidebar-toggle right-toggle" id="rightToggleBtn">Treasury</button>
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
+        MENU
+    </div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">
+        Treasury
+    </div>
     
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
     
     <!-- Left Sidebar -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-header">
             <h2 class="sidebar-title">Ancient Subjects</h2>
-            <button class="close-btn" id="leftCloseBtn">×</button>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
         </div>
         <div class="sidebar-content">
-            <a href="/index.html" class="nav-item">Library Hall</a>
-            <a href="/vocab/vocab.html" class="nav-item active">Vocabulary</a>
+            <a href="/index.html" class="nav-item">Library</a>
+            <a href="/vocab/vocab.html" class="nav-item active">Vocab</a>
             <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
-            <a href="/listening/listening.html" class="nav-item">Listening</a>
-            <a href="/debate/debate.html" class="nav-item">Debate</a>
-            <a href="/essay/essay.html" class="nav-item">Essay</a>
             <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
             <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
             <a href="/ted/ted-hub.html" class="nav-item">TED</a>
             <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/review/review.html" class="nav-item">Review</a>
             <a href="/timer/timer.html" class="nav-item">Timer</a>
             <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
         </div>
     </div>
     
-    <!-- Right Sidebar -->
+    <!-- Right Sidebar (Treasury) -->
     <div class="right-sidebar" id="rightSidebar">
         <div class="sidebar-header">
             <h2 class="sidebar-title">Scholar's Treasury</h2>
-            <button class="close-btn" id="rightCloseBtn">×</button>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
         </div>
         <div class="sidebar-content">
-            <h2 class="points-title">Daily Treasury</h2>
+            <!-- Section Title for Class Selection -->
+            <h3 class="section-subtitle">Quick Add by Class</h3>
+
+            <!-- Class Selection Section -->
+            <div class="add-section add-class-section">
+                <select class="dropdown-select class-select" id="classSelect">
+                    <option value="">Select a class...</option>
+                    <option value="m1">Monday 1 (m1)</option>
+                    <option value="m2">Monday 2 (m2)</option>
+                    <option value="tu1">Tuesday 1 (tu1)</option>
+                    <option value="tu2">Tuesday 2 (tu2)</option>
+                    <option value="w1">Wednesday 1 (w1)</option>
+                    <option value="w2">Wednesday 2 (w2)</option>
+                    <option value="th1">Thursday 1 (th1)</option>
+                    <option value="th2">Thursday 2 (th2)</option>
+                    <option value="s1">Saturday 1 (s1)</option>
+                    <option value="s2">Saturday 2 (s2)</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addClassToDaily()">Add Entire Class</button>
+            </div>
+
+            <div class="divider-ornament"></div>
+
+            <!-- Section Title for Individual Students -->
+            <h3 class="section-subtitle">Add Individual Student</h3>
             
-            <!-- Add Student Section -->
-            <div class="add-student-section">
-                <select id="studentSelect" class="student-select">
+            <!-- Individual Student Selection -->
+            <div class="add-section add-student-section">
+                <select id="studentSelect" class="dropdown-select student-select">
                     <option value="">Select a scholar...</option>
                 </select>
-                <button class="add-student-to-daily" id="addStudentBtn">Add to Today's Class</button>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Daily Points</button>
             </div>
+
+            <div class="divider-ornament"></div>
+
+            <!-- Section Title for Active Students -->
+            <h3 class="section-subtitle">Today's Scholars</h3>
             
             <!-- Daily Students List -->
-            <div id="dailyStudentsList"></div>
+            <div id="dailyStudentsList">
+                <div class="empty-state">No scholars in today's class yet</div>
+            </div>
             
             <!-- Action Buttons -->
             <div class="sidebar-buttons">
-                <button class="action-btn save-btn" id="saveToConquestBtn">💾 Save to Conquest</button>
+                <button class="action-btn" onclick="resetDailyTreasury()">Reset All Points</button>
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+                <button class="action-btn" onclick="exportData()">Export Data</button>
             </div>
         </div>
     </div>
@@ -1152,9 +1109,9 @@
     <div class="timer-display" id="timerDisplay">
         <div class="timer-time" id="timerTime">5:00</div>
         <div class="timer-controls">
-            <button class="timer-btn" id="startTimerBtn">▶ Start</button>
-            <button class="timer-btn" id="pauseTimerBtn">⏸ Pause</button>
-            <button class="timer-btn" id="resetTimerBtn">↺ Reset</button>
+            <button class="timer-btn" onclick="startTimer()">▶ Start</button>
+            <button class="timer-btn" onclick="pauseTimer()">⏸ Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">↺ Reset</button>
         </div>
     </div>
     
@@ -1165,8 +1122,8 @@
         
         <!-- Control Buttons -->
         <div class="control-section">
-            <button class="control-btn" id="toggleTimerBtn">⏱ Timer</button>
-            <button class="control-btn" id="toggleAnswersBtn">📜 Reveal Answers</button>
+            <button class="control-btn" onclick="toggleTimer()">⏱ Timer</button>
+            <button class="control-btn" onclick="toggleAnswers()">📜 Reveal Answers</button>
         </div>
         
         <!-- Answer Section -->
@@ -1178,220 +1135,220 @@
             
             <div class="answer-item">
                 <span class="answer-number">1</span>
-                <div class="vocab-word">assort</div>
+                <div class="vocab-word">perspective</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> rotate
+                        <span class="choice-number">①</span> detail
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> unsure
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">③</span> choice
+                        <span class="choice-number">②</span> fact
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">④</span> categorize
+                        <span class="choice-number">③</span> viewpoint
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> forecast
+                        <span class="choice-number">④</span> truth
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> reality
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">2</span>
-                <div class="vocab-word">attack</div>
+                <div class="vocab-word">structure</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> advertize
+                        <span class="choice-number">①</span> decoration
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> forsee
+                        <span class="choice-number">②</span> color
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> material
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">③</span> assault
+                        <span class="choice-number">④</span> framework
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> stance
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> elevation
+                        <span class="choice-number">⑤</span> texture
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">3</span>
-                <div class="vocab-word">assigned</div>
+                <div class="vocab-word">inspect</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> blend
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">②</span> flexibility
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">③</span> partner
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">④</span> calm
+                        <span class="choice-number">①</span> ignore
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">⑤</span> appointed
+                        <span class="choice-number">②</span> examine
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> create
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> destroy
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> forget
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">4</span>
-                <div class="vocab-word">archaic</div>
+                <div class="vocab-word">spectacle</div>
                 <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> sound
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> smell
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> taste
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> touch
+                    </div>
                     <div class="choice correct">
-                        <span class="choice-number">①</span> antique
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">②</span> hurt
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">③</span> adjust
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">④</span> profusion
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> unnamed
+                        <span class="choice-number">⑤</span> sight
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">5</span>
-                <div class="vocab-word">attitude</div>
+                <div class="vocab-word">construct</div>
                 <div class="choices-grid">
                     <div class="choice correct">
-                        <span class="choice-number">①</span> stand
+                        <span class="choice-number">①</span> build
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> fragrant
+                        <span class="choice-number">②</span> break
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> use
+                        <span class="choice-number">③</span> hide
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> talent
+                        <span class="choice-number">④</span> lose
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> ancient
+                        <span class="choice-number">⑤</span> find
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">6</span>
-                <div class="vocab-word">adept</div>
+                <div class="vocab-word">respectful</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> advance
+                        <span class="choice-number">①</span> rude
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> loud
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">②</span> skillful
+                        <span class="choice-number">③</span> courteous
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> designated
+                        <span class="choice-number">④</span> angry
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> satisfy
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> hit
+                        <span class="choice-number">⑤</span> careless
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">7</span>
-                <div class="vocab-word">advisor</div>
+                <div class="vocab-word">instructor</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> accomplish
+                        <span class="choice-number">①</span> student
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> categorize
+                        <span class="choice-number">②</span> parent
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> obstacle
+                        <span class="choice-number">③</span> friend
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">④</span> consultant
+                        <span class="choice-number">④</span> teacher
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> earn
+                        <span class="choice-number">⑤</span> stranger
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">8</span>
-                <div class="vocab-word">allay</div>
+                <div class="vocab-word">speculate</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> claim
+                        <span class="choice-number">①</span> know
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> employ
+                        <span class="choice-number">②</span> prove
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">③</span> soothe
+                        <span class="choice-number">③</span> guess
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> imply
+                        <span class="choice-number">④</span> deny
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> unknown
+                        <span class="choice-number">⑤</span> confirm
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">9</span>
-                <div class="vocab-word">all</div>
+                <div class="vocab-word">destruction</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> mixed
+                        <span class="choice-number">①</span> creation
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">②</span> everything
+                        <span class="choice-number">②</span> ruin
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> appropriate
+                        <span class="choice-number">③</span> growth
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> serene
+                        <span class="choice-number">④</span> repair
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> elevation
+                        <span class="choice-number">⑤</span> beginning
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">10</span>
-                <div class="vocab-word">assemble</div>
+                <div class="vocab-word">spectacular</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> flexibility
+                        <span class="choice-number">①</span> boring
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> gainful
+                        <span class="choice-number">②</span> ordinary
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> affiliate
+                        <span class="choice-number">③</span> quiet
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> execute
+                        <span class="choice-number">④</span> simple
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">⑤</span> collect
+                        <span class="choice-number">⑤</span> amazing
                     </div>
                 </div>
             </div>
@@ -1403,150 +1360,225 @@
             
             <div class="answer-item">
                 <span class="answer-number">11</span>
-                <div class="sentence-answer">
-                    <span class="blank-word">① apply</span> - You must have at least a high school diploma to <span class="blank-word">apply</span> for a majority of jobs.
+                <div class="vocab-word">The architect needed to _____ a new building for the city center.</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> inspect
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">②</span> construct
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> respect
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> spectate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> instruct
+                    </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">12</span>
-                <div class="sentence-answer">
-                    <span class="blank-word">④ aromatic</span> - Above her, bees buzzed around the <span class="blank-word">aromatic</span> apple blossoms.
+                <div class="vocab-word">The detective had to carefully _____ the crime scene for clues.</div>
+                <div class="choices-grid">
+                    <div class="choice correct">
+                        <span class="choice-number">①</span> inspect
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> construct
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> destruct
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> respect
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> spectate
+                    </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">13</span>
-                <div class="sentence-answer">
-                    <span class="blank-word">② appropriate</span> - It can be a challenge to find the <span class="blank-word">appropriate</span> outfit for a first job interview.
+                <div class="vocab-word">The fireworks display was truly _____, lighting up the entire night sky.</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> structural
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> respectful
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">③</span> spectacular
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> instructive
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> destructive
+                    </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">14</span>
-                <div class="sentence-answer">
-                    <span class="blank-word">③ assure</span> - The captain <span class="blank-word">assured</span> his passengers that the ship was safe to ride.
+                <div class="vocab-word">Without facts, we can only _____ about what might have happened.</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> construct
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> inspect
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> respect
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">④</span> speculate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> instruct
+                    </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">15</span>
-                <div class="sentence-answer">
-                    <span class="blank-word">⑤ asset</span> - One of the most important <span class="blank-word">assets</span> for a business is to have employees who know their abilities and can work together.
+                <div class="vocab-word">The earthquake caused massive _____ throughout the region.</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> construction
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">②</span> destruction
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> instruction
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> speculation
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> perspective
+                    </div>
                 </div>
             </div>
             
-            <!-- Part 3: Roots, prefixes & suffixes -->
+            <!-- Part 3: Roots/Prefixes/Suffixes -->
             <div class="section-header">
                 <h2 class="section-title">Part III: Roots, Prefixes & Suffixes</h2>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">16</span>
-                <div class="vocab-word">biweekly</div>
+                <div class="vocab-word">The root "SPECT" means:</div>
                 <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> build
+                    </div>
                     <div class="choice correct">
-                        <span class="choice-number">①</span> happening every two weeks
+                        <span class="choice-number">②</span> look/see
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> happening every two years
+                        <span class="choice-number">③</span> teach
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> happening twice a week
+                        <span class="choice-number">④</span> break
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> ending every two weeks
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> happening once a year
+                        <span class="choice-number">⑤</span> write
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">17</span>
-                <div class="vocab-word">preview</div>
+                <div class="vocab-word">The root "STRUCT" means:</div>
                 <div class="choices-grid">
-                    <div class="choice incorrect">
-                        <span class="choice-number">①</span> to observe from afar
-                    </div>
                     <div class="choice correct">
-                        <span class="choice-number">②</span> to see before
+                        <span class="choice-number">①</span> build
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> to see after
+                        <span class="choice-number">②</span> see
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> to write first
+                        <span class="choice-number">③</span> hear
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> to view behind
+                        <span class="choice-number">④</span> move
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> think
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">18</span>
-                <div class="vocab-word">tricycle</div>
+                <div class="vocab-word">The prefix "DE-" in "destruction" means:</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> to learn how to ride a bike
+                        <span class="choice-number">①</span> with
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> a bicycle with two wheels
+                        <span class="choice-number">②</span> before
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">③</span> a bicycle with three wheels
+                        <span class="choice-number">③</span> opposite/down
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> a bicycle for three people
+                        <span class="choice-number">④</span> again
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> happening every three weeks
+                        <span class="choice-number">⑤</span> between
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">19</span>
-                <div class="vocab-word">beautiful</div>
+                <div class="vocab-word">The prefix "IN-" in "inspect" means:</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> ugly
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">②</span> satisfied
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">③</span> serene
+                        <span class="choice-number">①</span> out
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">④</span> pretty
+                        <span class="choice-number">②</span> into/in
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> faster
+                        <span class="choice-number">③</span> not
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> before
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> after
                     </div>
                 </div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">20</span>
-                <div class="vocab-word">kindest</div>
+                <div class="vocab-word">The suffix "-FUL" in "respectful" means:</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> to have a friend
+                        <span class="choice-number">①</span> without
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> inconsiderate
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">③</span> selfishness
-                    </div>
-                    <div class="choice incorrect">
-                        <span class="choice-number">④</span> strongest
+                        <span class="choice-number">②</span> less
                     </div>
                     <div class="choice correct">
-                        <span class="choice-number">⑤</span> most benevolent
+                        <span class="choice-number">③</span> full of
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> able to
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> state of
                     </div>
                 </div>
             </div>
@@ -1558,312 +1590,599 @@
             
             <div class="answer-item">
                 <span class="answer-number">21</span>
-                <div class="spelling-answer">abundance</div>
+                <div class="vocab-word">perspective</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">22</span>
-                <div class="spelling-answer">ache</div>
+                <div class="vocab-word">spectacular</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">23</span>
-                <div class="spelling-answer">anonymous</div>
+                <div class="vocab-word">construction</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">24</span>
-                <div class="spelling-answer">barrier</div>
+                <div class="vocab-word">instructor</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">25</span>
-                <div class="spelling-answer">aptitude</div>
+                <div class="vocab-word">destruction</div>
             </div>
         </div>
     </div>
     
     <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-    
-    <!-- Audio elements for timer -->
-    <audio id="beepAudio" preload="auto">
-        <source src="data:audio/wav;base64,UklGRkQCAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YSACAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA" type="audio/wav">
-    </audio>
+    <div class="toast" id="toast"></div>
     
     <audio id="alarmAudio" preload="auto">
         <source src="data:audio/wav;base64,UklGRkQCAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YSACAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA" type="audio/wav">
     </audio>
     
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // ===== Initial Load =====
-    safeInit(() => {
-        bindUIActions();
-        loadConquestStudents();
-        renderDailyStudents();
-        updateTimerDisplay();
-    });
+  /* ======================
+           🎯 STUDENT MANAGEMENT SYSTEM
+           ====================== 
+           
+           PURPOSE: Manages daily student points and integrates with conquest system
+           
+           🔧 CUSTOMIZATION GUIDE:
+           
+           1. TEAM SETUP:
+           - Modify teamInfo object to match your team names and colors
+           - Teams are automatically loaded from localStorage 'conquestTeamData'
+           
+           2. POINT SYSTEM:
+           - Default: 10 points per click (change in addPointsToStudent function)
+           - Modify point increments in addPointsToStudent()
+           
+           3. STORAGE:
+           - Uses localStorage for persistence
+           - 'conquestTeamData' = main student/team data
+           - 'dailyStudents' = today's active students
+           - 'dailyTreasury' = today's point tracking
+           
+           4. INTEGRATION:
+           - Works with existing conquest system
+           - saveToConquest() transfers daily points to main system
+           - Automatically syncs with team data
+        */
 
-    // ===== Global State =====
-    window.dailyStudents = loadSafeJSON('dailyStudents', []);
-    window.dailyTreasury = loadSafeJSON('dailyTreasury', {});
-    window.timerInterval = null;
-    window.totalSeconds = 300;
-    window.isTimerRunning = false;
+      // Daily treasury object to track today's students
+      let dailyStudents = JSON.parse(
+        localStorage.getItem("dailyStudents") || "[]"
+      );
+      let dailyTreasury = JSON.parse(
+        localStorage.getItem("dailyTreasury") || "{}"
+      );
 
-    const teamColors = {
-        prettyEggplant: '#ba68c8',
-        jiggleBoggle: '#81c784',
-        bomi: '#ffd54f',
-        handsomeJoon: '#ff6b6b',
-        pinkie: '#f06292',
-        geniusIrene: '#4fc3f7'
-    };
+      // Load all students from Conquest data
+      function loadAllStudentsFromConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (conquestData) {
+          const teamData = JSON.parse(conquestData);
+          const students = [];
 
-    // ===== Utility Functions =====
-    function loadSafeJSON(key, fallback) {
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : fallback;
-        } catch {
-            console.warn(`Corrupt localStorage: ${key}`);
-            return fallback;
+          // Extract all students from teams
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            team.students.forEach((student) => {
+              if (student.name !== "Donation") {
+                students.push({
+                  name: student.name,
+                  team: team.name,
+                  teamKey: teamKey,
+                });
+              }
+            });
+          });
+
+          return students;
         }
-    }
+        return [];
+      }
 
-    function saveJSON(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
+      // Team info
+      const teamInfo = {
+        jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+        pinkie: { name: "Pinkie", color: "#f06292" },
+        handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+        bomi: { name: "Bomi", color: "#ffd54f" },
+        geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+        prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" }
+      };
 
-    function showToast(message) {
-        const toast = document.getElementById('toast');
+      // Show toast notification
+      function showToast(message) {
+        const toast = document.getElementById("toast");
         toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
 
-    function safeInit(fn) {
-        try { fn(); } catch (e) { console.error("Init failed:", e); }
-    }
+      // Back Button Function
+      function goBack() {
+        window.location.href = "/vocab/vocab.html";
+      }
 
-    // ===== Event Binding =====
-    function bindUIActions() {
-        document.getElementById('leftToggleBtn')?.addEventListener('click', toggleLeftSidebar);
-        document.getElementById('rightToggleBtn')?.addEventListener('click', toggleRightSidebar);
-        document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebars);
-        document.getElementById('leftCloseBtn')?.addEventListener('click', closeSidebars);
-        document.getElementById('rightCloseBtn')?.addEventListener('click', closeSidebars);
+      // Function to toggle left sidebar
+      function toggleLeftSidebar() {
+        document.getElementById("leftSidebar").classList.toggle("expanded");
+        document.getElementById("sidebarOverlay").classList.toggle("active");
+      }
 
-        document.getElementById('toggleTimerBtn')?.addEventListener('click', toggleTimer);
-        document.getElementById('startTimerBtn')?.addEventListener('click', startTimer);
-        document.getElementById('pauseTimerBtn')?.addEventListener('click', pauseTimer);
-        document.getElementById('resetTimerBtn')?.addEventListener('click', resetTimer);
+      // Function to toggle right sidebar
+      function toggleRightSidebar() {
+        document.getElementById("rightSidebar").classList.toggle("expanded");
+        document.getElementById("sidebarOverlay").classList.toggle("active");
+      }
 
-        document.getElementById('toggleAnswersBtn')?.addEventListener('click', toggleAnswers);
-        document.getElementById('addStudentBtn')?.addEventListener('click', addStudentToDaily);
-        document.getElementById('saveToConquestBtn')?.addEventListener('click', saveToConquest);
-    }
+      // Function to close all sidebars
+      function closeSidebars() {
+        document.getElementById("leftSidebar").classList.remove("expanded");
+        document.getElementById("rightSidebar").classList.remove("expanded");
+        document.getElementById("sidebarOverlay").classList.remove("active");
+      }
 
-    // ===== Sidebar Logic =====
-    function toggleLeftSidebar() {
-        document.getElementById('leftSidebar')?.classList.toggle('expanded');
-        document.getElementById('sidebarOverlay')?.classList.toggle('active');
-    }
-
-    function toggleRightSidebar() {
-        document.getElementById('rightSidebar')?.classList.toggle('expanded');
-        document.getElementById('sidebarOverlay')?.classList.toggle('active');
-    }
-
-    function closeSidebars() {
-        document.getElementById('leftSidebar')?.classList.remove('expanded');
-        document.getElementById('rightSidebar')?.classList.remove('expanded');
-        document.getElementById('sidebarOverlay')?.classList.remove('active');
-    }
-
-    // ===== Timer Logic =====
-    function toggleTimer() {
-        const timerDisplay = document.getElementById('timerDisplay');
-        timerDisplay.classList.toggle('active');
-        if (timerDisplay.classList.contains('active')) {
-            showToast('Timer ready - 5 minutes');
-        }
-    }
-
-    function updateTimerDisplay() {
-        const display = document.getElementById('timerTime');
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        display.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-        display.style.color = totalSeconds <= 30
-            ? '#ff6b6b' : totalSeconds <= 60
-            ? '#ffa726' : '#ffd700';
-
-        if (totalSeconds <= 10 && totalSeconds > 0) playBeep();
-        if (totalSeconds === 0) {
-            playAlarm();
-            pauseTimer();
-            showToast("Time's up! ⏰");
-        }
-    }
-
-    function startTimer() {
-        if (!isTimerRunning && totalSeconds > 0) {
-            isTimerRunning = true;
-            timerInterval = setInterval(() => {
-                totalSeconds--;
-                updateTimerDisplay();
-                if (totalSeconds <= 0) pauseTimer();
-            }, 1000);
-            showToast('Timer started');
-        }
-    }
-
-    function pauseTimer() {
-        isTimerRunning = false;
-        clearInterval(timerInterval);
-        timerInterval = null;
-        if (totalSeconds > 0) showToast('Timer paused');
-    }
-
-    function resetTimer() {
-        pauseTimer();
-        totalSeconds = 300;
-        updateTimerDisplay();
-        showToast('Timer reset to 5:00');
-    }
-
-    function playBeep() {
-        document.getElementById('beepAudio')?.play().catch(() => {});
-    }
-
-    function playAlarm() {
-        document.getElementById('alarmAudio')?.play().catch(() => {});
-    }
-
-    // ===== Answer Toggle =====
-    function toggleAnswers() {
-        const section = document.getElementById('answerSection');
-        section.classList.toggle('show');
-        showToast(section.classList.contains('show') ? '✨ Answers revealed!' : '📜 Answers hidden');
-    }
-
-    // ===== Student Logic =====
-    function loadConquestStudents() {
-        const select = document.getElementById('studentSelect');
-        const conquest = loadSafeJSON('conquestTeamData', {});
+      // Populate student dropdown
+      function populateStudentDropdown() {
+        const select = document.getElementById("studentSelect");
         select.innerHTML = '<option value="">Select a scholar...</option>';
 
-        for (const [key, team] of Object.entries(conquest)) {
-            (team.students || []).forEach(student => {
-                const opt = document.createElement('option');
-                opt.value = student.name;
-                opt.textContent = `${student.name} (${team.name})`;
-                opt.dataset.teamKey = key;
-                select.appendChild(opt);
-            });
-        }
-    }
+        const allStudents = loadAllStudentsFromConquest();
 
-    function addStudentToDaily() {
-        const select = document.getElementById('studentSelect');
-        const name = select.value;
-        if (!name) return showToast('Please select a scholar');
-        if (dailyStudents.includes(name)) return showToast('Scholar already added');
-
-        dailyStudents.push(name);
-        saveJSON('dailyStudents', dailyStudents);
-        renderDailyStudents();
-        select.value = '';
-        showToast(`${name} added to today's class`);
-    }
-
-    function removeStudentFromDaily(name) {
-        dailyStudents = dailyStudents.filter(s => s !== name);
-        delete dailyTreasury[name];
-        saveJSON('dailyStudents', dailyStudents);
-        saveJSON('dailyTreasury', dailyTreasury);
-        renderDailyStudents();
-        showToast(`${name} removed`);
-    }
-
-    function renderDailyStudents() {
-        const container = document.getElementById('dailyStudentsList');
-        if (!container) return;
-
-        container.innerHTML = '';
-        if (dailyStudents.length === 0) {
-            return container.innerHTML = `<div class="empty-state">No scholars in today's class yet</div>`;
-        }
-
-        const conquest = loadSafeJSON('conquestTeamData', {});
-
-        dailyStudents.forEach(name => {
-            let team = null, teamKey = null;
-            for (const [key, t] of Object.entries(conquest)) {
-                if (t.students?.some(s => s.name === name)) {
-                    team = t;
-                    teamKey = key;
-                    break;
-                }
-            }
-
-            const color = teamColors[teamKey] || '#d4af37';
-
-            const item = document.createElement('div');
-            item.className = 'student-item';
-            item.innerHTML = `
-                <div class="student-info">
-                    <span class="student-name">${name}</span>
-                    ${team ? `<span class="team-badge" style="color: ${color}; border-color: ${color}; background: ${color}20;">${team.name}</span>` : ''}
-                </div>
-                <div class="coin-display">
-                    <button class="points-btn" title="Add 10 points">
-                        <span class="points-value">${dailyTreasury[name] || 0}</span>
-                        <span class="coin-icon"></span>
-                    </button>
-                    <button class="remove-student" title="Remove">×</button>
-                </div>
-            `;
-
-            item.querySelector('.points-btn')?.addEventListener('click', () => {
-                dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
-                saveJSON('dailyTreasury', dailyTreasury);
-                renderDailyStudents();
-            });
-
-            item.querySelector('.remove-student')?.addEventListener('click', () => {
-                removeStudentFromDaily(name);
-            });
-
-            container.appendChild(item);
+        allStudents.forEach((student) => {
+          // Only show students not already in daily list
+          if (!dailyStudents.includes(student.name)) {
+            const option = document.createElement("option");
+            option.value = student.name;
+            option.dataset.team = student.team;
+            option.textContent = student.name;
+            select.appendChild(option);
+          }
         });
-    }
+      }
 
-    function saveToConquest() {
-        const conquest = loadSafeJSON('conquestTeamData', {});
-        let total = 0;
+      // Add student to daily treasury
+      function addStudentToDaily() {
+        const select = document.getElementById("studentSelect");
+        const studentName = select.value;
 
-        for (const [name, points] of Object.entries(dailyTreasury)) {
-            for (const team of Object.values(conquest)) {
-                const student = team.students?.find(s => s.name === name);
-                if (student) {
-                    student.points = (student.points || 0) + points;
-                    total += points;
-                    break;
-                }
-            }
+        if (!studentName) {
+          showToast("Please select a student first!");
+          return;
         }
 
-        saveJSON('conquestTeamData', conquest);
+        if (dailyStudents.includes(studentName)) {
+          showToast("Student already added to today's class!");
+          return;
+        }
+
+        // Add to daily lists
+        dailyStudents.push(studentName);
+        dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+
+        // Save to localStorage
+        localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+        // Refresh display
+        renderDailyStudents();
+        populateStudentDropdown();
+
+        // Reset dropdown
+        select.value = "";
+        showToast(`${studentName} added to today's class!`);
+      }
+
+      // Function to add entire class to daily list
+      function addClassToDaily() {
+        const select = document.getElementById("classSelect");
+        const className = select.value;
+
+        if (!className) {
+          showToast("Please select a class first!");
+          return;
+        }
+
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No student data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let addedCount = 0;
+        let skippedCount = 0;
+        let totalStudentsChecked = 0;
+
+        // Loop through all teams and students
+        Object.entries(teamData).forEach(([teamKey, team]) => {
+          if (!team.students) {
+            return;
+          }
+
+          team.students.forEach((student) => {
+            totalStudentsChecked++;
+
+            // Skip if no classes array
+            if (!student.classes) {
+              return;
+            }
+
+            // Check if student is in the selected class
+            const isInClass = student.classes.some((c) => {
+              return c.toLowerCase() === className.toLowerCase();
+            });
+
+            if (isInClass && student.name !== "Donation") {
+              if (!dailyStudents.includes(student.name)) {
+                dailyStudents.push(student.name);
+                dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                addedCount++;
+              } else {
+                skippedCount++;
+              }
+            }
+          });
+        });
+
+        // Save and update display
+        if (addedCount > 0) {
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+
+        // Show result message
+        if (addedCount > 0 && skippedCount > 0) {
+          showToast(
+            `✨ Added ${addedCount} students! (${skippedCount} already in class)`
+          );
+        } else if (addedCount > 0) {
+          showToast(`✨ Added ${addedCount} students to today's class!`);
+        } else if (skippedCount > 0) {
+          showToast("All students from this class are already added!");
+        } else {
+          showToast(`No students found for ${className.toUpperCase()}`);
+        }
+
+        // Reset dropdown
+        select.value = "";
+      }
+
+      // Remove student from daily treasury
+      function removeStudentFromDaily(studentName) {
+        const index = dailyStudents.indexOf(studentName);
+        if (index > -1) {
+          dailyStudents.splice(index, 1);
+          delete dailyTreasury[studentName];
+
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          showToast(`${studentName} removed from today's class`);
+        }
+      }
+
+      // Add points to student
+      function addPointsToStudent(name) {
+        dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+        renderDailyStudents();
+      }
+
+      // Render daily students list
+      function renderDailyStudents() {
+        const container = document.getElementById("dailyStudentsList");
+        container.innerHTML = "";
+
+        if (dailyStudents.length === 0) {
+          container.innerHTML = `<div class="empty-state">No scholars in today's class yet.<br>Add students from the options above.</div>`;
+          return;
+        }
+
+        // Load conquest data to get team information
+        const conquestData = localStorage.getItem("conquestTeamData");
+        const teamData = conquestData ? JSON.parse(conquestData) : {};
+
+        dailyStudents.forEach((studentName) => {
+          // Find student's team
+          let studentTeam = null;
+          let studentTeamKey = null;
+
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            const student = team.students.find((s) => s.name === studentName);
+            if (student) {
+              studentTeam = team.name;
+              studentTeamKey = teamKey;
+            }
+          });
+
+          const teamColor = teamInfo[studentTeamKey]?.color || "#d4af37";
+
+          const studentElement = document.createElement("div");
+          studentElement.className = "student-item";
+          studentElement.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${
+                          studentTeam
+                            ? `<span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor}; background: ${teamColor}20;">${studentTeam}</span>`
+                            : ""
+                        }
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${
+                              dailyTreasury[studentName] || 0
+                            }</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+
+          container.appendChild(studentElement);
+        });
+      }
+
+      // Save daily treasury to conquest
+      function saveToConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No conquest data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let totalPointsAdded = 0;
+
+        // Update points for each student
+        Object.entries(dailyTreasury).forEach(([studentName, points]) => {
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            const student = team.students.find((s) => s.name === studentName);
+            if (student) {
+              student.points = (student.points || 0) + points;
+              totalPointsAdded += points;
+            }
+          });
+        });
+
+        // Save updated conquest data
+        localStorage.setItem("conquestTeamData", JSON.stringify(teamData));
+
+        // Clear daily data
         dailyStudents = [];
         dailyTreasury = {};
-        saveJSON('dailyStudents', []);
-        saveJSON('dailyTreasury', {});
+        localStorage.removeItem("dailyStudents");
+        localStorage.removeItem("dailyTreasury");
+
+        // Refresh display
         renderDailyStudents();
-        showToast(`Treasury saved: ${total} coins added`);
-    }
-});
-</script>
+        populateStudentDropdown();
+
+        showToast(
+          `✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`
+        );
+      }
+
+      // Reset daily treasury
+      function resetDailyTreasury() {
+        if (
+          confirm(
+            "Are you sure you want to clear today's class? This will remove all students and their daily points!"
+          )
+        ) {
+          // Clear the data
+          dailyStudents = [];
+          dailyTreasury = {};
+
+          // Clear from localStorage
+          localStorage.removeItem("dailyStudents");
+          localStorage.removeItem("dailyTreasury");
+
+          // Force a refresh of the display
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          showToast("Daily treasury cleared!");
+        }
+      }
+      
+      // Export data function
+      function exportData() {
+        const exportObj = {
+          dailyStudents: dailyStudents,
+          dailyTreasury: dailyTreasury,
+          date: new Date().toISOString(),
+          totalPoints: Object.values(dailyTreasury).reduce((sum, points) => sum + points, 0)
+        };
+        
+        const dataStr = JSON.stringify(exportObj, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `daily-treasury-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showToast('Treasury data exported!');
+      }
+
+      // ========== TIMER FUNCTIONALITY ==========
+      let totalSeconds = 300; // 5 minutes
+      let currentSeconds = totalSeconds;
+      let timerInterval = null;
+      let alarmPlayed = false;
+
+      function toggleTimer() {
+        const timerDisplay = document.getElementById("timerDisplay");
+        timerDisplay.classList.toggle("active");
+        if (timerDisplay.classList.contains("active")) {
+          showToast("Timer ready - 5 minutes");
+        }
+      }
+
+      function updateTimerDisplay() {
+        const display = document.getElementById("timerTime");
+        const minutes = Math.floor(currentSeconds / 60);
+        const seconds = currentSeconds % 60;
+        display.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+        // Change color when time is running out
+        if (currentSeconds <= 30) {
+          display.style.color = "#ff6b6b";
+        } else if (currentSeconds <= 60) {
+          display.style.color = "#ffe66d";
+        } else {
+          display.style.color = "#d4af37";
+        }
+      }
+
+      function startTimer() {
+        if (timerInterval) return;
+
+        timerInterval = setInterval(() => {
+          currentSeconds--;
+          updateTimerDisplay();
+
+          if (currentSeconds <= 0) {
+            pauseTimer();
+            if (!alarmPlayed) {
+              playAlarm();
+              alarmPlayed = true;
+            }
+            showToast("⏰ Time's up!");
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+
+      function resetTimer() {
+        pauseTimer();
+        currentSeconds = totalSeconds;
+        alarmPlayed = false;
+        updateTimerDisplay();
+        showToast("Timer reset to 5 minutes");
+      }
+
+      function playAlarm() {
+        const audio = document.getElementById("alarmAudio");
+        audio.play().catch((e) => console.log("Audio play failed:", e));
+      }
+
+      // ========== ANSWER TOGGLE ==========
+      function toggleAnswers() {
+        const section = document.getElementById("answerSection");
+        section.classList.toggle("show");
+        if (section.classList.contains("show")) {
+          showToast("✨ Answers revealed!");
+        } else {
+          showToast("📜 Answers hidden");
+        }
+      }
+
+      // Particle creation function
+      function createParticles() {
+        for (let i = 0; i < 5; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = `${Math.random() * 100}%`;
+          particle.style.width = `${Math.random() * 6 + 4}px`;
+          particle.style.height = particle.style.width;
+          particle.style.background = `radial-gradient(circle, ${
+            ["#d4af37", "#ff6b6b", "#ffe66d"][Math.floor(Math.random() * 3)]
+          } 0%, transparent 70%)`;
+          particle.style.animationDelay = `${Math.random() * 15}s`;
+          particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Handle touch events for better tablet experience
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeThreshold = 50;
+        const leftSidebar = document.getElementById("leftSidebar");
+        const rightSidebar = document.getElementById("rightSidebar");
+
+        // Swipe right to open left sidebar
+        if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+          leftSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+
+        // Swipe left to open right sidebar
+        if (
+          touchStartX - touchEndX > swipeThreshold &&
+          touchStartX > window.innerWidth - 50
+        ) {
+          rightSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+      }
+
+      // Create floating particles
+      function createParticles() {
+        const particleCount = 20;
+        const particleSymbols = ["✦", "◆", "❋", "✧"];
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 10 + "s";
+          particle.innerHTML =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          particle.style.color = "#d4af37";
+          particle.style.fontSize = Math.random() * 10 + 10 + "px";
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        // Re-initialize from localStorage to ensure sync
+        dailyStudents = JSON.parse(
+          localStorage.getItem("dailyStudents") || "[]"
+        );
+        dailyTreasury = JSON.parse(
+          localStorage.getItem("dailyTreasury") || "{}"
+        );
+
+        populateStudentDropdown();
+        renderDailyStudents();
+        createParticles();
+      });
+    </script>
+</body>
+</html>

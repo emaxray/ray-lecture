@@ -532,6 +532,11 @@
             }
         }
         
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
         /* Student Items - Treasury */
         .student-item {
             background: rgba(139, 105, 20, 0.2);
@@ -835,42 +840,42 @@
         
         <div class="timer-grid">
             <!-- 1 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(1)">
+            <div class="timer-card" onclick="startTimer(1)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">⏰</div>
                 <div class="timer-duration">1</div>
                 <div class="timer-label">Minute</div>
             </div>
             
             <!-- 2 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(2)">
+            <div class="timer-card" onclick="startTimer(2)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">⏱️</div>
                 <div class="timer-duration">2</div>
                 <div class="timer-label">Minutes</div>
             </div>
             
             <!-- 3 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(3)">
+            <div class="timer-card" onclick="startTimer(3)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">⌛</div>
                 <div class="timer-duration">3</div>
                 <div class="timer-label">Minutes</div>
             </div>
             
             <!-- 4 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(4)">
+            <div class="timer-card" onclick="startTimer(4)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">🕐</div>
                 <div class="timer-duration">4</div>
                 <div class="timer-label">Minutes</div>
             </div>
             
             <!-- 5 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(5)">
+            <div class="timer-card" onclick="startTimer(5)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">🕑</div>
                 <div class="timer-duration">5</div>
                 <div class="timer-label">Minutes</div>
             </div>
             
             <!-- 10 Minute Timer -->
-            <div class="timer-card" onclick="startTimer(10)">
+            <div class="timer-card" onclick="startTimer(10)" onmouseenter="playHoverSound()">
                 <div class="timer-icon">🕰️</div>
                 <div class="timer-duration">10</div>
                 <div class="timer-label">Minutes</div>
@@ -914,12 +919,32 @@
         // Audio context for timer complete sound
         let audioContext = null;
         
+        // Initialize audio context on first user interaction
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Resume audio context if it's suspended (for browser autoplay policies)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            }
+        }
+        
+        // Play hover sound for timer cards
+        function playHoverSound() {
+            initAudioContext();
+            playBeep(300, 0.05);
+        }
+        
         // Start timer function
         function startTimer(minutes) {
-            currentMinutes                                                                                                                                                                                                                                                                                                                                                                                              nutes = minutes;
+            currentMinutes = minutes;
             totalSeconds = minutes * 60;
             remainingSeconds = totalSeconds;
             isPaused = false;
+            
+            // Initialize audio context
+            initAudioContext();
             
             // Update modal title and display
             document.getElementById('timerTitle').textContent = `${minutes} Minute Timer`;
@@ -931,11 +956,13 @@
             // Show modal
             document.getElementById('timerModal').style.display = 'flex';
             
-            // Play start beep
-            playBeep(600, 0.2);
+            // Play start sound (three ascending beeps)
+            playStartSound();
             
-            // Start the timer
-            runTimer();
+            // Start the timer after a short delay
+            setTimeout(() => {
+                runTimer();
+            }, 500);
         }
         
         // Run timer
@@ -948,9 +975,9 @@
                     updateTimerDisplay();
                     updateProgressBar();
                     
-                    // Play beep for last 3 seconds
-                    if (remainingSeconds === 3 || remainingSeconds === 2 || remainingSeconds === 1) {
-                        playBeep(700, 0.15);
+                    // Play warning beeps for last 3 seconds
+                    if (remainingSeconds <= 3 && remainingSeconds > 0) {
+                        playBeep(800, 0.2);  // Warning beep
                     }
                     
                     if (remainingSeconds === 0) {
@@ -988,10 +1015,8 @@
         }
         
         // Play beep sound
-        function playBeep(frequency, duration) {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
+        function playBeep(frequency, duration, delay = 0) {
+            initAudioContext();
             
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
@@ -1000,34 +1025,32 @@
             gainNode.connect(audioContext.destination);
             
             oscillator.frequency.value = frequency;
-            gainNode.gain.value = 0.3;
+            oscillator.type = 'sine';
             
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
+            // Envelope for cleaner sound
+            const startTime = audioContext.currentTime + delay;
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+            gainNode.gain.setValueAtTime(0.3, startTime + duration - 0.01);
+            gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+            
+            oscillator.start(startTime);
+            oscillator.stop(startTime + duration);
+        }
+        
+        // Play start sound (three ascending beeps)
+        function playStartSound() {
+            playBeep(400, 0.2, 0);
+            playBeep(500, 0.2, 0.2);
+            playBeep(600, 0.2, 0.4);
         }
         
         // Play completion sound
         function playCompletionSound() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            initAudioContext();
             
-            // Play a longer, more distinctive completion sound
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // Create a more complex sound by modulating frequency
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.5);
-            
-            gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
+            // Play a single longer beep for completion
+            playBeep(1000, 0.5, 0);  // Final beep at 1000Hz for 0.5 seconds
         }
         
         // Show visual alert
@@ -1035,8 +1058,13 @@
             const visual = document.getElementById('audioVisual');
             visual.classList.add('pulse');
             
+            // Also flash the timer display
+            const display = document.getElementById('timerDisplay');
+            display.style.animation = 'flash 0.5s ease-in-out 3';
+            
             setTimeout(() => {
                 visual.classList.remove('pulse');
+                display.style.animation = '';
             }, 1500);
         }
         

@@ -24,6 +24,7 @@
                 radial-gradient(ellipse at bottom, #1a0f0a, transparent);
             overflow-x: hidden;
             position: relative;
+            font-size: 12px;
         }
         
         /* Candlelight effect overlay */
@@ -72,6 +73,17 @@
             100% {
                 opacity: 0;
                 transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.3;
+                transform: translateY(-50%) scale(0.8) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: translateY(-50%) scale(1.2) rotate(180deg);
             }
         }
         
@@ -641,19 +653,32 @@
             position: relative;
         }
         
+        .library-title::before,
+        .library-title::after {
+            content: "✨";
+            position: absolute;
+            top: 50%;
+            font-size: 24px;
+            animation: sparkle 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .library-title::before {
+            left: -40px;
+            animation-delay: 0s;
+        }
+        
+        .library-title::after {
+            right: -40px;
+            animation-delay: 1.5s;
+        }
+        
         @keyframes glow {
             from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
             to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
         }
         
-        .subtitle {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #b8860b;
-            position: relative;
-            padding: 0 80px;
-        }
+        /* Subtitle removed - integrated into title */
         
         /* Control Buttons */
         .control-section {
@@ -665,68 +690,63 @@
         }
         
         .control-btn {
+            padding: 15px 30px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #d4af37;
+            border: 2px solid #8b6914;
             color: #f4e4bc;
-            padding: 15px 35px;
-            border-radius: 5px;
+            font-family: 'Cinzel', serif;
             font-size: 18px;
             font-weight: bold;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Cinzel', serif;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
         .control-btn:hover {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
         }
         
         /* Answer Section */
         .answer-section {
-            display: none;
             width: 100%;
-            animation: fadeIn 0.5s ease;
+            max-width: 1000px;
+            display: none;
         }
         
-        .answer-section.show {
+        .answer-section.active {
             display: block;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         
         /* Section Headers */
         .section-header {
-            background: linear-gradient(135deg, #3a2418 0%, #2a1810 50%, #4a3428 100%);
-            border: 1px solid #d4af37;
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.6) 0%, rgba(139, 32, 32, 0.4) 100%);
+            border: 1px solid #8b6914;
+            border-radius: 8px;
             padding: 12px;
             margin-bottom: 15px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
         
         .section-header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            animation: rotate 10s linear infinite;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            animation: shimmer 3s infinite;
         }
         
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
         
         .section-title {
@@ -734,51 +754,44 @@
             font-size: 20px;
             color: #f4e4bc;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            position: relative;
-            z-index: 1;
         }
         
         /* Answer Item */
         .answer-item {
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
-            border: 1px solid #8b6914;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
             padding: 12px 15px;
             margin-bottom: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
         }
         
         .answer-item:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-            border-color: #d4af37;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            border-color: #8b6914;
         }
         
         .answer-number {
             display: inline-block;
-            background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
-            color: #1a0f0a;
             width: 30px;
             height: 30px;
-            border-radius: 50%;
+            background: #8b6914;
+            color: #1a1a1a;
+            font-weight: bold;
             text-align: center;
             line-height: 30px;
-            font-weight: bold;
+            border-radius: 50%;
             margin-right: 10px;
-            margin-bottom: 15px;
             font-size: 14px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         
         .vocab-word {
             font-size: 18px;
             font-weight: bold;
-            color: #ffd700;
+            color: #f4e4bc;
             margin-bottom: 8px;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            display: inline-block;
+            font-family: 'cinzel', serif;
         }
         
         /* Choices Grid */
@@ -791,88 +804,52 @@
         
         .choice {
             padding: 6px 10px;
-            border: 2px solid #8b6914;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
+            border-radius: 5px;
             font-size: 13px;
-            background: rgba(26, 15, 10, 0.5);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
         
         .choice.correct {
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.4) 0%, rgba(56, 142, 60, 0.3) 100%);
-            border-color: #4caf50;
-            color: #a5d6a7;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+            background: rgba(46, 125, 50, 0.3);
+            border: 1px solid #2e7d32;
+            color: #4caf50;
         }
         
         .choice.incorrect {
-            background: linear-gradient(135deg, rgba(183, 28, 28, 0.3) 0%, rgba(198, 40, 40, 0.2) 100%);
-            border-color: #c62828;
-            color: #ef9a9a;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid #333;
+            color: #888;
         }
         
         .choice-number {
-            display: inline-block;
-            width: 26px;
-            height: 26px;
-            background: linear-gradient(135deg, #8b6914 0%, #d4af37 100%);
-            color: #1a0f0a;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 26px;
             font-weight: bold;
-            font-size: 12px;
             margin-right: 6px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
-        }
-        
-        .choice.correct .choice-number {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            color: #f4e4bc;
-        }
-        
-        .choice.incorrect .choice-number {
-            background: linear-gradient(135deg, #c62828 0%, #ef5350 100%);
-            color: #f4e4bc;
+            font-size: 12px;
         }
         
         /* Sentence Answer */
         .sentence-answer {
-            font-size: 17px;
+            font-size: 18px;
             line-height: 1.6;
-            text-align: center;
-            margin-bottom: 10px;
             color: #f4e4bc;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
         }
         
         .blank-word {
-            color: #4caf50;
+            color: #ffd700;
             font-weight: bold;
             text-decoration: underline;
-            text-decoration-style: wavy;
-            text-underline-offset: 3px;
-            padding: 0 4px;
         }
         
-        /* Spelling Answer */
-        .spelling-answer {
-            font-size: 28px;
-            color: #4caf50;
-            text-align: center;
+        /* Dictation Answers */
+        .dictation-word {
+            font-size: 22px;
+            color: #ffd700;
             font-weight: bold;
             font-family: 'Cinzel', serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(56, 142, 60, 0.1) 100%);
-            border-radius: 10px;
-            border: 2px solid #4caf50;
+            text-align: center;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 5px;
         }
         
         /* Empty State */
@@ -1049,29 +1026,22 @@
     <div class="corner-ornament corner-bottom-left"></div>
     <div class="corner-ornament corner-bottom-right"></div>
     
-    <!-- Floating particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
-    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">◆</div>
-    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
-    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
-    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
-    
     <!-- Sidebar Toggle Buttons -->
-    <button class="sidebar-toggle left-toggle" id="leftToggleBtn">Subjects</button>
-    <button class="sidebar-toggle right-toggle" id="rightToggleBtn">Treasury</button>
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
     
     <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
     
     <!-- Left Sidebar -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-header">
             <h2 class="sidebar-title">Ancient Subjects</h2>
-            <button class="close-btn" id="leftCloseBtn">×</button>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
         </div>
         <div class="sidebar-content">
             <a href="/index.html" class="nav-item">Library Hall</a>
-            <a href="/vocab/vocab.html" class="nav-item active">Vocabulary</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
             <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
             <a href="/listening/listening.html" class="nav-item">Listening</a>
             <a href="/debate/debate.html" class="nav-item">Debate</a>
@@ -1080,7 +1050,7 @@
             <a href="/reading/reading.html" class="nav-item">Reading</a>
             <a href="/ted/ted-hub.html" class="nav-item">TED</a>
             <a href="/science/science.html" class="nav-item">Science</a>
-            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/timer/timer.html" class="nav-item active">Timer</a>
             <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
         </div>
     </div>
@@ -1089,7 +1059,7 @@
     <div class="right-sidebar" id="rightSidebar">
         <div class="sidebar-header">
             <h2 class="sidebar-title">Scholar's Treasury</h2>
-            <button class="close-btn" id="rightCloseBtn">×</button>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
         </div>
         <div class="sidebar-content">
             <h2 class="points-title">Daily Treasury</h2>
@@ -1099,7 +1069,7 @@
                 <select id="studentSelect" class="student-select">
                     <option value="">Select a scholar...</option>
                 </select>
-                <button class="add-student-to-daily" id="addStudentBtn">Add to Today's Class</button>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
             </div>
             
             <!-- Daily Students List -->
@@ -1107,7 +1077,7 @@
             
             <!-- Action Buttons -->
             <div class="sidebar-buttons">
-                <button class="action-btn save-btn" id="saveToConquestBtn">💾 Save to Conquest</button>
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
             </div>
         </div>
     </div>
@@ -1116,28 +1086,27 @@
     <div class="timer-display" id="timerDisplay">
         <div class="timer-time" id="timerTime">5:00</div>
         <div class="timer-controls">
-            <button class="timer-btn" id="startTimerBtn">▶ Start</button>
-            <button class="timer-btn" id="pauseTimerBtn">⏸ Pause</button>
-            <button class="timer-btn" id="resetTimerBtn">↺ Reset</button>
+            <button class="timer-btn" onclick="startTimer()">Start</button>
+            <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">Reset</button>
         </div>
     </div>
     
     <!-- Main Content -->
     <div class="main-content">
-        <h1 class="library-title">Week 2 Vocabulary Test</h1>
-        <p class="subtitle">MTW Version A</p>
+        <h1 class="library-title">Week 2 Vocabulary Test A</h1>
         
         <!-- Control Buttons -->
         <div class="control-section">
-            <button class="control-btn" id="toggleTimerBtn">⏱ Timer</button>
-            <button class="control-btn" id="toggleAnswersBtn">📜 Reveal Answers</button>
+            <button class="control-btn" onclick="toggleTimer()">⏱️ Timer</button>
+            <button class="control-btn" onclick="toggleAnswers()">📝 Answers</button>
         </div>
         
         <!-- Answer Section -->
         <div class="answer-section" id="answerSection">
             <!-- Part 1: Definition & Meaning -->
             <div class="section-header">
-                <h2 class="section-title">Part I: Definition & Meaning</h2>
+                <h2 class="section-title">Part 1. Definition & Meaning</h2>
             </div>
             
             <div class="answer-item">
@@ -1362,7 +1331,7 @@
             
             <!-- Part 2: Sentence Completion -->
             <div class="section-header">
-                <h2 class="section-title">Part II: Sentence Completion</h2>
+                <h2 class="section-title">Part 2. Sentence Completion</h2>
             </div>
             
             <div class="answer-item">
@@ -1402,7 +1371,7 @@
             
             <!-- Part 3: Roots, prefixes & suffixes -->
             <div class="section-header">
-                <h2 class="section-title">Part III: Roots, Prefixes & Suffixes</h2>
+                <h2 class="section-title">Part 3. Roots, Prefixes & Suffixes</h2>
             </div>
             
             <div class="answer-item">
@@ -1517,32 +1486,32 @@
             
             <!-- Part 4: Dictation -->
             <div class="section-header">
-                <h2 class="section-title">Part IV: Dictation</h2>
+                <h2 class="section-title">Part 4. Dictation</h2>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">21</span>
-                <div class="spelling-answer">be at odds with</div>
+                <div class="dictation-word">be at odds with</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">22</span>
-                <div class="spelling-answer">camouflage</div>
+                <div class="dictation-word">camouflage</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">23</span>
-                <div class="spelling-answer">chronically</div>
+                <div class="dictation-word">chronically</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">24</span>
-                <div class="spelling-answer">consciously</div>
+                <div class="dictation-word">consciously</div>
             </div>
             
             <div class="answer-item">
                 <span class="answer-number">25</span>
-                <div class="spelling-answer">controversy</div>
+                <div class="dictation-word">controversy</div>
             </div>
         </div>
     </div>
@@ -1560,102 +1529,80 @@
     </audio>
     
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // ===== Initial Load =====
-    safeInit(() => {
-        bindUIActions();
-        loadConquestStudents();
-        renderDailyStudents();
-        updateTimerDisplay();
-    });
+// ===== Global State =====
+let dailyStudents = [];
+let dailyTreasury = {};
+let timerInterval = null;
+let totalSeconds = 300;
+let isTimerRunning = false;
 
-    // ===== Global State =====
-    window.dailyStudents = loadSafeJSON('dailyStudents', []);
-    window.dailyTreasury = loadSafeJSON('dailyTreasury', {});
-    window.timerInterval = null;
-    window.totalSeconds = 300;
-    window.isTimerRunning = false;
+const teamColors = {
+    prettyEggplant: '#ba68c8',
+    jiggleBoggle: '#81c784',
+    bomi: '#ffd54f',
+    handsomeJoon: '#ff6b6b',
+    pinkie: '#f06292',
+    geniusIrene: '#4fc3f7'
+};
 
-    const teamColors = {
-        prettyEggplant: '#ba68c8',
-        jiggleBoggle: '#81c784',
-        bomi: '#ffd54f',
-        handsomeJoon: '#ff6b6b',
-        pinkie: '#f06292',
-        geniusIrene: '#4fc3f7'
-    };
-
-    // ===== Utility Functions =====
-    function loadSafeJSON(key, fallback) {
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : fallback;
-        } catch {
-            console.warn(`Corrupt localStorage: ${key}`);
-            return fallback;
-        }
+// ===== Utility Functions =====
+function loadSafeJSON(key, fallback) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : fallback;
+    } catch {
+        console.warn(`Corrupt localStorage: ${key}`);
+        return fallback;
     }
+}
 
-    function saveJSON(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
+function saveJSON(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
 
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
 
-    function safeInit(fn) {
-        try { fn(); } catch (e) { console.error("Init failed:", e); }
-    }
+function safeInit(fn) {
+    try { fn(); } catch (e) { console.error("Init failed:", e); }
+}
 
-    // ===== Event Binding =====
-    function bindUIActions() {
-        document.getElementById('leftToggleBtn')?.addEventListener('click', toggleLeftSidebar);
-        document.getElementById('rightToggleBtn')?.addEventListener('click', toggleRightSidebar);
-        document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebars);
-        document.getElementById('leftCloseBtn')?.addEventListener('click', closeSidebars);
-        document.getElementById('rightCloseBtn')?.addEventListener('click', closeSidebars);
+// ===== Event Binding =====
+function bindUIActions() {
+    // Event listeners removed - using inline onclick handlers
+}
 
-        document.getElementById('toggleTimerBtn')?.addEventListener('click', toggleTimer);
-        document.getElementById('startTimerBtn')?.addEventListener('click', startTimer);
-        document.getElementById('pauseTimerBtn')?.addEventListener('click', pauseTimer);
-        document.getElementById('resetTimerBtn')?.addEventListener('click', resetTimer);
+// ===== Sidebar Logic =====
+function toggleLeftSidebar() {
+    document.getElementById('leftSidebar')?.classList.toggle('expanded');
+    document.getElementById('sidebarOverlay')?.classList.toggle('active');
+}
 
-        document.getElementById('toggleAnswersBtn')?.addEventListener('click', toggleAnswers);
-        document.getElementById('addStudentBtn')?.addEventListener('click', addStudentToDaily);
-        document.getElementById('saveToConquestBtn')?.addEventListener('click', saveToConquest);
-    }
+function toggleRightSidebar() {
+    document.getElementById('rightSidebar')?.classList.toggle('expanded');
+    document.getElementById('sidebarOverlay')?.classList.toggle('active');
+}
 
-    // ===== Sidebar Logic =====
-    function toggleLeftSidebar() {
-        document.getElementById('leftSidebar')?.classList.toggle('expanded');
-        document.getElementById('sidebarOverlay')?.classList.toggle('active');
-    }
+function closeSidebars() {
+    document.getElementById('leftSidebar')?.classList.remove('expanded');
+    document.getElementById('rightSidebar')?.classList.remove('expanded');
+    document.getElementById('sidebarOverlay')?.classList.remove('active');
+}
 
-    function toggleRightSidebar() {
-        document.getElementById('rightSidebar')?.classList.toggle('expanded');
-        document.getElementById('sidebarOverlay')?.classList.toggle('active');
-    }
-
-    function closeSidebars() {
-        document.getElementById('leftSidebar')?.classList.remove('expanded');
-        document.getElementById('rightSidebar')?.classList.remove('expanded');
-        document.getElementById('sidebarOverlay')?.classList.remove('active');
-    }
-
-    // ===== Timer Logic =====
-    function toggleTimer() {
+// ===== Timer Logic =====
+function toggleTimer() {
         const timerDisplay = document.getElementById('timerDisplay');
         timerDisplay.classList.toggle('active');
         if (timerDisplay.classList.contains('active')) {
             showToast('Timer ready - 5 minutes');
         }
-    }
+}
 
-    function updateTimerDisplay() {
+function updateTimerDisplay() {
         const display = document.getElementById('timerTime');
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
@@ -1671,9 +1618,9 @@ document.addEventListener('DOMContentLoaded', () => {
             pauseTimer();
             showToast("Time's up! ⏰");
         }
-    }
+}
 
-    function startTimer() {
+function startTimer() {
         if (!isTimerRunning && totalSeconds > 0) {
             isTimerRunning = true;
             timerInterval = setInterval(() => {
@@ -1683,39 +1630,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
             showToast('Timer started');
         }
-    }
+}
 
-    function pauseTimer() {
+function pauseTimer() {
         isTimerRunning = false;
         clearInterval(timerInterval);
         timerInterval = null;
         if (totalSeconds > 0) showToast('Timer paused');
-    }
+}
 
-    function resetTimer() {
+function resetTimer() {
         pauseTimer();
         totalSeconds = 300;
         updateTimerDisplay();
         showToast('Timer reset to 5:00');
-    }
+}
 
-    function playBeep() {
+function playBeep() {
         document.getElementById('beepAudio')?.play().catch(() => {});
-    }
+}
 
-    function playAlarm() {
+function playAlarm() {
         document.getElementById('alarmAudio')?.play().catch(() => {});
-    }
+}
 
-    // ===== Answer Toggle =====
-    function toggleAnswers() {
+// ===== Answer Toggle =====
+function toggleAnswers() {
         const section = document.getElementById('answerSection');
-        section.classList.toggle('show');
-        showToast(section.classList.contains('show') ? '✨ Answers revealed!' : '📜 Answers hidden');
-    }
+        section.classList.toggle('active');
+        showToast(section.classList.contains('active') ? '✨ Answers revealed!' : '📜 Answers hidden');
+}
 
-    // ===== Student Logic =====
-    function loadConquestStudents() {
+// ===== Student Logic =====
+function loadConquestStudents() {
         const select = document.getElementById('studentSelect');
         const conquest = loadSafeJSON('conquestTeamData', {});
         select.innerHTML = '<option value="">Select a scholar...</option>';
@@ -1729,9 +1676,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.appendChild(opt);
             });
         }
-    }
+}
 
-    function addStudentToDaily() {
+function addStudentToDaily() {
         const select = document.getElementById('studentSelect');
         const name = select.value;
         if (!name) return showToast('Please select a scholar');
@@ -1742,18 +1689,18 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDailyStudents();
         select.value = '';
         showToast(`${name} added to today's class`);
-    }
+}
 
-    function removeStudentFromDaily(name) {
+function removeStudentFromDaily(name) {
         dailyStudents = dailyStudents.filter(s => s !== name);
         delete dailyTreasury[name];
         saveJSON('dailyStudents', dailyStudents);
         saveJSON('dailyTreasury', dailyTreasury);
         renderDailyStudents();
         showToast(`${name} removed`);
-    }
+}
 
-    function renderDailyStudents() {
+function renderDailyStudents() {
         const container = document.getElementById('dailyStudentsList');
         if (!container) return;
 
@@ -1784,29 +1731,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${team ? `<span class="team-badge" style="color: ${color}; border-color: ${color}; background: ${color}20;">${team.name}</span>` : ''}
                 </div>
                 <div class="coin-display">
-                    <button class="points-btn" title="Add 10 points">
+                    <button class="points-btn" onclick="addPointsToStudent('${name}')" title="Add 10 points">
                         <span class="points-value">${dailyTreasury[name] || 0}</span>
                         <span class="coin-icon"></span>
                     </button>
-                    <button class="remove-student" title="Remove">×</button>
+                    <button class="remove-student" onclick="removeStudentFromDaily('${name}')" title="Remove">×</button>
                 </div>
             `;
 
-            item.querySelector('.points-btn')?.addEventListener('click', () => {
-                dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
-                saveJSON('dailyTreasury', dailyTreasury);
-                renderDailyStudents();
-            });
-
-            item.querySelector('.remove-student')?.addEventListener('click', () => {
-                removeStudentFromDaily(name);
-            });
-
             container.appendChild(item);
         });
-    }
+}
 
-    function saveToConquest() {
+function addPointsToStudent(name) {
+    dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+    saveJSON('dailyTreasury', dailyTreasury);
+    renderDailyStudents();
+}
+
+function saveToConquest() {
         const conquest = loadSafeJSON('conquestTeamData', {});
         let total = 0;
 
@@ -1828,6 +1771,16 @@ document.addEventListener('DOMContentLoaded', () => {
         saveJSON('dailyTreasury', {});
         renderDailyStudents();
         showToast(`Treasury saved: ${total} coins added`);
-    }
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadConquestStudents();
+    renderDailyStudents();
+    updateTimerDisplay();
+    
+    // Load saved data
+    dailyStudents = loadSafeJSON('dailyStudents', []);
+    dailyTreasury = loadSafeJSON('dailyTreasury', {});
 });
 </script>

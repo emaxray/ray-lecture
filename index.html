@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Library - Comprehensive Template</title>
+    <title>The Library of Rayhaven</title>
             <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
     <style>
         /* ======================
@@ -333,8 +333,8 @@
         }
         
         @keyframes shimmer {
-            0%, 100% { opacity: 0.5; width: 50px; }
-            50% { opacity: 1; width: 100px; }
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
         
         /* Close button styling */
@@ -506,8 +506,8 @@
     opacity: 0.5;
 }
 
-/* Class Selection Section */
-.add-class-section {
+/* Shared section styling for add-class-section and add-student-section */
+.add-section {
     background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Section background */
     border: 1px solid #8b6914;
     border-radius: 5px;
@@ -515,8 +515,8 @@
     margin-bottom: 0;
 }
 
-/* Class dropdown selector */
-.class-select {
+/* Shared dropdown styling for class-select and student-select */
+.dropdown-select {
     width: 100%;
     padding: 15px;                             /* CUSTOMIZE: Dropdown padding */
     background: rgba(139, 105, 20, 0.3);       /* CUSTOMIZE: Dropdown background */
@@ -537,50 +537,13 @@
     padding-right: 45px;
 }
 
-.class-select option {
+.dropdown-select option {
     background: #2a1810;                       /* CUSTOMIZE: Option background */
     color: #f4e4bc;
     padding: 10px;
     font-size: 16px;
 }
 
-/* Student Selection Section */
-.add-student-section {
-    background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Section background */
-    border: 1px solid #8b6914;
-    border-radius: 5px;
-    padding: 20px;                             /* CUSTOMIZE: Section padding */
-    margin-bottom: 0;
-}
-
-/* Student dropdown selector */
-.student-select {
-    width: 100%;
-    padding: 15px;                             /* CUSTOMIZE: Dropdown padding */
-    background: rgba(139, 105, 20, 0.3);       /* CUSTOMIZE: Dropdown background */
-    border: 2px solid #8b6914;
-    color: #f4e4bc;
-    font-family: 'Cinzel', serif;
-    font-size: 16px;                           /* CUSTOMIZE: Font size */
-    border-radius: 5px;
-    margin-bottom: 15px;
-    min-height: 50px;
-    -webkit-appearance: none;
-    appearance: none;
-    /* Custom dropdown arrow */
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 20px;
-    padding-right: 45px;
-}
-
-.student-select option {
-    background: #2a1810;                       /* CUSTOMIZE: Option background */
-    color: #f4e4bc;
-    padding: 10px;
-    font-size: 16px;
-}
 
 /* Add button (used for both class and student) */
 .add-student-to-daily {
@@ -1189,10 +1152,6 @@
             100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
         }
         
-         @keyframes shimmer {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
     </style>
 </head>
 <body>
@@ -1202,12 +1161,9 @@
     <div class="corner-ornament corner-bottom-left"></div>
     <div class="corner-ornament corner-bottom-right"></div>
     
-    <!-- back button NAVIGATION -->
-  <button class="back-button" onclick="goBack()">Back to Library</button> 
-    
     <!-- 📱 SIDEBAR SYSTEM -->
     <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">MENU</div>
-    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">POINTS</div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</div>
     
     <!-- Mobile overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
@@ -1239,7 +1195,7 @@
     <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
     <div class="right-sidebar" id="rightSidebar">
         <div class="sidebar-header">
-            <h2 class="points-title">Daily Points</h2>
+            <h2 class="points-title">Daily Treasury</h2>
             <button class="close-btn" onclick="toggleRightSidebar()">×</button>
         </div>
         <div class="sidebar-content">
@@ -1247,8 +1203,8 @@
     <h3 class="section-subtitle">Quick Add by Class</h3>
     
     <!-- Class Selection Section -->
-    <div class="add-class-section">
-        <select class="class-select" id="classSelect">
+    <div class="add-section add-class-section">
+        <select class="dropdown-select class-select" id="classSelect">
             <option value="">Select a class...</option>
             <option value="m1">Monday 1 (m1)</option>
             <option value="m2">Monday 2 (m2)</option>
@@ -1270,8 +1226,8 @@
     <h3 class="section-subtitle">Add Individual Student</h3>
     
     <!-- Individual Student Selection -->
-    <div class="add-student-section">
-        <select class="student-select" id="studentSelect">
+    <div class="add-section add-student-section">
+        <select class="dropdown-select student-select" id="studentSelect">
             <option value="">Select a scholar...</option>
         </select>
         <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Daily Points</button>
@@ -1437,12 +1393,12 @@
         
         // 🔧 CUSTOMIZE: Team information for badges
         const teamInfo = {
-            'jiggleBoggle': { name: 'Jiggle Boggle', color: '#81c784' },
-            'pinkie': { name: 'Pinkie', color: '#f06292' },
-            'handsomeJoon': { name: 'Handsome Joon', color: '#ff6b6b' },
-            'bomi': { name: 'Bomi', color: '#ffd54f' },
-            'geniusIrene': { name: 'Genius Irene', color: '#4fc3f7' },
-            'prettyEggplant': { name: 'Pretty Eggplant', color: '#ba68c8' }
+            jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+            pinkie: { name: "Pinkie", color: "#f06292" },
+            handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+            bomi: { name: "Bomi", color: "#ffd54f" },
+            geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+            prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" }
         };
         
         // Function to toggle left sidebar
@@ -1526,14 +1482,9 @@
         }
         
 // Function to add entire class to daily list
-// Function to add entire class to daily list
 function addClassToDaily() {
     const select = document.getElementById('classSelect');
     const className = select.value;
-    
-    console.log('=== ADD CLASS TO DAILY DEBUG ===');
-    console.log('Selected class:', className);
-    console.log('Current dailyStudents:', dailyStudents);
     
     if (!className) {
         showToast('Please select a class first!');
@@ -1547,56 +1498,40 @@ function addClassToDaily() {
     }
     
     const teamData = JSON.parse(conquestData);
-    console.log('Loaded teamData:', teamData);
-    
     let addedCount = 0;
     let skippedCount = 0;
     let totalStudentsChecked = 0;
     
     // Loop through all teams and students
     Object.entries(teamData).forEach(([teamKey, team]) => {
-        console.log(`Checking team: ${teamKey}`);
-        
         if (!team.students) {
-            console.log(`No students array in team ${teamKey}`);
             return;
         }
         
         team.students.forEach(student => {
             totalStudentsChecked++;
-            console.log(`Checking student: ${student.name}, Classes:`, student.classes);
             
             // Skip if no classes array
             if (!student.classes) {
-                console.log(`- No classes array for ${student.name}`);
                 return;
             }
             
             // Check if student is in the selected class
             const isInClass = student.classes.some(c => {
-                const matches = c.toLowerCase() === className.toLowerCase();
-                console.log(`  - Comparing "${c}" with "${className}": ${matches}`);
-                return matches;
+                return c.toLowerCase() === className.toLowerCase();
             });
             
             if (isInClass && student.name !== 'Donation') {
-                console.log(`✓ ${student.name} is in class ${className}`);
-                
                 if (!dailyStudents.includes(student.name)) {
                     dailyStudents.push(student.name);
                     dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
                     addedCount++;
-                    console.log(`  → Added to daily list`);
                 } else {
                     skippedCount++;
-                    console.log(`  → Already in daily list`);
                 }
             }
         });
     });
-    
-    console.log(`Total students checked: ${totalStudentsChecked}`);
-    console.log(`Added: ${addedCount}, Skipped: ${skippedCount}`);
     
     // Save and update display
     if (addedCount > 0) {
@@ -1618,7 +1553,6 @@ function addClassToDaily() {
         showToast('All students from this class are already added!');
     } else {
         showToast(`No students found for ${className.toUpperCase()}`);
-        console.log('NO STUDENTS FOUND - Check the console output above');
     }
 }
         
