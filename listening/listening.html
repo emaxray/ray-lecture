@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 12px 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button::before {
+            content: '←';
+            font-size: 20px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Decorative floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Decorative corner ornaments */
+        .corner-ornament {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .corner-top-left { top: 0; left: 0; }
+        .corner-top-right { top: 0; right: 0; transform: rotate(90deg); }
+        .corner-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+        .corner-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 150;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .left-toggle {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+        
+        .right-toggle {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+        
+        .sidebar-toggle:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 90;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-300px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f4e4bc;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 15px 20px;
+            margin: 5px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            color: #f4e4bc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '◆';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #f4e4bc;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.4);
+            border-color: #f4e4bc;
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Daily Students List */
+        #dailyStudentsList {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .student-item {
+            background: rgba(42, 30, 20, 0.8);
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .student-item:hover {
+            background: rgba(60, 40, 25, 0.9);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .student-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border: 1px solid;
+            border-radius: 4px;
+            font-weight: normal;
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .points-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #ffd700;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .points-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        .points-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .coin-icon::before {
+            content: '🪙';
+            font-size: 24px;
+        }
+        
+        .remove-student {
+            background: rgba(139, 0, 0, 0.4);
+            border: 1px solid #8b0000;
+            color: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-student:hover {
+            background: rgba(139, 0, 0, 0.6);
+            transform: scale(1.1);
+        }
+        
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .save-btn {
+            background: rgba(46, 125, 50, 0.3);
+            border-color: #2e7d32;
+        }
+        
+        .save-btn:hover {
+            background: rgba(46, 125, 50, 0.5);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(42, 30, 20, 0.95);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;
+        }
+        
+        .library-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        .subtitle::before,
+        .subtitle::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+        }
+        
+        .subtitle::before {
+            left: 0;
+        }
+        
+        .subtitle::after {
+            right: 0;
+        }
+        
+        /* Section Cards */
+        .sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+        
+        .section-card {
+            background: linear-gradient(135deg, #3a2418 0%, #2a1810 50%, #4a3428 100%);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            min-height: 250px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .section-card:hover::before {
+            opacity: 1;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 30px rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+        }
+        
+        .section-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .section-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 32px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .section-description {
+            font-size: 16px;
+            color: #b8860b;
+            line-height: 1.6;
+        }
+        
+        /* Decorative elements */
+        .section-card::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath d='M15,5 L20,15 L15,25 L10,15 Z' fill='none' stroke='%238b6914' stroke-width='1' opacity='0.3'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 20px 10px;
+            }
+            
+            .library-title {
+                font-size: 32px;
+            }
+            
+            .sections-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .section-card {
+                min-height: 200px;
+                padding: 30px;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes goldenGlow {
+            0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+    
+    <!-- Decorative corner ornaments -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
+    <div class="particle" style="left: 30%; animation-delay: 3s; color: #f4e4bc;">◆</div>
+    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
+    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
+    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item active">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="library-title">Auditoria</h1>
+        <p class="subtitle">The Chamber of Listening Arts</p>
+        
+        <div class="sections-container">
+            <!-- Listening Strategies Section -->
+            <a href="/listening/strategies/listening-strategies.html" class="section-card">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Listening Strategies</h2>
+                <p class="section-description">
+                    Master the ancient arts of comprehension.<br>
+                    Learn to decipher the spoken word with precision.
+                </p>
+            </a>
+            
+            <!-- Listening Tests Section -->
+            <a href="/listening/tests/listening-tests.html" class="section-card">
+                <span class="section-icon">📜</span>
+                <h2 class="section-title">Listening Tests</h2>
+                <p class="section-description">
+                    Challenge thy auditory prowess.<br>
+                    Weekly trials from Week 31 to Week 38.
+                </p>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConquestStudents();
+            renderDailyStudents();
+        });
+        
+        // Global variables
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+        let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+        
+        // Navigation Functions
+        function goBack() {
+            window.location.href = '/index.html';
+        }
+        
+        // Sidebar Functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Load students from Conquest
+      function loadConquestStudents() {
+    const conquestData = localStorage.getItem('conquestTeamData');
+    if (!conquestData) return;
+
+    const teams = JSON.parse(conquestData);
+    const select = document.getElementById('studentSelect');
+    select.innerHTML = '<option value="">Select a scholar...</option>';
+
+    // Flatten all students into one list with team info
+    const allStudents = [];
+
+    Object.values(teams).forEach(team => {
+        team.students.forEach(student => {
+            if (student.name !== 'Donation') {
+                allStudents.push({
+                    name: student.name,
+                    teamName: team.name,
+                    teamColor: team.color || '#d4af37'
+                });
+            }
+        });
+    });
+
+    // Sort all students alphabetically by name
+    allStudents.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Create options
+    allStudents.forEach(student => {
+        const option = document.createElement('option');
+        option.value = student.name;
+        option.textContent = `${student.name} (${student.teamName})`;
+        option.dataset.teamName = student.teamName;
+        option.dataset.teamColor = student.teamColor;
+        select.appendChild(option);
+    });
+}
+        
+        // Add student to daily treasury
+        function addStudentToDaily() {
+            const select = document.getElementById('studentSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!selectedOption || !selectedOption.value) {
+                showToast('Please select a scholar');
+                return;
+            }
+            
+            const studentName = selectedOption.value;
+            
+            if (dailyStudents.includes(studentName)) {
+                showToast('Scholar already in today\'s class');
+                return;
+            }
+            
+            dailyStudents.push(studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            renderDailyStudents();
+            select.value = '';
+            showToast(`${studentName} added to today's class`);
+        }
+        
+        // Remove student from daily treasury
+        function removeStudentFromDaily(studentName) {
+            dailyStudents = dailyStudents.filter(name => name !== studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            delete dailyTreasury[studentName];
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            
+            renderDailyStudents();
+            showToast(`${studentName} removed from today's class`);
+        }
+        
+        // Render daily students list
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            dailyStudents.forEach(studentName => {
+                const conquestData = localStorage.getItem('conquestTeamData');
+                let team = null;
+                
+                if (conquestData) {
+                    const teams = JSON.parse(conquestData);
+                    for (const teamData of Object.values(teams)) {
+                        const student = teamData.students?.find(s => s.name === studentName);
+                        if (student) {
+                            team = teamData;
+                            break;
+                        }
+                    }
+                }
+                
+                const item = document.createElement('div');
+                item.className = 'student-item';
+                item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ''}
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${dailyTreasury[studentName] || 0}</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Update daily treasury
+        function updateDailyTreasury(name, value) {
+            dailyTreasury[name] = parseInt(value) || 0;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        }
+        
+        // Add 10 points when clicking on student
+        function addPointsToStudent(name) {
+            dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            renderDailyStudents();
+            
+            // Visual feedback
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                if (item.querySelector('.student-name').textContent === name) {
+                    item.style.animation = 'pulse 0.3s ease';
+                    const btn = item.querySelector('.points-btn');
+                    if (btn) {
+                        btn.style.animation = 'goldenGlow 0.3s ease';
+                    }
+                    setTimeout(() => {
+                        item.style.animation = '';
+                        if (btn) btn.style.animation = '';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Save to Conquest
+        function saveToConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No Conquest data found! Please set up teams first.');
+                return;
+            }
+            
+            const teams = JSON.parse(conquestData);
+            let totalPointsAdded = 0;
+            
+            // Add points to each student
+            Object.entries(dailyTreasury).forEach(([studentName, points]) => {
+                for (const teamKey in teams) {
+                    const team = teams[teamKey];
+                    const student = team.students?.find(s => s.name === studentName);
+                    if (student) {
+                        student.points = (student.points || 0) + points;
+                        totalPointsAdded += points;
+                        break;
+                    }
+                }
+            });
+            
+            // Save updated conquest data
+            localStorage.setItem('conquestTeamData', JSON.stringify(teams));
+            
+            // Clear daily treasury
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
+            dailyStudents = [];
+            dailyTreasury = {};
+            
+            renderDailyStudents();
+            showToast(`Treasury saved! ${totalPointsAdded} gold coins transferred to Conquest.`);
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1 MTW Test - Version A</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Decorative floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Decorative corner ornaments */
+        .corner-ornament {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .corner-top-left { top: 0; left: 0; }
+        .corner-top-right { top: 0; right: 0; transform: rotate(90deg); }
+        .corner-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+        .corner-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 12px 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .back-button::before {
+            content: '←';
+            font-size: 20px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 90;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-300px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f4e4bc;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 15px 20px;
+            margin: 5px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            color: #f4e4bc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '◆';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #8b2020;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+            border-color: #d4af37;
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        .sidebar-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Daily Students List */
+        #dailyStudentsList {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .student-item {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 5px;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .student-item:hover {
+            background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            border-color: #d4af37;
+            transform: translateX(-2px);
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border: 1px solid;
+            border-radius: 3px;
+            font-weight: normal;
+            animation: subtleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 0 3px currentColor); 
+            }
+            50% { 
+                filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+            }
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        
+        .points-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 2px solid #8b6914;
+            color: #ffd700;
+            padding: 8px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            font-family: 'Cinzel', serif;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .coin-icon {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(255, 215, 0, 0.4);
+            position: relative;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b4513;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .remove-student {
+            background: rgba(139, 0, 0, 0.4);
+            border: 1px solid #8b0000;
+            color: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-student:hover {
+            background: rgba(139, 0, 0, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border-color: #2e7d32;
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Timer Display */
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            padding: 25px;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            min-width: 200px;
+        }
+        
+        .timer-display.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .timer-time {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .timer-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+        
+        .timer-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .library-title {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #b8860b;
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        /* Control Buttons */
+        .control-section {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 35px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Answer Section */
+        .answer-section {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .answer-section.show {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Section Headers */
+        .section-header {
+            background: linear-gradient(135deg, #3a2418 0%, #2a1810 50%, #4a3428 100%);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Answer Item */
+        .answer-item {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+            border: 1px solid #8b6914;
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .answer-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+            border-color: #d4af37;
+        }
+        
+        .answer-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
+            color: #1a0f0a;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .vocab-word {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 8px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        /* Choices Grid */
+        .choices-grid {
+            display: grid;
+            gap: 6px;
+            margin-top: 6px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            justify-content: center;
+        }
+        
+        .choice {
+            padding: 6px 10px;
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            background: rgba(26, 15, 10, 0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .choice.correct {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.4) 0%, rgba(56, 142, 60, 0.3) 100%);
+            border-color: #4caf50;
+            color: #a5d6a7;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .choice.incorrect {
+            background: linear-gradient(135deg, rgba(183, 28, 28, 0.3) 0%, rgba(198, 40, 40, 0.2) 100%);
+            border-color: #c62828;
+            color: #ef9a9a;
+        }
+        
+        .choice-number {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, #8b6914 0%, #d4af37 100%);
+            color: #1a0f0a;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 6px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .choice.correct .choice-number {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: #f4e4bc;
+        }
+        
+        .choice.incorrect .choice-number {
+            background: linear-gradient(135deg, #c62828 0%, #ef5350 100%);
+            color: #f4e4bc;
+        }
+        
+        /* Sentence Answer */
+        .sentence-answer {
+            font-size: 17px;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #f4e4bc;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        
+        .blank-word {
+            color: #4caf50;
+            font-weight: bold;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+            text-underline-offset: 3px;
+            padding: 0 4px;
+        }
+        
+        /* Spelling Answer */
+        .spelling-answer {
+            font-size: 28px;
+            color: #4caf50;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Cinzel', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(56, 142, 60, 0.1) 100%);
+            border-radius: 10px;
+            border: 2px solid #4caf50;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Animation Keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes goldenGlow {
+            0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+        }
+        
+        /* Dark Red Accent Elements */
+        .accent-red {
+            color: #8b2020;
+        }
+        
+        .border-accent-red {
+            border-color: #8b2020 !important;
+        }
+        
+        .bg-accent-red {
+            background: rgba(139, 32, 32, 0.2);
+        }
+        
+        /* Special hover state with red glow */
+        .red-glow:hover {
+            box-shadow: 0 0 20px rgba(139, 32, 32, 0.6);
+        }
+        @media (max-width: 834px) {
+            .main-content {
+                padding: 70px 15px 30px;
+                margin: 0 60px;
+            }
+            
+            .library-title {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+                padding: 0 40px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .answer-item {
+                padding: 20px;
+            }
+            
+            .vocab-word {
+                font-size: 22px;
+            }
+            
+            .choice {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .control-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            
+            .timer-time {
+                font-size: 40px;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 60px 10px 20px;
+            }
+            
+            .library-title {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                padding: 0 20px;
+            }
+            
+            /* Further compact styling for iPad mini */
+            .answer-item {
+                padding: 8px 10px;
+                margin-bottom: 8px;
+            }
+            
+            .answer-number {
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
+                font-size: 12px;
+                margin-right: 8px;
+            }
+            
+            .vocab-word {
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+            
+            .choices-grid {
+                gap: 4px;
+                margin-top: 4px;
+                grid-template-columns: 1fr;
+            }
+            
+            .choice {
+                padding: 5px 8px;
+                font-size: 12px;
+                gap: 8px;
+            }
+            
+            .choice-number {
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                font-size: 11px;
+                margin-right: 5px;
+            }
+            
+            .section-header {
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+            
+            .sentence-answer {
+                font-size: 14px;
+                padding: 8px;
+            }
+            
+            .spelling-answer {
+                font-size: 20px;
+                padding: 12px;
+            }
+            
+            .control-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .timer-display {
+                padding: 15px;
+                min-width: 160px;
+            }
+            
+            .timer-time {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+            
+            .left-sidebar, .right-sidebar {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/vocab/vocab.html" class="back-button">Back</a>
+    
+    <!-- Decorative corner ornaments -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
+    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">◆</div>
+    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
+    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
+    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" id="leftToggleBtn">Subjects</button>
+    <button class="sidebar-toggle right-toggle" id="rightToggleBtn">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" id="leftCloseBtn">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item active">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" id="rightCloseBtn">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" id="addStudentBtn">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" id="saveToConquestBtn">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Timer Display -->
+    <div class="timer-display" id="timerDisplay">
+        <div class="timer-time" id="timerTime">5:00</div>
+        <div class="timer-controls">
+            <button class="timer-btn" id="startTimerBtn">▶ Start</button>
+            <button class="timer-btn" id="pauseTimerBtn">⏸ Pause</button>
+            <button class="timer-btn" id="resetTimerBtn">↺ Reset</button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="library-title">Week I Vocabulary Test</h1>
+        <p class="subtitle">MTW Version A - Foundation Roots</p>
+        
+        <!-- Control Buttons -->
+        <div class="control-section">
+            <button class="control-btn" id="toggleTimerBtn">⏱ Timer</button>
+            <button class="control-btn" id="toggleAnswersBtn">📜 Reveal Answers</button>
+        </div>
+        
+        <!-- Answer Section -->
+        <div class="answer-section" id="answerSection">
+            <!-- Part 1: Definition & Meaning -->
+            <div class="section-header">
+                <h2 class="section-title">Part I: Definition & Meaning</h2>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">1</span>
+                <div class="vocab-word">assort</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> rotate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> unsure
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> choice
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">④</span> categorize
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> forecast
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">2</span>
+                <div class="vocab-word">attack</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> advertize
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> forsee
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">③</span> assault
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> stance
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> elevation
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">3</span>
+                <div class="vocab-word">assigned</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> blend
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> flexibility
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> partner
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> calm
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">⑤</span> appointed
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">4</span>
+                <div class="vocab-word">archaic</div>
+                <div class="choices-grid">
+                    <div class="choice correct">
+                        <span class="choice-number">①</span> antique
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> hurt
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> adjust
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> profusion
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> unnamed
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">5</span>
+                <div class="vocab-word">attitude</div>
+                <div class="choices-grid">
+                    <div class="choice correct">
+                        <span class="choice-number">①</span> stand
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> fragrant
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> use
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> talent
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> ancient
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">6</span>
+                <div class="vocab-word">adept</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> advance
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">②</span> skillful
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> designated
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> satisfy
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> hit
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">7</span>
+                <div class="vocab-word">advisor</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> accomplish
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> categorize
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> obstacle
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">④</span> consultant
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> earn
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">8</span>
+                <div class="vocab-word">allay</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> claim
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> employ
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">③</span> soothe
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> imply
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> unknown
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">9</span>
+                <div class="vocab-word">all</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> mixed
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">②</span> everything
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> appropriate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> serene
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> elevation
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">10</span>
+                <div class="vocab-word">assemble</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> flexibility
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> gainful
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> affiliate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> execute
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">⑤</span> collect
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Part 2: Sentence Completion -->
+            <div class="section-header">
+                <h2 class="section-title">Part II: Sentence Completion</h2>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">11</span>
+                <div class="sentence-answer">
+                    <span class="blank-word">① apply</span> - You must have at least a high school diploma to <span class="blank-word">apply</span> for a majority of jobs.
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">12</span>
+                <div class="sentence-answer">
+                    <span class="blank-word">④ aromatic</span> - Above her, bees buzzed around the <span class="blank-word">aromatic</span> apple blossoms.
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">13</span>
+                <div class="sentence-answer">
+                    <span class="blank-word">② appropriate</span> - It can be a challenge to find the <span class="blank-word">appropriate</span> outfit for a first job interview.
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">14</span>
+                <div class="sentence-answer">
+                    <span class="blank-word">③ assure</span> - The captain <span class="blank-word">assured</span> his passengers that the ship was safe to ride.
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">15</span>
+                <div class="sentence-answer">
+                    <span class="blank-word">⑤ asset</span> - One of the most important <span class="blank-word">assets</span> for a business is to have employees who know their abilities and can work together.
+                </div>
+            </div>
+            
+            <!-- Part 3: Roots, prefixes & suffixes -->
+            <div class="section-header">
+                <h2 class="section-title">Part III: Roots, Prefixes & Suffixes</h2>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">16</span>
+                <div class="vocab-word">biweekly</div>
+                <div class="choices-grid">
+                    <div class="choice correct">
+                        <span class="choice-number">①</span> happening every two weeks
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> happening every two years
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> happening twice a week
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> ending every two weeks
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> happening once a year
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">17</span>
+                <div class="vocab-word">preview</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> to observe from afar
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">②</span> to see before
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> to see after
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> to write first
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> to view behind
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">18</span>
+                <div class="vocab-word">tricycle</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> to learn how to ride a bike
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> a bicycle with two wheels
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">③</span> a bicycle with three wheels
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> a bicycle for three people
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> happening every three weeks
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">19</span>
+                <div class="vocab-word">beautiful</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> ugly
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> satisfied
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> serene
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">④</span> pretty
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">⑤</span> faster
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">20</span>
+                <div class="vocab-word">kindest</div>
+                <div class="choices-grid">
+                    <div class="choice incorrect">
+                        <span class="choice-number">①</span> to have a friend
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">②</span> inconsiderate
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">③</span> selfishness
+                    </div>
+                    <div class="choice incorrect">
+                        <span class="choice-number">④</span> strongest
+                    </div>
+                    <div class="choice correct">
+                        <span class="choice-number">⑤</span> most benevolent
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Part 4: Dictation -->
+            <div class="section-header">
+                <h2 class="section-title">Part IV: Dictation</h2>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">21</span>
+                <div class="spelling-answer">abundance</div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">22</span>
+                <div class="spelling-answer">ache</div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">23</span>
+                <div class="spelling-answer">anonymous</div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">24</span>
+                <div class="spelling-answer">barrier</div>
+            </div>
+            
+            <div class="answer-item">
+                <span class="answer-number">25</span>
+                <div class="spelling-answer">aptitude</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Audio elements for timer -->
+    <audio id="beepAudio" preload="auto">
+        <source src="data:audio/wav;base64,UklGRkQCAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YSACAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA" type="audio/wav">
+    </audio>
+    
+    <audio id="alarmAudio" preload="auto">
+        <source src="data:audio/wav;base64,UklGRkQCAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YSACAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA" type="audio/wav">
+    </audio>
+    
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // ===== Initial Load =====
+    safeInit(() => {
+        bindUIActions();
+        loadConquestStudents();
+        renderDailyStudents();
+        updateTimerDisplay();
+    });
+
+    // ===== Global State =====
+    window.dailyStudents = loadSafeJSON('dailyStudents', []);
+    window.dailyTreasury = loadSafeJSON('dailyTreasury', {});
+    window.timerInterval = null;
+    window.totalSeconds = 300;
+    window.isTimerRunning = false;
+
+    const teamColors = {
+        prettyEggplant: '#ba68c8',
+        jiggleBoggle: '#81c784',
+        bomi: '#ffd54f',
+        handsomeJoon: '#ff6b6b',
+        pinkie: '#f06292',
+        geniusIrene: '#4fc3f7'
+    };
+
+    // ===== Utility Functions =====
+    function loadSafeJSON(key, fallback) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : fallback;
+        } catch {
+            console.warn(`Corrupt localStorage: ${key}`);
+            return fallback;
+        }
+    }
+
+    function saveJSON(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function safeInit(fn) {
+        try { fn(); } catch (e) { console.error("Init failed:", e); }
+    }
+
+    // ===== Event Binding =====
+    function bindUIActions() {
+        document.getElementById('leftToggleBtn')?.addEventListener('click', toggleLeftSidebar);
+        document.getElementById('rightToggleBtn')?.addEventListener('click', toggleRightSidebar);
+        document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebars);
+        document.getElementById('leftCloseBtn')?.addEventListener('click', closeSidebars);
+        document.getElementById('rightCloseBtn')?.addEventListener('click', closeSidebars);
+
+        document.getElementById('toggleTimerBtn')?.addEventListener('click', toggleTimer);
+        document.getElementById('startTimerBtn')?.addEventListener('click', startTimer);
+        document.getElementById('pauseTimerBtn')?.addEventListener('click', pauseTimer);
+        document.getElementById('resetTimerBtn')?.addEventListener('click', resetTimer);
+
+        document.getElementById('toggleAnswersBtn')?.addEventListener('click', toggleAnswers);
+        document.getElementById('addStudentBtn')?.addEventListener('click', addStudentToDaily);
+        document.getElementById('saveToConquestBtn')?.addEventListener('click', saveToConquest);
+    }
+
+    // ===== Sidebar Logic =====
+    function toggleLeftSidebar() {
+        document.getElementById('leftSidebar')?.classList.toggle('expanded');
+        document.getElementById('sidebarOverlay')?.classList.toggle('active');
+    }
+
+    function toggleRightSidebar() {
+        document.getElementById('rightSidebar')?.classList.toggle('expanded');
+        document.getElementById('sidebarOverlay')?.classList.toggle('active');
+    }
+
+    function closeSidebars() {
+        document.getElementById('leftSidebar')?.classList.remove('expanded');
+        document.getElementById('rightSidebar')?.classList.remove('expanded');
+        document.getElementById('sidebarOverlay')?.classList.remove('active');
+    }
+
+    // ===== Timer Logic =====
+    function toggleTimer() {
+        const timerDisplay = document.getElementById('timerDisplay');
+        timerDisplay.classList.toggle('active');
+        if (timerDisplay.classList.contains('active')) {
+            showToast('Timer ready - 5 minutes');
+        }
+    }
+
+    function updateTimerDisplay() {
+        const display = document.getElementById('timerTime');
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        display.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        display.style.color = totalSeconds <= 30
+            ? '#ff6b6b' : totalSeconds <= 60
+            ? '#ffa726' : '#ffd700';
+
+        if (totalSeconds <= 10 && totalSeconds > 0) playBeep();
+        if (totalSeconds === 0) {
+            playAlarm();
+            pauseTimer();
+            showToast("Time's up! ⏰");
+        }
+    }
+
+    function startTimer() {
+        if (!isTimerRunning && totalSeconds > 0) {
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                updateTimerDisplay();
+                if (totalSeconds <= 0) pauseTimer();
+            }, 1000);
+            showToast('Timer started');
+        }
+    }
+
+    function pauseTimer() {
+        isTimerRunning = false;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        if (totalSeconds > 0) showToast('Timer paused');
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        totalSeconds = 300;
+        updateTimerDisplay();
+        showToast('Timer reset to 5:00');
+    }
+
+    function playBeep() {
+        document.getElementById('beepAudio')?.play().catch(() => {});
+    }
+
+    function playAlarm() {
+        document.getElementById('alarmAudio')?.play().catch(() => {});
+    }
+
+    // ===== Answer Toggle =====
+    function toggleAnswers() {
+        const section = document.getElementById('answerSection');
+        section.classList.toggle('show');
+        showToast(section.classList.contains('show') ? '✨ Answers revealed!' : '📜 Answers hidden');
+    }
+
+    // ===== Student Logic =====
+    function loadConquestStudents() {
+        const select = document.getElementById('studentSelect');
+        const conquest = loadSafeJSON('conquestTeamData', {});
+        select.innerHTML = '<option value="">Select a scholar...</option>';
+
+        for (const [key, team] of Object.entries(conquest)) {
+            (team.students || []).forEach(student => {
+                const opt = document.createElement('option');
+                opt.value = student.name;
+                opt.textContent = `${student.name} (${team.name})`;
+                opt.dataset.teamKey = key;
+                select.appendChild(opt);
+            });
+        }
+    }
+
+    function addStudentToDaily() {
+        const select = document.getElementById('studentSelect');
+        const name = select.value;
+        if (!name) return showToast('Please select a scholar');
+        if (dailyStudents.includes(name)) return showToast('Scholar already added');
+
+        dailyStudents.push(name);
+        saveJSON('dailyStudents', dailyStudents);
+        renderDailyStudents();
+        select.value = '';
+        showToast(`${name} added to today's class`);
+    }
+
+    function removeStudentFromDaily(name) {
+        dailyStudents = dailyStudents.filter(s => s !== name);
+        delete dailyTreasury[name];
+        saveJSON('dailyStudents', dailyStudents);
+        saveJSON('dailyTreasury', dailyTreasury);
+        renderDailyStudents();
+        showToast(`${name} removed`);
+    }
+
+    function renderDailyStudents() {
+        const container = document.getElementById('dailyStudentsList');
+        if (!container) return;
+
+        container.innerHTML = '';
+        if (dailyStudents.length === 0) {
+            return container.innerHTML = `<div class="empty-state">No scholars in today's class yet</div>`;
+        }
+
+        const conquest = loadSafeJSON('conquestTeamData', {});
+
+        dailyStudents.forEach(name => {
+            let team = null, teamKey = null;
+            for (const [key, t] of Object.entries(conquest)) {
+                if (t.students?.some(s => s.name === name)) {
+                    team = t;
+                    teamKey = key;
+                    break;
+                }
+            }
+
+            const color = teamColors[teamKey] || '#d4af37';
+
+            const item = document.createElement('div');
+            item.className = 'student-item';
+            item.innerHTML = `
+                <div class="student-info">
+                    <span class="student-name">${name}</span>
+                    ${team ? `<span class="team-badge" style="color: ${color}; border-color: ${color}; background: ${color}20;">${team.name}</span>` : ''}
+                </div>
+                <div class="coin-display">
+                    <button class="points-btn" title="Add 10 points">
+                        <span class="points-value">${dailyTreasury[name] || 0}</span>
+                        <span class="coin-icon"></span>
+                    </button>
+                    <button class="remove-student" title="Remove">×</button>
+                </div>
+            `;
+
+            item.querySelector('.points-btn')?.addEventListener('click', () => {
+                dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+                saveJSON('dailyTreasury', dailyTreasury);
+                renderDailyStudents();
+            });
+
+            item.querySelector('.remove-student')?.addEventListener('click', () => {
+                removeStudentFromDaily(name);
+            });
+
+            container.appendChild(item);
+        });
+    }
+
+    function saveToConquest() {
+        const conquest = loadSafeJSON('conquestTeamData', {});
+        let total = 0;
+
+        for (const [name, points] of Object.entries(dailyTreasury)) {
+            for (const team of Object.values(conquest)) {
+                const student = team.students?.find(s => s.name === name);
+                if (student) {
+                    student.points = (student.points || 0) + points;
+                    total += points;
+                    break;
+                }
+            }
+        }
+
+        saveJSON('conquestTeamData', conquest);
+        dailyStudents = [];
+        dailyTreasury = {};
+        saveJSON('dailyStudents', []);
+        saveJSON('dailyTreasury', {});
+        renderDailyStudents();
+        showToast(`Treasury saved: ${total} coins added`);
+    }
+});
+</script>

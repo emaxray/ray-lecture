@@ -1,0 +1,3140 @@
+<!DOCTYPE html>
+<!--
+==============================================================================
+📚 MEDIEVAL LIBRARY TEMPLATE - USAGE GUIDE
+==============================================================================
+
+HOW TO CREATE A NEW LESSON FROM THIS TEMPLATE:
+
+1. COPY THIS FILE:
+   - Save as: your-lesson-name.html
+   - Place in appropriate subject folder (e.g., /vocab/weeks/2/)
+
+2. UPDATE METADATA:
+   - Change <title> tag (line ~47)
+   - Update main title in .library-title (line ~1474)
+   - Update subtitle in .subtitle (line ~1475)
+
+3. ADD YOUR LESSON CONTENT:
+   - Find the "LESSON CONTENT AREA" section (line ~1476)
+   - Replace placeholder content with your lesson material
+   - Use provided example layouts as guides
+
+4. CUSTOMIZE NAVIGATION:
+   - Update the active nav-item class in left sidebar
+   - Modify navigation links if needed
+
+5. OPTIONAL CUSTOMIZATIONS:
+   - Colors: Search for "CUSTOMIZE:" comments
+   - Teams: Update teamInfo object in JavaScript
+   - Points: Change pointsToAdd value (default: 10)
+
+CONTENT STRUCTURE EXAMPLES:
+- Word Analysis: See root.html for reference
+- Interactive Elements: Use .test-definition pattern
+- Grid Layouts: Use .books-container or custom grids
+
+KEY SECTIONS TO MODIFY:
+✓ Line ~47: Page title
+✓ Line ~1474-1476: Main title and subtitle  
+✓ Line ~1476+: Main lesson content
+✓ Line ~1383: Active navigation item
+
+NOTE: The sidebars, treasury system, and decorative elements
+work automatically - no changes needed unless customizing.
+==============================================================================
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medieval Library - Comprehensive Template</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== 
+           
+           PURPOSE: Sets up the foundation for the entire page
+           CUSTOMIZE: Change font families, base colors, background gradients
+           
+           Key Variables:
+           - Primary Gold: #d4af37
+           - Light Gold: #f4e4bc  
+           - Dark Gold: #b8860b
+           - Team Colors: Defined in JavaScript teamInfo object
+        */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Change main font */
+        background: #1a1a1a; /* CUSTOMIZE: Base background color */
+        color: #d4af37; /* CUSTOMIZE: Default text color */
+        min-height: 100vh;
+        display: flex;
+        background-image: radial-gradient(ellipse at top, #2a2a2a, transparent),
+          radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+        overflow-x: hidden;
+        position: relative;
+        font-size: 12px;
+      }
+
+      /* ======================
+           ✨ SPECIAL EFFECTS & ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Creates the medieval atmosphere with candlelight and particles
+           CUSTOMIZE: Adjust animation speeds, particle counts, flicker intensity
+           
+           Components:
+           - Candlelight overlay (::before pseudo-element)
+           - Floating particles (.particle class)
+           - Corner ornaments (decorative SVG elements)
+        */
+
+      /* Candlelight flickering effect - creates warm atmospheric lighting */
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            rgba(255, 147, 41, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 30%,
+            rgba(255, 183, 77, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 80%,
+            rgba(255, 140, 0, 0.12) 0%,
+            transparent 45%
+          );
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        animation: flicker 4s ease-in-out infinite; /* CUSTOMIZE: Change flicker speed */
+        z-index: 1;
+      }
+
+      /* CUSTOMIZE: Adjust flicker intensity and timing */
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 0.8;
+        } /* Base opacity */
+        25% {
+          opacity: 0.9;
+        } /* Bright moment */
+        50% {
+          opacity: 0.75;
+        } /* Dim moment */
+        75% {
+          opacity: 0.85;
+        } /* Medium bright */
+      }
+
+      /* Floating particles - decorative elements that float upward */
+      .particle {
+        position: fixed;
+        pointer-events: none;
+        opacity: 0;
+        animation: float-up 15s linear infinite; /* CUSTOMIZE: Change float speed */
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% {
+          opacity: 0.6; /* CUSTOMIZE: Particle visibility */
+        }
+        90% {
+          opacity: 0.6;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) scale(1.5);
+        }
+      }
+
+      /* Decorative corner ornaments - SVG-based decorative elements */
+      .corner-ornament {
+        position: fixed;
+        width: 120px; /* CUSTOMIZE: Ornament size */
+        height: 120px;
+        opacity: 0.3; /* CUSTOMIZE: Ornament visibility */
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+        background-size: contain;
+        z-index: 1;
+      }
+
+      /* CUSTOMIZE: Adjust corner ornament positions */
+      .corner-top-left {
+        top: 20px;
+        left: 70px;
+      }
+
+      .corner-top-right {
+        top: 20px;
+        right: 70px;
+        transform: scaleX(-1);
+      }
+
+      .corner-bottom-left {
+        bottom: 20px;
+        left: 70px;
+        transform: scaleY(-1);
+      }
+
+      .corner-bottom-right {
+        bottom: 20px;
+        right: 70px;
+        transform: scale(-1, -1);
+      }
+
+      /* ======================
+           🔙 NAVIGATION & BACK BUTTON
+           ====================== */
+
+      /* Back Button
+           PURPOSE: Provides navigation controls
+           CUSTOMIZE: Position, styling, hover effects
+           
+           Usage: Add onclick="goBack()" to any back button
+        */
+      .back-button {
+        position: fixed;
+        top: 20px; /* CUSTOMIZE: Vertical position */
+        left: 20px; /* CUSTOMIZE: Horizontal position */
+        background: rgba(212, 175, 55, 0.2); /* CUSTOMIZE: Background color */
+        border: 2px solid #8b6914; /* CUSTOMIZE: Border color */
+        color: #f4e4bc; /* CUSTOMIZE: Text color */
+        padding: 12px 24px; /* CUSTOMIZE: Button size */
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Font */
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-button:hover {
+        background: rgba(212, 175, 55, 0.4); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      }
+
+      /* ======================
+           📱 SIDEBAR SYSTEM
+           ====================== 
+           
+           PURPOSE: Collapsible navigation and student management panels
+           CUSTOMIZE: Widths, colors, animations, content
+           
+           Components:
+           - Toggle buttons (left/right sides)
+           - Overlay for mobile
+           - Left sidebar (navigation)
+           - Right sidebar (student management)
+           
+           JavaScript Functions:
+           - toggleLeftSidebar()
+           - toggleRightSidebar()
+           - closeSidebars()
+        */
+
+      /* Sidebar toggle buttons - visible buttons to open/close sidebars */
+      .sidebar-toggle {
+        position: fixed;
+        width: 50px; /* CUSTOMIZE: Button width */
+        height: 120px; /* CUSTOMIZE: Button height */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        color: #d4af37;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        writing-mode: vertical-rl; /* Makes text vertical */
+        text-orientation: mixed;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        transition: all 0.3s ease;
+        z-index: 99;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .left-toggle {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+      }
+
+      .right-toggle {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 10px 0 0 10px;
+        border-right: none;
+      }
+
+      .sidebar-toggle:hover {
+        background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        width: 60px; /* CUSTOMIZE: Hover width expansion */
+      }
+
+      .sidebar-toggle:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      /* Mobile overlay - darkens background when sidebar is open */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* CUSTOMIZE: Overlay opacity */
+        display: none;
+        z-index: 98;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      /* ======================
+           📋 LEFT SIDEBAR (NAVIGATION)
+           ====================== 
+           
+           PURPOSE: Main navigation menu
+           CUSTOMIZE: Width, menu items, styling
+           
+           Structure:
+           - Header with title and close button
+           - Navigation items (.nav-item)
+           - Decorative background pattern
+           
+           To Add Menu Items:
+           <a href="your-link.html" class="nav-item">Menu Item Name</a>
+        */
+
+      .left-sidebar {
+        width: 250px; /* CUSTOMIZE: Sidebar width */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border-right: 2px solid #8b6914;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transition: transform 0.3s ease;
+        z-index: 200;
+        transform: translateX(-250px); /* Hidden by default */
+      }
+
+      /* Decorative background pattern for left sidebar */
+      .left-sidebar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .left-sidebar.expanded {
+        transform: translateX(0); /* Visible when expanded */
+      }
+
+      /* Sidebar header - contains title and close button */
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px; /* CUSTOMIZE: Header padding */
+        border-bottom: 1px solid #8b6914;
+        position: relative;
+      }
+
+      /* Animated underline effect for header */
+      .sidebar-header::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%,
+        100% {
+          transform: translateX(-100%);
+        }
+        50% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Close button styling */
+      .close-btn {
+        background: rgba(139, 105, 20, 0.3);
+        border: 1px solid #8b6914;
+        color: #d4af37;
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 24px;
+      }
+
+      .close-btn:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .sidebar-content {
+        padding: 20px; /* CUSTOMIZE: Content padding */
+      }
+
+      /* Navigation items - individual menu links */
+      .nav-item {
+        display: block;
+        padding: 12px 15px; /* CUSTOMIZE: Item padding */
+        margin: 8px 0; /* CUSTOMIZE: Item spacing */
+        background: rgba(139, 105, 20, 0.2); /* CUSTOMIZE: Item background */
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #d4af37; /* CUSTOMIZE: Text color */
+        transition: all 0.3s ease;
+        text-align: center;
+        font-size: 14px; /* CUSTOMIZE: Font size */
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Decorative diamond icon that appears on hover */
+      .nav-item::before {
+        content: "◆"; /* CUSTOMIZE: Icon character */
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        color: #f4e4bc;
+      }
+
+      .nav-item:hover::before {
+        opacity: 1;
+      }
+
+      .nav-item:hover {
+        background: rgba(212, 175, 55, 0.3); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        transform: translateX(5px); /* Slides right on hover */
+      }
+
+      .nav-item.active {
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.4) 0%,
+          rgba(139, 32, 32, 0.3) 100%
+        );
+        border-color: #f4e4bc;
+        box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+      }
+
+      .sidebar-title {
+        font-family: "Uncial Antiqua", cursive; /* CUSTOMIZE: Title font */
+        font-size: 20px; /* CUSTOMIZE: Title size */
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        flex: 1;
+      }
+
+      /* ======================
+           👥 RIGHT SIDEBAR (STUDENT MANAGEMENT)
+           ====================== 
+           
+           PURPOSE: Daily student points tracking and management
+           CUSTOMIZE: Width, colors, button styles
+           
+           Components:
+           - Student dropdown selector
+           - Daily student list
+           - Action buttons (save, reset, export)
+           
+           JavaScript Integration:
+           - Connects to localStorage 'conquestTeamData'
+           - Manages 'dailyStudents' and 'dailyTreasury'
+           - Functions: addStudentToDaily(), removeStudentFromDaily(), etc.
+        */
+
+      .right-sidebar {
+        width: 350px; /* CUSTOMIZE: Sidebar width */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border-left: 2px solid #8b6914;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        z-index: 100;
+        transform: translateX(350px); /* Hidden by default */
+      }
+
+      .right-sidebar.expanded {
+        transform: translateX(0); /* Visible when expanded */
+      }
+
+      .points-title {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Title font */
+        font-size: 24px; /* CUSTOMIZE: Title size */
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #8b6914;
+        padding-bottom: 15px;
+      }
+
+      /* Section subtitles for better organization */
+      .section-subtitle {
+        font-family: "Uncial Antiqua", cursive;
+        font-size: 16px;
+        color: #d4af37;
+        text-align: center;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        position: relative;
+        padding: 0 20px;
+      }
+
+      /* Decorative elements for section titles */
+      .section-subtitle::before,
+      .section-subtitle::after {
+        content: "◆";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: #8b6914;
+      }
+
+      .section-subtitle::before {
+        left: 0;
+      }
+
+      .section-subtitle::after {
+        right: 0;
+      }
+
+      /* Decorative divider between sections */
+      .divider-ornament {
+        width: 100%;
+        height: 30px;
+        margin: 20px 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 0.5;
+      }
+
+      /* Shared section styling for add-class-section and add-student-section */
+      .add-section {
+        background: rgba(139, 105, 20, 0.2); /* CUSTOMIZE: Section background */
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        padding: 20px; /* CUSTOMIZE: Section padding */
+        margin-bottom: 0;
+      }
+
+      /* Shared dropdown styling for class-select and student-select */
+      .dropdown-select {
+        width: 100%;
+        padding: 15px; /* CUSTOMIZE: Dropdown padding */
+        background: rgba(
+          139,
+          105,
+          20,
+          0.3
+        ); /* CUSTOMIZE: Dropdown background */
+        border: 2px solid #8b6914;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        border-radius: 5px;
+        margin-bottom: 15px;
+        min-height: 50px;
+        -webkit-appearance: none;
+        appearance: none;
+        /* Custom dropdown arrow */
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+        padding-right: 45px;
+      }
+
+      .dropdown-select option {
+        background: #2a1810; /* CUSTOMIZE: Option background */
+        color: #f4e4bc;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      /* Add button (used for both class and student) */
+      .add-student-to-daily {
+        width: 100%;
+        padding: 18px; /* CUSTOMIZE: Button padding */
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        ); /* CUSTOMIZE: Button background */
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 55px;
+      }
+
+      .add-student-to-daily:hover {
+        background: rgba(212, 175, 55, 0.5); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      /* ======================
+           👤 STUDENT DISPLAY SYSTEM
+           ====================== 
+           
+           PURPOSE: Shows daily students with points and controls
+           CUSTOMIZE: Layout, colors, team badge styling
+           
+           Structure:
+           - Student info (name, team badge)
+           - Points button (shows current points, adds 10 on click)
+           - Remove button (removes from daily list)
+           
+           JavaScript Functions:
+           - renderDailyStudents() - creates the student list
+           - addPointsToStudent() - adds points and visual feedback
+           - removeStudentFromDaily() - removes student from list
+        */
+
+      .student-item {
+        background: rgba(
+          139,
+          105,
+          20,
+          0.2
+        ); /* CUSTOMIZE: Student item background */
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        padding: 20px; /* CUSTOMIZE: Item padding */
+        margin: 15px 0; /* CUSTOMIZE: Item spacing */
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 80px; /* CUSTOMIZE: Minimum height */
+        position: relative;
+      }
+
+      .student-item:hover {
+        background: rgba(212, 175, 55, 0.3); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .student-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+      }
+
+      .student-name {
+        font-size: 16px; /* CUSTOMIZE: Name font size */
+        color: #f4e4bc;
+      }
+
+      /* Team badges - color-coded team identification */
+      .team-badge {
+        font-size: 12px; /* CUSTOMIZE: Badge font size */
+        padding: 2px 6px; /* CUSTOMIZE: Badge padding */
+        border-radius: 7px;
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.3); /* CUSTOMIZE: Badge background */
+        border: 1px solid;
+        width: 80px;
+        /* Colors set dynamically by JavaScript based on team */
+      }
+
+      .coin-display {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* CUSTOMIZE: Spacing between elements */
+      }
+
+      /* Points button - shows current points and adds more when clicked */
+      /*         .points-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 12px;                        / CUSTOMIZE: Button padding /
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 1px solid #d4af37;
+            border-radius: 30px;                       / CUSTOMIZE: Button roundness /
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+            min-width: 70px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;                           / CUSTOMIZE: Font size /
+            font-weight: bold;
+            color: #f4e4bc;
+        } */
+
+      .points-btn {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Reduced from 10px */
+        padding: 6px 10px; /* Reduced from 12px 12px */
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.3) 0%,
+          rgba(180, 140, 40, 0.4) 100%
+        );
+        border: 1px solid #d4af37;
+        border-radius: 20px; /* Reduced from 30px */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 36px; /* Reduced from 50px */
+        min-width: 60px; /* Reduced from 70px */
+        font-family: "Cinzel", serif;
+        font-size: 14px; /* Reduced from 18px */
+        font-weight: bold;
+        color: #f4e4bc;
+      }
+
+      .points-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.5) 0%,
+          rgba(180, 140, 40, 0.6) 100%
+        );
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        transform: scale(1.05); /* Slight growth on hover */
+      }
+
+      .points-btn:active {
+        transform: scale(0.95); /* Slight shrink when clicked */
+      }
+
+      .points-value {
+        font-size: 16px; /* CUSTOMIZE: Points number size */
+        min-width: 40px;
+        text-align: center;
+      }
+
+      /* Coin icon - decorative gold coin */
+      .coin-icon {
+        width: 12px; /* CUSTOMIZE: Coin size */
+        height: 12px;
+        background: radial-gradient(circle, #ffd700, #b8860b);
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        position: relative;
+      }
+
+      .coin-icon::after {
+        content: "₹"; /* CUSTOMIZE: Coin symbol */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #8b4513;
+        font-weight: bold;
+        font-size: 7px;
+      }
+
+      /* Remove student button */
+      .remove-student {
+        background: rgba(139, 20, 20, 0.3); /* CUSTOMIZE: Remove button color */
+        border: 2px solid #8b4514;
+        color: #ff6b6b;
+        width: 45px; /* CUSTOMIZE: Button size */
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 15px;
+        transition: all 0.3s ease;
+        font-size: 24px; /* CUSTOMIZE: X size */
+        font-weight: bold;
+      }
+
+      .remove-student:hover {
+        background: rgba(200, 50, 50, 0.4);
+        box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+      }
+
+      /* Action buttons container */
+      .sidebar-buttons {
+        display: flex;
+        gap: 10px; /* CUSTOMIZE: Button spacing */
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* General action button styling */
+      .action-btn {
+        width: 100%;
+        padding: 15px; /* CUSTOMIZE: Button padding */
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        );
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        min-height: 55px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px); /* Lifts on hover */
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+      }
+
+      /* Save button - special green styling */
+      .save-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(46, 125, 50, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        );
+        border-color: #2e7d32;
+      }
+
+      .save-btn:hover {
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.5);
+      }
+
+      /* Empty state message */
+
+      /* Daily students list container */
+      #dailyStudentsList {
+        min-height: 200px;
+        margin-bottom: 20px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #b8860b;
+        font-style: italic;
+        background: rgba(139, 105, 20, 0.1);
+        border-radius: 5px;
+        border: 1px dashed #8b6914;
+      }
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+        color: #1a0f0a;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1001;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      /* ======================
+           🏠 MAIN CONTENT AREA
+           ====================== 
+           
+           PURPOSE: Primary content display area
+           CUSTOMIZE: Layout, spacing, title styling
+           
+           Structure:
+           - Title and subtitle
+           - Content containers (books, sections, etc.)
+           - Responsive margins for sidebars
+        */
+
+      .main-content {
+        flex: 1;
+        padding: 40px 20px; /* CUSTOMIZE: Content padding */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0 70px; /* CUSTOMIZE: Sidebar margins */
+      }
+
+      .library-title {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Title font */
+        font-size: 48px; /* CUSTOMIZE: Title size */
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+        position: relative;
+      }
+
+      /* Decorative stars around title */
+      .library-title::before,
+      .library-title::after {
+        content: "✦"; /* CUSTOMIZE: Star character */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px; /* CUSTOMIZE: Star size */
+        color: #d4af37;
+        animation: sparkle 3s ease-in-out infinite;
+      }
+
+      .library-title::before {
+        left: -50px; /* CUSTOMIZE: Left star position */
+      }
+
+      .library-title::after {
+        right: -50px; /* CUSTOMIZE: Right star position */
+        animation-delay: 1.5s;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: translateY(-50%) scale(0.8) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-50%) scale(1.2) rotate(180deg);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        to {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(212, 175, 55, 0.8);
+        }
+      }
+
+      .subtitle {
+        font-size: 20px; /* CUSTOMIZE: Subtitle size */
+        text-align: center;
+        margin-bottom: 50px;
+        color: #b8860b;
+        position: relative;
+        padding: 0 80px;
+      }
+
+      /* Decorative lines beside subtitle */
+      .subtitle::before,
+      .subtitle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 60px; /* CUSTOMIZE: Line length */
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #b8860b, transparent);
+      }
+
+      .subtitle::before {
+        left: 0;
+      }
+
+      .subtitle::after {
+        right: 0;
+      }
+
+    
+      /* ======================
+           📱 RESPONSIVE DESIGN
+           ====================== 
+           
+           PURPOSE: Adapt layout for different screen sizes
+           CUSTOMIZE: Breakpoints, mobile-specific styling
+           
+           Breakpoints:
+           - 1024px: Tablet landscape
+           - 768px: Tablet portrait and mobile
+        */
+
+      /* Tablet styles */
+      @media (max-width: 1024px) {
+        .books-container {
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 20px;
+        }
+
+        .book {
+          width: 150px;
+          height: 220px;
+        }
+
+        .book-spine {
+          font-size: 16px;
+        }
+
+        .library-title {
+          font-size: 36px;
+        }
+
+        .subtitle {
+          font-size: 18px;
+        }
+
+        .right-sidebar {
+          width: 100%;
+          max-width: 500px;
+        }
+
+        .right-sidebar.expanded {
+          transform: translateX(0);
+          right: 0;
+          left: auto;
+        }
+
+        .sidebar-toggle {
+          width: 60px;
+          height: 140px;
+          font-size: 18px;
+        }
+
+        .student-item {
+          margin: 20px 0;
+        }
+
+        .sidebar-buttons {
+          gap: 15px;
+        }
+      }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        .main-content {
+          margin: 0 60px;
+          padding: 20px 10px;
+        }
+
+        .library-title {
+          font-size: 28px;
+        }
+
+        .books-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .sections-container {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+
+        .section-card {
+          min-height: 200px;
+          padding: 30px;
+        }
+      }
+
+      /* ======================
+           🎬 UTILITY ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Reusable animation effects
+           CUSTOMIZE: Timing, intensity, easing
+           
+           Available Animations:
+           - pulse: Gentle scaling effect
+           - goldenGlow: Golden lighting effect
+        */
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        } /* CUSTOMIZE: Pulse intensity */
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes goldenGlow {
+        0% {
+          box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        } /* CUSTOMIZE: Glow intensity */
+        100% {
+          box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+      }
+
+      /* ========== LESSON-SPECIFIC STYLES ========== */
+      /* Add your custom CSS for the lesson here */
+      
+      /* Week 26 Two-Column Layout Styles */
+.week26-lesson-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Tab System */
+.lesson-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 30px auto;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    border: 2px solid #8b6914;
+    background: rgba(139, 105, 20, 0.3);
+    color: #d4af37;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+}
+
+.tab-btn:hover {
+    background: rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.tab-btn.active {
+    background: rgba(212, 175, 55, 0.5);
+    border-color: #f4e4bc;
+    color: #f4e4bc;
+}
+
+/* Day Content */
+.day-content {
+    display: none;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.day-content.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Two Column Layout */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* Passage Column (Left) */
+.passage-column {
+    background: rgba(42, 30, 20, 0.9);
+    border: 2px solid #8b6914;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.passage-column h2 {
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.passage-text {
+    background: rgba(139, 105, 20, 0.2);
+    padding: 25px;
+    border-radius: 10px;
+    border-left: 4px solid #d4af37;
+}
+
+.passage-text p {
+    color: #d4af37;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 16px;
+    transition: all 0.5s ease;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Glowing animation for highlighted paragraphs */
+.passage-text p.highlight {
+    animation: glow 2s ease-in-out infinite;
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        background: rgba(255, 215, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        background: rgba(255, 215, 0, 0.3);
+    }
+}
+
+/* Question Column (Right) */
+.question-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question-card {
+    background: rgba(42, 30, 20, 0.9);
+    border: 2px solid #8b6914;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    display: none;
+}
+
+.question-card.active {
+    display: block;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.question-card h3 {
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.question-text {
+    color: #ffd700;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Strategy Hint Box */
+.strategy-hint {
+    background: rgba(139, 105, 20, 0.2);
+    border: 2px solid #8b6914;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ffd700;
+}
+
+.strategy-hint p {
+    color: #d4af37;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.keyword {
+    background: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+/* Answer Options */
+.answer-options {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.answer-btn {
+    padding: 15px;
+    background: rgba(139, 105, 20, 0.3);
+    border: 2px solid #8b6914;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    color: #d4af37;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+}
+
+.answer-btn:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.3);
+    border-color: #d4af37;
+    transform: translateX(5px);
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.answer-btn.correct {
+    background: rgba(129, 199, 132, 0.3);
+    border-color: #81c784;
+    color: #81c784;
+    animation: correctPulse 0.6s ease;
+}
+
+.answer-btn.incorrect {
+    background: rgba(239, 83, 80, 0.3);
+    border-color: #ef5350;
+    color: #ef5350;
+    animation: incorrectShake 0.5s ease;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes incorrectShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Feedback */
+.feedback {
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+}
+
+.feedback.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback.correct {
+    background: rgba(129, 199, 132, 0.2);
+    color: #81c784;
+    border: 2px solid #81c784;
+}
+
+.feedback.incorrect {
+    background: rgba(239, 83, 80, 0.2);
+    color: #ef5350;
+    border: 2px solid #ef5350;
+}
+
+/* Next Button */
+.next-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    border: none;
+    border-radius: 25px;
+    color: #1a0f0a;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+}
+
+/* Completion Message */
+.completion-message {
+    background: rgba(42, 30, 20, 0.9);
+    border: 2px solid #ffd700;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+}
+
+.completion-message h2 {
+    color: #ffd700;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 20px;
+}
+
+.completion-message p {
+    color: #d4af37;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .two-column-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .passage-column {
+        position: relative;
+        max-height: none;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-btn {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+    
+    .passage-text p {
+        font-size: 14px;
+    }
+    
+    .question-text {
+        font-size: 16px;
+    }
+    
+    .answer-btn {
+        font-size: 13px;
+        padding: 12px;
+    }
+}
+
+/* Custom Scrollbar for Passage */
+.passage-column::-webkit-scrollbar {
+    width: 8px;
+}
+
+.passage-column::-webkit-scrollbar-track {
+    background: rgba(139, 105, 20, 0.2);
+    border-radius: 4px;
+}
+
+.passage-column::-webkit-scrollbar-thumb {
+    background: #8b6914;
+    border-radius: 4px;
+}
+
+.passage-column::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+
+/* Animation for fade in */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+    }
+    to { 
+        opacity: 1; 
+    }
+}
+        /* Add this to your CSS section */
+
+.explanation {
+    margin-top: 15px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-left: 4px solid #ffd700;
+}
+
+.explanation h4 {
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.explanation p {
+    color: #f4e4bc;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.explanation ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.explanation li {
+    color: #d4af37;
+    margin: 8px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.explanation li::before {
+    position: absolute;
+    left: 0;
+}
+
+.explanation .keyword {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* Make feedback area larger to accommodate explanations */
+.feedback.correct {
+    background: rgba(129, 199, 132, 0.2);
+    color: #81c784;
+    border: 2px solid #81c784;
+    max-height: none;
+    overflow: visible;
+}
+    </style>
+  </head>
+  <body>
+    <!-- 🎨 DECORATIVE ELEMENTS -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+
+    <!-- back button NAVIGATION
+  <button class="back-button" onclick="goBack()">Back</button>  -->
+
+    <!-- 📱 SIDEBAR SYSTEM -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
+      MENU
+    </div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">
+      Treasury
+    </div>
+
+    <!-- Mobile overlay -->
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="closeSidebars()"
+    ></div>
+
+    <!-- 📋 LEFT SIDEBAR (NAVIGATION) -->
+    <div class="left-sidebar" id="leftSidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Navigation</h2>
+        <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- 🔧 CUSTOMIZE: Add your navigation links here -->
+        <a href="/index.html" class="nav-item active">Library</a>
+        <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+        <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+        <a href="/novel/novel.html" class="nav-item">Novel</a>
+        <a href="/listening/listening.html" class="nav-item">Listening</a>
+        <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
+        <a href="/reading/reading.html" class="nav-item">Reading</a>
+        <a href="/essay/essay.html" class="nav-item">Essay</a>
+        <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+        <a href="/science/science.html" class="nav-item">Science</a>
+        <a href="/review/review.html" class="nav-item">Review</a>
+        <a href="/timer/timer.html" class="nav-item">Timer</a>
+        <a href="/conquest/conquest-of-rayhaven.html" class="nav-item"
+          >Conquest</a
+        >
+      </div>
+    </div>
+
+    <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
+    <div class="right-sidebar" id="rightSidebar">
+      <div class="sidebar-header">
+        <h2 class="points-title">Daily Treasury</h2>
+        <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- Section Title for Class Selection -->
+        <h3 class="section-subtitle">Quick Add by Class</h3>
+
+        <!-- Class Selection Section -->
+        <div class="add-section add-class-section">
+          <select class="dropdown-select class-select" id="classSelect">
+            <option value="">Select a class...</option>
+            <option value="m1">Monday 1 (m1)</option>
+            <option value="m2">Monday 2 (m2)</option>
+            <option value="tu1">Tuesday 1 (tu1)</option>
+            <option value="tu2">Tuesday 2 (tu2)</option>
+            <option value="w1">Wednesday 1 (w1)</option>
+            <option value="w2">Wednesday 2 (w2)</option>
+            <option value="th1">Thursday 1 (th1)</option>
+            <option value="th2">Thursday 2 (th2)</option>
+            <option value="s1">Saturday 1 (s1)</option>
+            <option value="s2">Saturday 2 (s2)</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addClassToDaily()">
+            Add Entire Class
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Individual Students -->
+        <h3 class="section-subtitle">Add Individual Student</h3>
+
+        <!-- Individual Student Selection -->
+        <div class="add-section add-student-section">
+          <select class="dropdown-select student-select" id="studentSelect">
+            <option value="">Select a scholar...</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addStudentToDaily()">
+            Add to Daily Points
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Active Students -->
+        <h3 class="section-subtitle">Today's Scholars</h3>
+
+        <!-- Daily Students List -->
+        <div id="dailyStudentsList">
+          <div class="empty-state">
+            No scholars in today's class yet.<br />Add students from the options
+            above.
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="sidebar-buttons">
+          <button class="action-btn" onclick="resetDailyTreasury()">
+            Reset All Points
+          </button>
+          <button class="action-btn save-btn" onclick="saveToConquest()">
+            Save to Conquest
+          </button>
+          <button class="action-btn">Export Data</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🏠 MAIN CONTENT -->
+    <div class="main-content">
+      <!-- ========== CUSTOMIZE BELOW FOR YOUR LESSON ========== -->
+      
+      <!-- 📚 TITLE SECTION -->
+      <h1 class="library-title">Week 26: Reading Comprehension</h1>
+      <p class="subtitle">Master the Art of Finding Answers</p>
+      
+      <!-- ========== LESSON CONTENT AREA ========== -->
+      <!-- Add your lesson content here -->
+      <div class="week26-lesson-container">
+    <div class="lesson-tabs">
+        <button class="tab-btn active" onclick="showDay('day1')">Day 1: Table Manners</button>
+        <button class="tab-btn" onclick="showDay('day2')">Day 2: Run for Your Life</button>
+        <button class="tab-btn" onclick="showDay('day3')">Day 3: Sea Monster</button>
+        <button class="tab-btn" onclick="showDay('day4')">Day 4: Cougars</button>
+    </div>
+
+    <!-- DAY 1: Table Manners -->
+    <div id="day1" class="day-content active">
+        <div class="two-column-layout">
+            <!-- LEFT: Passage -->
+            <div class="passage-column">
+                <h2>📖 Basic Table Manners: A Short Guide</h2>
+                <div class="passage-text">
+                    <p id="d1-p1">Do you want to make a great impression at a meal? Want your dining companions to focus on you instead of your eating habits? Whether you are at a family holiday get-together, trying to impress someone on a first date, or going out with your colleagues for a business lunch, you will feel more comfortable if you have mastered good table manners.</p>
+                    
+                    <p id="d1-p2">When you first sit down, spread your napkin out on your lap. Before you begin to eat, make sure that everyone has been served and that the host is eating, too. If you are in a large group and the host says to start eating, go ahead, as long as you are not the only one to do so.</p>
+                    
+                    <p id="d1-p3">If you need something you cannot reach, such as the water pitcher or butter, ask someone to pass it to you; do not reach across anyone else's space. If you are passing a serving dish to someone who requested it, do not help yourself first. If those rolls look tasty, ask for the basket back afterward. If you change your mind after you have touched the roll, take it anyway.</p>
+                    
+                    <p id="d1-p4">Before you start a conversation, ask yourself if the topic is appropriate to discuss while eating. Try to keep things positive, and definitely avoid anything gross! Do not text or talk on your cellphone at the table. If you must take a call, politely excuse yourself.</p>
+                    
+                    <p id="d1-p5">Toward the end of the meal, compliment the host. If you keep all of these directions in mind, you should make a fine impression in any setting. Happy dining!</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Questions -->
+            <div class="question-column">
+                <!-- Question 1 -->
+                <div class="question-card active" id="d1-q1-card">
+                    <h3>Question 1</h3>
+                    <p class="question-text">What was the author's purpose for writing the passage?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key Word:</strong> <span class="keyword">author's purpose</span></p>
+                        <p>💡 Look for: Command verbs (do this, don't do that)</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q1', 'd1-p2,d1-p3')">
+                            A) to inform readers about the history of table manners
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q1', 'd1-p2,d1-p3')">
+                            B) to entertain readers with a funny story
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd1-q1', 'd1-p2,d1-p3')">
+                            C) to instruct readers on proper table manners
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q1', 'd1-p2,d1-p3')">
+                            D) to persuade readers to buy a guide
+                        </button>
+                    </div>
+                    <div class="feedback" id="d1-q1-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d1-q1', 'd1-q2')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" id="d1-q2-card">
+                    <h3>Question 2</h3>
+                    <p class="question-text">The author asks questions of the reader to _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look at:</strong> The opening questions</p>
+                        <p>💡 Why do authors start with questions?</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q2', 'd1-p1')">
+                            A) find out what the reader already knows
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd1-q2', 'd1-p1')">
+                            B) help the reader connect to the topic
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q2', 'd1-p1')">
+                            C) see if the reader is paying attention
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q2', 'd1-p1')">
+                            D) ask for advice about dining in a group
+                        </button>
+                    </div>
+                    <div class="feedback" id="d1-q2-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d1-q2', 'd1-q3')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" id="d1-q3-card">
+                    <h3>Question 3</h3>
+                    <p class="question-text">The author talks about making a good impression to _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key Phrase:</strong> <span class="keyword">making a good impression</span></p>
+                        <p>💡 Find this exact phrase in the passage!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd1-q3', 'd1-p1,d1-p5')">
+                            A) explain why good table manners are important
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q3', 'd1-p1,d1-p5')">
+                            B) describe a good impression
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q3', 'd1-p1,d1-p5')">
+                            C) give examples of good manners
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q3', 'd1-p1,d1-p5')">
+                            D) persuade readers not to judge others
+                        </button>
+                    </div>
+                    <div class="feedback" id="d1-q3-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d1-q3', 'd1-q4')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" id="d1-q4-card">
+                    <h3>Question 4</h3>
+                    <p class="question-text">The author believes that table manners _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> The overall message</p>
+                        <p>💡 Check the conclusion paragraph!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q4', 'd1-p5')">
+                            A) are the most important part of human behavior
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q4', 'd1-p5')">
+                            B) are an amusing, old-fashioned idea
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd1-q4', 'd1-p5')">
+                            C) can solve problems in relationships
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd1-q4', 'd1-p5')">
+                            D) help make a meal pleasant for everyone
+                        </button>
+                    </div>
+                    <div class="feedback" id="d1-q4-feedback"></div>
+                    
+                    <button class="next-btn" onclick="showCompletion('day1')" style="display:none;">Complete Day 1 ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAY 2: Run for Your Life -->
+    <div id="day2" class="day-content">
+        <div class="two-column-layout">
+            <!-- LEFT: Passage -->
+            <div class="passage-column">
+                <h2>📖 Run for Your Life</h2>
+                <div class="passage-text">
+                    <p id="d2-p1">For people who wonder which type of exercise they should try, I have a one-word answer: running! While I am not a fitness trainer or medical doctor, I am able to assess the facts, and the facts favor running. Running is a great form of exercise because you do not need a gym membership in order to run. You also do not need a bunch of fancy equipment (a pair of basic running shoes should do). Finally, you do not need to rely on other people, as you do when playing team sports. That means you can easily fit exercise into your schedule.</p>
+                    
+                    <p id="d2-p2">When you run, you build stamina and endurance. You give your heart a great workout, too. On top of these benefits, you also build bone density, which has long-term benefits. Many runners use the time on the track or road to think through problems, so running can have mental health benefits, as well. In fact, the expression "runner's high" exists because running helps increase your level of endorphins, which are chemicals that relieve pain and make you more relaxed. When these endorphins reach the brain, they can make the runner feel a kind of elation. And, beyond the temporary runner's high, running regularly helps people with depression improve their moods.</p>
+                    
+                    <p id="d2-p3">Some people may argue that swimming and biking are easier on the joints than running, but swimming requires a pool, and biking requires a bicycle and a helmet. Additionally, no one has ever proven that the average runner's routine leads to joint problems. So grab a pair of running shoes and start your new life as a runner!</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Questions -->
+            <div class="question-column">
+                <!-- Question 1 -->
+                <div class="question-card active" id="d2-q1-card">
+                    <h3>Question 1</h3>
+                    <p class="question-text">The author feels that running is _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> Opinion words about running</p>
+                        <p>💡 Check the overall tone!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q1', 'd2-p1,d2-p2')">
+                            A) the only way to treat depression
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd2-q1', 'd2-p1,d2-p2')">
+                            B) a great way to improve your life
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q1', 'd2-p1,d2-p2')">
+                            C) designed for wealthy people
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q1', 'd2-p1,d2-p2')">
+                            D) a fun activity instead of exercise
+                        </button>
+                    </div>
+                    <div class="feedback" id="d2-q1-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d2-q1', 'd2-q2')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" id="d2-q2-card">
+                    <h3>Question 2</h3>
+                    <p class="question-text">The author wrote the passage to _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> Opinion words & calls to action</p>
+                        <p>💡 Check the beginning and ending!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q2', 'd2-p1,d2-p3')">
+                            A) describe how running helps you lose weight
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q2', 'd2-p1,d2-p3')">
+                            B) tell a personal story about running
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q2', 'd2-p1,d2-p3')">
+                            C) explain how running is safer than other sports
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd2-q2', 'd2-p1,d2-p3')">
+                            D) persuade readers to take up running
+                        </button>
+                    </div>
+                    <div class="feedback" id="d2-q2-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d2-q2', 'd2-q3')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" id="d2-q3-card">
+                    <h3>Question 3</h3>
+                    <p class="question-text">Which of the following provides the strongest support for the author's argument?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key Word:</strong> <span class="keyword">strongest support</span></p>
+                        <p>💡 Look for the answer with MULTIPLE benefits!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q3', 'd2-p2')">
+                            A) Running does not cause joint problems
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q3', 'd2-p2')">
+                            B) You do not need to rely on other people
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd2-q3', 'd2-p2')">
+                            C) Running is good for the heart, bones, and mental health
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q3', 'd2-p2')">
+                            D) You can run outside a gym
+                        </button>
+                    </div>
+                    <div class="feedback" id="d2-q3-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d2-q3', 'd2-q4')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" id="d2-q4-card">
+                    <h3>Question 4</h3>
+                    <p class="question-text">In the author's opinion, running is better than bicycling or swimming because _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Find:</strong> Comparison with swimming/biking</p>
+                        <p>💡 Look in the last paragraph!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd2-q4', 'd2-p3')">
+                            A) you do not need extra equipment or facilities
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q4', 'd2-p3')">
+                            B) you can do it by yourself
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q4', 'd2-p3')">
+                            C) it is easier on the joints
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd2-q4', 'd2-p3')">
+                            D) it is a routine form of exercise
+                        </button>
+                    </div>
+                    <div class="feedback" id="d2-q4-feedback"></div>
+                    
+                    <button class="next-btn" onclick="showCompletion('day2')" style="display:none;">Complete Day 2 ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAY 3: Sea Monster -->
+    <div id="day3" class="day-content">
+        <div class="two-column-layout">
+            <!-- LEFT: Passage -->
+            <div class="passage-column">
+                <h2>📖 The Real Sea Monster</h2>
+                <div class="passage-text">
+                    <p id="d3-p1">In November of 1861, a French ship called the Alecton was off the coast of Africa when the sailors aboard spotted a sea monster. It was a giant squid that had numerous arms and an immensely long tail. The sailors tried to capture the squid but succeeded only in cutting off its tail, which they sent back to France.</p>
+                    
+                    <p id="d3-p2">Despite the evidence of the tail, scientists did not believe in the existence of the giant squid for many years. However, over time, giant squid bodies washed up on shore and were found in the stomachs of whales. The scientific community had to accept that these sea creatures, up to 60 feet in length, were real.</p>
+                    
+                    <p id="d3-p3">The squids were not just enormous; they were also fierce fighters. In 1965, whalers saw a giant squid and a sperm whale fight, and the battle killed them both. In 1966, lighthouse keepers watched a giant squid attack and drown a baby whale.</p>
+                    
+                    <p id="d3-p4">Scientists could not study the squids in their natural habitat because they live so deep in the ocean—between 600 and 2,300 feet under the surface. Then, in 2004, Japanese scientist Tsunemi Kubodera and his team used a remote control camera to take the first photographs of the giant squid deep below the ocean's surface. Two years later, Kubodera's team captured and photographed a small (24-foot) giant squid, though it was killed in the capture. Scientists hope to see and safely study this great creature of the deep in the near future.</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Questions -->
+            <div class="question-column">
+                <!-- Question 1 -->
+                <div class="question-card active" id="d3-q1-card">
+                    <h3>Question 1</h3>
+                    <p class="question-text">Which evidence from the passage best supports the idea that giant squids are fierce fighters?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key Phrase:</strong> <span class="keyword">fierce fighters</span></p>
+                        <p>💡 Find this exact phrase, then look at what comes AFTER!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q1', 'd3-p3')">
+                            A) their great size and length
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd3-q1', 'd3-p3')">
+                            B) their attacks on other sea animals
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q1', 'd3-p3')">
+                            C) how deep they live in the ocean
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q1', 'd3-p3')">
+                            D) the large number of arms
+                        </button>
+                    </div>
+                    <div class="feedback" id="d3-q1-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d3-q1', 'd3-q2')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" id="d3-q2-card">
+                    <h3>Question 2</h3>
+                    <p class="question-text">Why didn't French scientists believe the giant squid existed after receiving the tail in 1861?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key Words:</strong> <span class="keyword">scientists did not believe</span></p>
+                        <p>💡 Find what changed their minds!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q2', 'd3-p2')">
+                            A) They thought the sailors were trying to trick them
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q2', 'd3-p2')">
+                            B) They were sure they already knew about every animal on earth
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q2', 'd3-p2')">
+                            C) They did not believe there could be marine animals near Africa
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd3-q2', 'd3-p2')">
+                            D) They needed an entire giant squid as proof
+                        </button>
+                    </div>
+                    <div class="feedback" id="d3-q2-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d3-q2', 'd3-q3')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" id="d3-q3-card">
+                    <h3>Question 3</h3>
+                    <p class="question-text">The author's information can be trusted because it includes _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> Types of information given</p>
+                        <p>💡 Are there facts, opinions, or beliefs?</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd3-q3', 'd3-p1,d3-p3,d3-p4')">
+                            A) factual information
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q3', 'd3-p1,d3-p3,d3-p4')">
+                            B) personal opinions
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q3', 'd3-p1,d3-p3,d3-p4')">
+                            C) long-held beliefs
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q3', 'd3-p1,d3-p3,d3-p4')">
+                            D) scientists' hopes
+                        </button>
+                    </div>
+                    <div class="feedback" id="d3-q3-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d3-q3', 'd3-q4')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" id="d3-q4-card">
+                    <h3>Question 4</h3>
+                    <p class="question-text">Which of these statements is best supported by evidence from the passage?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Strategy:</strong> Check each answer against the passage</p>
+                        <p>💡 Look for facts that are actually stated!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q4', 'd3-p4')">
+                            A) Giant squids are a threat to humans
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q4', 'd3-p4')">
+                            B) Giant squids are seriously endangered
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd3-q4', 'd3-p4')">
+                            C) Giant squids are difficult to observe
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd3-q4', 'd3-p4')">
+                            D) Giant squids do not really exist
+                        </button>
+                    </div>
+                    <div class="feedback" id="d3-q4-feedback"></div>
+                    
+                    <button class="next-btn" onclick="showCompletion('day3')" style="display:none;">Complete Day 3 ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAY 4: Cougars -->
+    <div id="day4" class="day-content">
+        <div class="two-column-layout">
+            <!-- LEFT: Passage -->
+            <div class="passage-column">
+                <h2>📖 Cougars . . . or Not?</h2>
+                <div class="passage-text">
+                    <p id="d4-p1">When Carol Wilbur's horse was found dead on her farm in rural New York, she was certain it had been killed by an eastern cougar, or mountain lion. The problem with this theory is that there have been no confirmed sightings of wild cougars in New York for over 100 years. The Department of Environmental Conservation (DEC) claims that cougars have been eliminated from New York. In fact, they claim mountain lions do not live anywhere east of the Mississippi River, except for a small population in Florida.</p>
+                    
+                    <p id="d4-p2">Many upstate New York residents disagree with the statement that mountain lions do not live in the state. Dozens of people claim to have sighted the large, dangerous, long-tailed cats. Reports have come in from the Hudson Valley, northern New York, and the western part of the state. Some people have taken photographs of what they saw. The DEC responded by stating that the sightings and photos are of bobcats, dogs, large cats, or coyotes.</p>
+                    
+                    <p id="d4-p3">One resident of Cooperstown says he saw a cougar in a cornfield. He points out that, as a hunter, he is very familiar with the differences between cougars and other animals. But DEC officials insist they need hard evidence: the body of a wild cougar. Still, despite the lack of absolute proof, it seems unlikely that so many people could be wrong about seeing these stealthy, solitary animals.</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Questions -->
+            <div class="question-column">
+                <!-- Question 1 -->
+                <div class="question-card active" id="d4-q1-card">
+                    <h3>Question 1</h3>
+                    <p class="question-text">What does the author refer to in order to support the DEC's claim that cougars no longer live in New York?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Key:</strong> DEC's claim = NO cougars</p>
+                        <p>💡 What supports this view?</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q1', 'd4-p1')">
+                            A) statements from eyewitnesses who have seen cougars
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q1', 'd4-p1')">
+                            B) statistics about the cougar population
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd4-q1', 'd4-p1')">
+                            C) lack of a confirmed cougar
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q1', 'd4-p1')">
+                            D) facts about cougars' lives and habits
+                        </button>
+                    </div>
+                    <div class="feedback" id="d4-q1-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d4-q1', 'd4-q2')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card" id="d4-q2-card">
+                    <h3>Question 2</h3>
+                    <p class="question-text">What leads many New Yorkers to believe cougars still live in the state?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> Evidence FOR cougars</p>
+                        <p>💡 Check paragraph 2!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd4-q2', 'd4-p2')">
+                            A) claims from eyewitnesses
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q2', 'd4-p2')">
+                            B) descriptions of photographs
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q2', 'd4-p2')">
+                            C) reports of confirmed sightings
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q2', 'd4-p2')">
+                            D) information about cougars from the DEC
+                        </button>
+                    </div>
+                    <div class="feedback" id="d4-q2-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d4-q2', 'd4-q3')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card" id="d4-q3-card">
+                    <h3>Question 3</h3>
+                    <p class="question-text">Which evidence from the passage best supports the claim that cougars still live in New York?</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Look for:</strong> Evidence FOR cougars being in NY</p>
+                        <p>💡 What's the STRONGEST evidence?</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q3', 'd4-p2,d4-p3')">
+                            A) the horse that was killed
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q3', 'd4-p2,d4-p3')">
+                            B) the list of animals that look like cougars
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q3', 'd4-p2,d4-p3')">
+                            C) the hunter's experience with animals
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd4-q3', 'd4-p2,d4-p3')">
+                            D) the number of people who say they have seen cougars
+                        </button>
+                    </div>
+                    <div class="feedback" id="d4-q3-feedback"></div>
+                    
+                    <button class="next-btn" onclick="nextQuestion('d4-q3', 'd4-q4')" style="display:none;">Next Question →</button>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card" id="d4-q4-card">
+                    <h3>Question 4</h3>
+                    <p class="question-text">According to the passage, some people have taken photos of cougars. These photos are not considered evidence because they were not _______.</p>
+                    
+                    <div class="strategy-hint">
+                        <p>🔍 <strong>Find:</strong> What DEC says about photos</p>
+                        <p>💡 Look in paragraph 2!</p>
+                    </div>
+
+                    <div class="answer-options">
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q4', 'd4-p2')">
+                            A) taken in New York
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, true, 'd4-q4', 'd4-p2')">
+                            B) clear enough to prove they were cougars
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q4', 'd4-p2')">
+                            C) taken by the DEC
+                        </button>
+                        <button class="answer-btn" onclick="checkAnswer(this, false, 'd4-q4', 'd4-p2')">
+                            D) of animals that looked dangerous
+                        </button>
+                    </div>
+                    <div class="feedback" id="d4-q4-feedback"></div>
+                    
+                    <button class="next-btn" onclick="showCompletion('day4')" style="display:none;">Complete Day 4 ✓</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Message -->
+    <div class="completion-message" id="completion-message" style="display:none;">
+        <h2>🎉 Excellent Work!</h2>
+        <p>You've completed this day's reading comprehension practice!</p>
+        <p>Remember the key strategy: <strong>Find the keywords from the question in the passage!</strong></p>
+    </div>
+</div>
+
+    <!-- Completion Message -->
+    <div class="completion-message" id="completion-message" style="display:none;">
+        <h2>🎉 Excellent Work!</h2>
+        <p>You've completed this day's reading comprehension practice!</p>
+        <p>Remember the key strategy: <strong>Find the keywords from the question in the passage!</strong></p>
+    </div>
+</div>
+      
+      <!-- ========== END OF LESSON CUSTOMIZATION ========== -->
+    </div>
+
+    <!-- 📢 NOTIFICATION SYSTEM -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+      /* ======================
+           🎯 STUDENT MANAGEMENT SYSTEM
+           ====================== 
+           
+           PURPOSE: Manages daily student points and integrates with conquest system
+           
+           🔧 CUSTOMIZATION GUIDE:
+           
+           1. TEAM SETUP:
+           - Modify teamInfo object to match your team names and colors
+           - Teams are automatically loaded from localStorage 'conquestTeamData'
+           
+           2. POINT SYSTEM:
+           - Default: 10 points per click (change in addPointsToStudent function)
+           - Modify point increments in addPointsToStudent()
+           
+           3. STORAGE:
+           - Uses localStorage for persistence
+           - 'conquestTeamData' = main student/team data
+           - 'dailyStudents' = today's active students
+           - 'dailyTreasury' = today's point tracking
+           
+           4. INTEGRATION:
+           - Works with existing conquest system
+           - saveToConquest() transfers daily points to main system
+           - Automatically syncs with team data
+        */
+
+      // Daily treasury object to track today's students
+      let dailyStudents = JSON.parse(
+        localStorage.getItem("dailyStudents") || "[]"
+      );
+      let dailyTreasury = JSON.parse(
+        localStorage.getItem("dailyTreasury") || "{}"
+      );
+
+      // Load all students from Conquest data
+      function loadAllStudentsFromConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (conquestData) {
+          const teamData = JSON.parse(conquestData);
+          const students = [];
+
+          // Extract all students from teams
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            team.students.forEach((student) => {
+              if (student.name !== "Donation") {
+                students.push({
+                  name: student.name,
+                  team: teamKey,
+                  classes: student.classes || [], // Include classes data
+                });
+              }
+            });
+          });
+
+          // Sort alphabetically
+          return students.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        return [];
+      }
+
+      // 🔧 CUSTOMIZE: Team information for badges
+      const teamInfo = {
+        jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+        pinkie: { name: "Pinkie", color: "#f06292" },
+        handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+        bomi: { name: "Bomi", color: "#ffd54f" },
+        geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+        prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" },
+      };
+
+      // Function to toggle left sidebar
+      function toggleLeftSidebar() {
+        const sidebar = document.getElementById("leftSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const isExpanded = sidebar.classList.contains("expanded");
+
+        if (isExpanded) {
+          sidebar.classList.remove("expanded");
+          overlay.classList.remove("active");
+        } else {
+          document.getElementById("rightSidebar").classList.remove("expanded");
+          sidebar.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      }
+
+      // Function to toggle right sidebar
+      function toggleRightSidebar() {
+        const sidebar = document.getElementById("rightSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const isExpanded = sidebar.classList.contains("expanded");
+
+        if (isExpanded) {
+          sidebar.classList.remove("expanded");
+          overlay.classList.remove("active");
+        } else {
+          document.getElementById("leftSidebar").classList.remove("expanded");
+          sidebar.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      }
+
+      // Function to close all sidebars
+      function closeSidebars() {
+        document.getElementById("leftSidebar").classList.remove("expanded");
+        document.getElementById("rightSidebar").classList.remove("expanded");
+        document.getElementById("sidebarOverlay").classList.remove("active");
+      }
+
+      // Populate student dropdown
+      function populateStudentDropdown() {
+        const select = document.getElementById("studentSelect");
+        select.innerHTML = '<option value="">Select a scholar...</option>';
+
+        const allStudents = loadAllStudentsFromConquest();
+
+        allStudents.forEach((student) => {
+          // Only show students not already in daily list
+          if (!dailyStudents.includes(student.name)) {
+            const option = document.createElement("option");
+            option.value = student.name;
+            option.dataset.team = student.team;
+            option.textContent = student.name;
+            select.appendChild(option);
+          }
+        });
+      }
+
+      // Add student to daily treasury
+      function addStudentToDaily() {
+        const select = document.getElementById("studentSelect");
+        const studentName = select.value;
+
+        if (studentName && !dailyStudents.includes(studentName)) {
+          dailyStudents.push(studentName);
+          dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+
+          // Save to localStorage
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          // Refresh display
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          // Reset dropdown
+          select.value = "";
+        }
+      }
+
+      // Function to add entire class to daily list
+      function addClassToDaily() {
+        const select = document.getElementById("classSelect");
+        const className = select.value;
+
+        if (!className) {
+          showToast("Please select a class first!");
+          return;
+        }
+
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No student data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let addedCount = 0;
+        let skippedCount = 0;
+        let totalStudentsChecked = 0;
+
+        // Loop through all teams and students
+        Object.entries(teamData).forEach(([teamKey, team]) => {
+          if (!team.students) {
+            return;
+          }
+
+          team.students.forEach((student) => {
+            totalStudentsChecked++;
+
+            // Skip if no classes array
+            if (!student.classes) {
+              return;
+            }
+
+            // Check if student is in the selected class
+            const isInClass = student.classes.some((c) => {
+              return c.toLowerCase() === className.toLowerCase();
+            });
+
+            if (isInClass && student.name !== "Donation") {
+              if (!dailyStudents.includes(student.name)) {
+                dailyStudents.push(student.name);
+                dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                addedCount++;
+              } else {
+                skippedCount++;
+              }
+            }
+          });
+        });
+
+        // Save and update display
+        if (addedCount > 0) {
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+
+        // Reset dropdown
+        select.value = "";
+
+        // Show result message
+        if (addedCount > 0 && skippedCount > 0) {
+          showToast(
+            `✨ Added ${addedCount} students! (${skippedCount} already in class)`
+          );
+        } else if (addedCount > 0) {
+          showToast(`✨ Added ${addedCount} students to today's class!`);
+        } else if (skippedCount > 0) {
+          showToast("All students from this class are already added!");
+        } else {
+          showToast(`No students found for ${className.toUpperCase()}`);
+        }
+      }
+
+      // Remove student from daily treasury
+      function removeStudentFromDaily(studentName) {
+        const index = dailyStudents.indexOf(studentName);
+        if (index > -1) {
+          dailyStudents.splice(index, 1);
+          delete dailyTreasury[studentName];
+
+          // Save to localStorage
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          // Refresh display
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+      }
+
+      // Get student's team
+      function getStudentTeam(studentName) {
+        const allStudents = loadAllStudentsFromConquest();
+        const student = allStudents.find((s) => s.name === studentName);
+        return student ? student.team : null;
+      }
+
+      // Render daily students
+      function renderDailyStudents() {
+        const container = document.getElementById("dailyStudentsList");
+        container.innerHTML = "";
+
+        if (dailyStudents.length === 0) {
+          container.innerHTML =
+            '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+          return;
+        }
+
+        dailyStudents.forEach((studentName) => {
+          const teamKey = getStudentTeam(studentName);
+          const team = teamInfo[teamKey];
+
+          const item = document.createElement("div");
+          item.className = "student-item";
+
+          item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${
+                          team
+                            ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>`
+                            : ""
+                        }
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${
+                              dailyTreasury[studentName] || 0
+                            }</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+
+          container.appendChild(item);
+        });
+      }
+
+      // Update daily treasury
+      function updateDailyTreasury(name, value) {
+        dailyTreasury[name] = parseInt(value) || 0;
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+      }
+
+      // 🔧 CUSTOMIZE: Add points when clicking on student (default: 10 points)
+      function addPointsToStudent(name) {
+        const pointsToAdd = 10; // CUSTOMIZE: Change points per click
+        dailyTreasury[name] = (dailyTreasury[name] || 0) + pointsToAdd;
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+        renderDailyStudents();
+
+        // Visual feedback
+        const studentItems = document.querySelectorAll(".student-item");
+        studentItems.forEach((item) => {
+          if (item.querySelector(".student-name").textContent === name) {
+            item.style.animation = "pulse 0.3s ease";
+            const btn = item.querySelector(".points-btn");
+            if (btn) {
+              btn.style.animation = "goldenGlow 0.3s ease";
+            }
+            setTimeout(() => {
+              item.style.animation = "";
+              if (btn) btn.style.animation = "";
+            }, 300);
+          }
+        });
+      }
+
+      // Save to Conquest
+      function saveToConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No Conquest data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let totalPointsAdded = 0;
+
+        // Update each student's points in their team
+        Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+          if (dailyPoints > 0) {
+            // Find which team the student belongs to
+            for (const [teamKey, team] of Object.entries(teamData)) {
+              const studentIndex = team.students.findIndex(
+                (s) => s.name === studentName
+              );
+              if (studentIndex !== -1) {
+                // Add daily points to existing points
+                teamData[teamKey].students[studentIndex].points += dailyPoints;
+                totalPointsAdded += dailyPoints;
+                break;
+              }
+            }
+          }
+        });
+
+        // Save updated conquest data
+        localStorage.setItem("conquestTeamData", JSON.stringify(teamData));
+
+        // Reset daily data
+        dailyStudents = [];
+        dailyTreasury = {};
+        localStorage.removeItem("dailyStudents");
+        localStorage.removeItem("dailyTreasury");
+
+        // Refresh display
+        renderDailyStudents();
+        populateStudentDropdown();
+
+        showToast(
+          `✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`
+        );
+      }
+
+      // Reset daily treasury
+      function resetDailyTreasury() {
+        if (
+          confirm(
+            "Are you sure you want to clear today's class? This will remove all students and their daily points!"
+          )
+        ) {
+          // Clear the data
+          dailyStudents = [];
+          dailyTreasury = {};
+
+          // Clear from localStorage
+          localStorage.removeItem("dailyStudents");
+          localStorage.removeItem("dailyTreasury");
+
+          // Force a refresh of the display
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          showToast("Daily treasury cleared!");
+        }
+      }
+
+      // Show toast notification
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000); // CUSTOMIZE: Toast display duration
+      }
+
+      // Go back function
+      function goBack() {
+        window.history.back();
+      }
+
+      // Close sidebars when clicking on a nav item
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", closeSidebars);
+      });
+
+      // Handle touch events for better tablet experience
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeThreshold = 50; // CUSTOMIZE: Swipe sensitivity
+        const leftSidebar = document.getElementById("leftSidebar");
+        const rightSidebar = document.getElementById("rightSidebar");
+
+        // Swipe right to open left sidebar
+        if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+          leftSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+
+        // Swipe left to open right sidebar
+        if (
+          touchStartX - touchEndX > swipeThreshold &&
+          touchStartX > window.innerWidth - 50
+        ) {
+          rightSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+      }
+
+      // 🔧 CUSTOMIZE: Add floating particles (decorative effect)
+      function createParticles() {
+        const particleCount = 20; // CUSTOMIZE: Number of particles
+        const particleSymbols = ["✦", "◆", "❋", "✧"]; // CUSTOMIZE: Particle symbols
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 10 + "s";
+          particle.innerHTML =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          particle.style.color = "#d4af37";
+          particle.style.fontSize = Math.random() * 10 + 10 + "px";
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        // Re-initialize from localStorage to ensure sync
+        dailyStudents = JSON.parse(
+          localStorage.getItem("dailyStudents") || "[]"
+        );
+        dailyTreasury = JSON.parse(
+          localStorage.getItem("dailyTreasury") || "{}"
+        );
+
+        populateStudentDropdown();
+        renderDailyStudents();
+        createParticles();
+      });
+
+// Current active elements
+let currentDay = 'day1';
+let currentQuestion = null;
+
+// Show selected day
+function showDay(dayId) {
+    // Hide all days
+    document.querySelectorAll('.day-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected day
+    document.getElementById(dayId).classList.add('active');
+    event.target.classList.add('active');
+    currentDay = dayId;
+    
+    // Reset highlights
+    clearHighlights();
+}
+
+// Clear all highlights
+function clearHighlights() {
+    document.querySelectorAll('.passage-text p').forEach(p => {
+        p.classList.remove('highlight');
+    });
+}
+
+// Highlight specific paragraphs
+function highlightParagraphs(paragraphIds) {
+    clearHighlights();
+    const ids = paragraphIds.split(',');
+    ids.forEach(id => {
+        const paragraph = document.getElementById(id);
+        if (paragraph) {
+            paragraph.classList.add('highlight');
+            // Scroll to first highlighted paragraph
+            if (ids[0] === id) {
+                paragraph.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+}
+
+// Check answer function
+function checkAnswer(button, isCorrect, feedbackId, highlightIds) {
+    // Disable all buttons in this question
+    const buttons = button.parentElement.querySelectorAll('.answer-btn');
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+    
+    // Mark the selected button
+    button.classList.add(isCorrect ? 'correct' : 'incorrect');
+    
+    // Highlight relevant paragraphs
+    highlightParagraphs(highlightIds);
+    
+    // Show feedback
+    const feedback = document.getElementById(feedbackId + '-feedback');
+    feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+    
+    if (isCorrect) {
+        // Get detailed explanation based on question ID
+        const explanation = getExplanation(feedbackId);
+        feedback.innerHTML = `
+            ✅ <strong>Excellent!</strong> You found the right answer!
+            <div class="explanation">
+                <h4>📚 Why this is correct:</h4>
+                ${explanation}
+            </div>
+        `;
+        // Show next button
+        const nextBtn = button.closest('.question-card').querySelector('.next-btn');
+        if (nextBtn) {
+            nextBtn.style.display = 'block';
+        }
+    } else {
+        feedback.innerHTML = '❌ <strong>Try looking at the highlighted text.</strong> The answer is there!';
+        // Re-enable buttons for another try
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('incorrect');
+            });
+        }, 2000);
+    }
+}
+
+// Move to next question
+function nextQuestion(currentId, nextId) {
+    // Hide current question
+    document.getElementById(currentId + '-card').classList.remove('active');
+    
+    // Clear highlights
+    clearHighlights();
+    
+    // Show next question
+    setTimeout(() => {
+        document.getElementById(nextId + '-card').classList.add('active');
+    }, 300);
+}
+
+// Show completion message
+function showCompletion(dayId) {
+    // Hide question column content
+    const questionCards = document.querySelectorAll(`#${dayId} .question-card`);
+    questionCards.forEach(card => card.style.display = 'none');
+    
+    // Clear highlights
+    clearHighlights();
+    
+    // Show completion message
+    document.getElementById('completion-message').style.display = 'block';
+    
+    // Hide completion message after 3 seconds
+    setTimeout(() => {
+        document.getElementById('completion-message').style.display = 'none';
+        // Reset to first question
+        questionCards.forEach(card => card.classList.remove('active'));
+        questionCards[0].classList.add('active');
+        questionCards.forEach(card => card.style.display = '');
+        // Reset buttons and feedback
+        resetDay(dayId);
+    }, 3000);
+}
+
+// Reset a day's progress
+function resetDay(dayId) {
+    const dayContent = document.getElementById(dayId);
+    
+    // Reset all buttons
+    dayContent.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('correct', 'incorrect');
+    });
+    
+    // Hide all feedback
+    dayContent.querySelectorAll('.feedback').forEach(feedback => {
+        feedback.classList.remove('show');
+    });
+    
+    // Hide all next buttons
+    dayContent.querySelectorAll('.next-btn').forEach(btn => {
+        btn.style.display = 'none';
+    });
+    
+    // Clear highlights
+    clearHighlights();
+}
+
+// Get explanation for each question
+function getExplanation(questionId) {
+    const explanations = {
+        // Day 1 explanations
+        'd1-q1': `
+            <p><strong>Key Strategy:</strong> When you see "author's purpose," look for the TYPE of writing:</p>
+            <ul>
+                <li>📝 This passage uses <span class="keyword">command verbs</span>: "spread," "make sure," "ask," "do not reach"</li>
+                <li>🎯 These are INSTRUCTIONS telling you what to do</li>
+                <li>💡 When an author gives step-by-step directions, they are trying to <strong>INSTRUCT</strong></li>
+            </ul>
+            <p><strong>Remember:</strong> Instructional writing uses commands and tells you HOW to do something!</p>
+        `,
+        'd1-q2': `
+            <p><strong>Key Strategy:</strong> Opening questions hook the reader!</p>
+            <ul>
+                <li>❓ "Do you want to make a great impression?"</li>
+                <li>🎯 These questions make YOU think about YOUR experiences</li>
+                <li>💡 Authors use questions to help readers <span class="keyword">connect personally</span> to the topic</li>
+            </ul>
+            <p><strong>Remember:</strong> Questions at the beginning make the topic feel relevant to YOU!</p>
+        `,
+        'd1-q3': `
+            <p><strong>Key Strategy:</strong> Find the exact phrase in the passage!</p>
+            <ul>
+                <li>🔍 "Making a good impression" appears at the <span class="keyword">beginning</span> (paragraph 1) and <span class="keyword">end</span> (paragraph 5)</li>
+                <li>🎯 The author uses this to show WHY table manners matter</li>
+                <li>💡 This creates a "frame" - the author starts and ends with the same idea to emphasize importance</li>
+            </ul>
+            <p><strong>Remember:</strong> Authors often put their main point at the beginning AND end!</p>
+        `,
+        'd1-q4': `
+            <p><strong>Key Strategy:</strong> Look at the overall message!</p>
+            <ul>
+                <li>📍 "Happy dining!" shows a <span class="keyword">positive</span> outcome</li>
+                <li>🎯 The whole passage focuses on making meals <span class="keyword">pleasant</span></li>
+                <li>💡 Not extreme claims - just helping everyone enjoy meals</li>
+            </ul>
+            <p><strong>Remember:</strong> The conclusion often reveals the author's main belief!</p>
+        `,
+        
+        // Day 2 explanations
+        'd2-q1': `
+            <p><strong>Key Strategy:</strong> Look at the overall tone!</p>
+            <ul>
+                <li>✨ "Running is a <span class="keyword">great</span> form of exercise"</li>
+                <li>🎯 Lists many benefits: physical AND mental health</li>
+                <li>💡 The author sees running as improving your whole life, not just one aspect</li>
+            </ul>
+            <p><strong>Remember:</strong> Words like "great" show positive opinions!</p>
+        `,
+        'd2-q2': `
+            <p><strong>Key Strategy:</strong> Look for opinion words and calls to action!</p>
+            <ul>
+                <li>💪 Strong opinion: "I have a one-word answer: <span class="keyword">running!</span>" (with exclamation!)</li>
+                <li>📣 Call to action at the end: "<span class="keyword">So grab</span> a pair of running shoes and <span class="keyword">start</span> your new life!"</li>
+                <li>🎯 The author gives reasons why running is BETTER than other exercises</li>
+            </ul>
+            <p><strong>Remember:</strong> Persuasive writing tries to convince you to DO something!</p>
+        `,
+        'd2-q3': `
+            <p><strong>Key Strategy:</strong> "Strongest support" means MOST evidence!</p>
+            <ul>
+                <li>❤️ Heart benefits (cardiovascular health)</li>
+                <li>🦴 Bone benefits (bone density)</li>
+                <li>🧠 Mental health benefits (runner's high, helps depression)</li>
+                <li>🎯 This answer gives THREE different types of benefits = strongest!</li>
+            </ul>
+            <p><strong>Remember:</strong> Count the benefits! More benefits = stronger support!</p>
+        `,
+        'd2-q4': `
+            <p><strong>Key Strategy:</strong> Find the comparison in the passage!</p>
+            <ul>
+                <li>🏊 "swimming <span class="keyword">requires a pool</span>"</li>
+                <li>🚴 "biking <span class="keyword">requires a bicycle and a helmet</span>"</li>
+                <li>🏃 Running only needs basic shoes = no extra equipment or facilities!</li>
+            </ul>
+            <p><strong>Remember:</strong> Comparisons often appear in "but" or "however" sentences!</p>
+        `,
+        
+        // Day 3 explanations
+        'd3-q1': `
+            <p><strong>Key Strategy:</strong> Evidence comes AFTER the claim!</p>
+            <ul>
+                <li>📍 Claim: "they were also <span class="keyword">fierce fighters</span>"</li>
+                <li>🎯 Evidence immediately follows: "whalers saw a giant squid and sperm whale <span class="keyword">fight</span>"</li>
+                <li>💀 More evidence: "giant squid <span class="keyword">attack and drown</span> a baby whale"</li>
+            </ul>
+            <p><strong>Remember:</strong> Authors usually put evidence right after making a claim!</p>
+        `,
+        'd3-q2': `
+            <p><strong>Key Strategy:</strong> Look at what changed their minds!</p>
+            <ul>
+                <li>❌ Just a tail wasn't enough proof</li>
+                <li>✅ "giant squid <span class="keyword">bodies</span> washed up on shore"</li>
+                <li>🎯 Scientists needed complete bodies, not just parts</li>
+            </ul>
+            <p><strong>Remember:</strong> Scientists require complete evidence!</p>
+        `,
+        'd3-q3': `
+            <p><strong>Key Strategy:</strong> Identify the type of information!</p>
+            <ul>
+                <li>📅 Specific dates: "1861," "1965," "2004"</li>
+                <li>📏 Specific measurements: "60 feet," "600 and 2,300 feet"</li>
+                <li>👤 Named people: "Tsunemi Kubodera"</li>
+                <li>🎯 These are FACTS, not opinions or beliefs</li>
+            </ul>
+            <p><strong>Remember:</strong> Dates, numbers, and names = factual information!</p>
+        `,
+        'd3-q4': `
+            <p><strong>Key Strategy:</strong> Match each answer to specific text!</p>
+            <ul>
+                <li>❌ No mention of danger to humans</li>
+                <li>❌ No mention of being endangered</li>
+                <li>✅ Text says: "Scientists <span class="keyword">could not study</span> the squids... because they live <span class="keyword">so deep</span>"</li>
+                <li>❌ The passage proves they DO exist</li>
+            </ul>
+            <p><strong>Remember:</strong> The correct answer must have DIRECT evidence in the passage!</p>
+        `,
+        
+        // Day 4 explanations
+        'd4-q1': `
+            <p><strong>Key Strategy:</strong> DEC's position = NO cougars!</p>
+            <ul>
+                <li>📍 "<span class="keyword">no confirmed sightings</span> of wild cougars in New York for over 100 years"</li>
+                <li>🎯 "DEC officials insist they need hard evidence: the <span class="keyword">body</span> of a wild cougar"</li>
+                <li>💡 Lack of physical proof supports their claim</li>
+            </ul>
+            <p><strong>Remember:</strong> "Lack of" = absence of something!</p>
+        `,
+        'd4-q2': `
+            <p><strong>Key Strategy:</strong> Find what people believe!</p>
+            <ul>
+                <li>👥 "<span class="keyword">Dozens of people claim</span> to have sighted"</li>
+                <li>🎯 These are eyewitness claims</li>
+                <li>💡 People believe because of what they've seen</li>
+            </ul>
+            <p><strong>Remember:</strong> "Claims from eyewitnesses" = what people say they saw!</p>
+        `,
+        'd4-q3': `
+            <p><strong>Key Strategy:</strong> Multiple witnesses = strong evidence!</p>
+            <ul>
+                <li>👥 "<span class="keyword">Dozens of people</span> claim to have sighted"</li>
+                <li>📍 Reports from "<span class="keyword">Hudson Valley, northern New York, and western part</span>" (multiple locations)</li>
+                <li>🎯 "unlikely that <span class="keyword">so many people</span> could be wrong"</li>
+            </ul>
+            <p><strong>Remember:</strong> Many independent witnesses from different places = very strong evidence!</p>
+        `,
+        'd4-q4': `
+            <p><strong>Key Strategy:</strong> Find DEC's response to photos!</p>
+            <ul>
+                <li>📸 People took photos of what they saw</li>
+                <li>❌ DEC says photos are of "<span class="keyword">bobcats, dogs, large cats, or coyotes</span>"</li>
+                <li>🎯 This means photos weren't clear enough to prove they were cougars</li>
+            </ul>
+            <p><strong>Remember:</strong> If photos could be of other animals, they're not clear proof!</p>
+        `
+    };
+    
+    return explanations[questionId] || 'Great job finding the answer!';
+}
+
+      /* ======================
+           🔧 CUSTOMIZATION QUICK REFERENCE
+           ====================== 
+           
+           🎨 VISUAL CUSTOMIZATION:
+           - Colors: Search for color codes like #d4af37, #f4e4bc, #b8860b
+           - Fonts: Change 'Cinzel' and 'Uncial Antiqua' to your preferred fonts
+           - Animations: Adjust timing in @keyframes sections
+           - Spacing: Modify padding, margin, and gap values
+           
+           📱 LAYOUT CUSTOMIZATION:
+           - Sidebar widths: Change .left-sidebar and .right-sidebar width values
+           - Content grid: Modify grid-template-columns in .books-container and .sections-container
+           - Responsive breakpoints: Adjust @media query pixel values
+           
+           🎯 FUNCTIONALITY CUSTOMIZATION:
+           - Points per click: Change pointsToAdd in addPointsToStudent()
+           - Toast duration: Modify setTimeout in showToast()
+           - Team info: Update teamInfo object with your teams
+           - Swipe sensitivity: Adjust swipeThreshold in handleSwipe()
+           
+           📊 DATA INTEGRATION:
+           - Student data: Stored in localStorage 'conquestTeamData'
+           - Daily tracking: Uses 'dailyStudents' and 'dailyTreasury' keys
+           - Team structure: Expects teams with students arrays
+           
+           🔗 NAVIGATION CUSTOMIZATION:
+           - Add menu items: Insert <a class="nav-item" href="...">Item</a> in left sidebar
+           - Add books: Insert <a class="book" href="..."><div class="book-spine">Title</div></a>
+           - Add sections: Insert <a class="section-card" href="...">Card content</a>
+           
+           💡 QUICK TIPS:
+           - Use "CUSTOMIZE:" comments to find key customization points
+           - Test responsive design on different screen sizes
+           - Backup localStorage data before making changes
+           - Use browser dev tools to test color and spacing changes
+        */
+    </script>
+  </body>
+</html>

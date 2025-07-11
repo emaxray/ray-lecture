@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapters 10-11: The Tuck Cottage & Supper - Tuck Everlasting</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Decorative floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Decorative corner ornaments */
+        .corner-ornament {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .corner-top-left { top: 0; left: 0; }
+        .corner-top-right { top: 0; right: 0; transform: rotate(90deg); }
+        .corner-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+        .corner-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 12px 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .back-button::before {
+            content: '←';
+            font-size: 20px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 90;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-300px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f4e4bc;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 15px 20px;
+            margin: 5px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            color: #f4e4bc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '◆';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #8b2020;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+            border-color: #d4af37;
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Daily Students List */
+        #dailyStudentsList {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .student-item {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 5px;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .student-item:hover {
+            background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            border-color: #d4af37;
+            transform: translateX(-2px);
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border: 1px solid;
+            border-radius: 3px;
+            font-weight: normal;
+            animation: subtleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 0 3px currentColor); 
+            }
+            50% { 
+                filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+            }
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        
+        .points-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 2px solid #8b6914;
+            color: #ffd700;
+            padding: 8px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            font-family: 'Cinzel', serif;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .coin-icon {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(255, 215, 0, 0.4);
+            position: relative;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b4513;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .remove-student {
+            background: rgba(139, 0, 0, 0.4);
+            border: 1px solid #8b0000;
+            color: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-student:hover {
+            background: rgba(139, 0, 0, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border-color: #2e7d32;
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .page-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #b8860b;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            width: 100%;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.8) 0%, rgba(52, 38, 26, 0.8) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .section-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 28px;
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        /* Chapter Summary */
+        .chapter-summary {
+            background: rgba(0,0,0,0.2);
+            border-left: 3px solid #8b6914;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chapter-summary h3 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .chapter-summary ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .chapter-summary li {
+            color: #f4e4bc;
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.8;
+        }
+        
+        .chapter-summary li::before {
+            content: '•';
+            color: #d4af37;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+        }
+        
+        .chapter-summary strong {
+            color: #ffd700;
+        }
+        
+        /* Themes Section */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .theme-card {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-color: #d4af37;
+        }
+        
+        .theme-card h4 {
+            color: #d4af37;
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        /* Theme Modal */
+        .theme-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .theme-modal-content {
+            background: linear-gradient(135deg, #3a2418 0%, #2a1810 100%);
+            margin: 15% auto;
+            padding: 30px;
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .theme-modal-close {
+            color: #f4e4bc;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-modal-close:hover {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        
+        .theme-modal h3 {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .theme-modal p {
+            color: #f4e4bc;
+            line-height: 1.8;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* Foreshadowing */
+        .foreshadowing-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .foreshadowing-list li {
+            background: rgba(139, 32, 32, 0.1);
+            border-left: 3px solid #8b2020;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #f4e4bc;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        .foreshadowing-list li:hover {
+            background: rgba(139, 32, 32, 0.2);
+            transform: translateX(5px);
+        }
+        
+        /* Activities */
+        .activity-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .activity-title {
+            font-size: 22px;
+            color: #d4af37;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .activity-title::before {
+            content: '📚';
+            font-size: 28px;
+        }
+        
+        .instructions {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            font-style: italic;
+        }
+        
+        /* Vocabulary Challenge */
+        .vocab-question {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .vocab-word {
+            font-size: 24px;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .context-quote {
+            color: #b8860b;
+            font-style: italic;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .answer-options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .answer-option {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #f4e4bc;
+        }
+        
+        .answer-option:hover {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+            transform: translateX(5px);
+        }
+        
+        .answer-option.correct {
+            background: rgba(46, 125, 50, 0.3);
+            border-color: #2e7d32;
+        }
+        
+        .answer-option.incorrect {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: #8b0000;
+        }
+        
+        /* Quote Search */
+        .quote-box {
+            background: rgba(139, 32, 32, 0.1);
+            border: 2px solid #8b2020;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quote-box:hover {
+            background: rgba(139, 32, 32, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .quote-text {
+            font-size: 18px;
+            color: #f4e4bc;
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        .quote-details {
+            color: #b8860b;
+            font-size: 14px;
+        }
+        
+        .quote-details strong {
+            color: #d4af37;
+        }
+        
+        .quote-importance {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+            padding: 5px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #d4af37;
+        }
+        
+        /* Quote Modal */
+        .quote-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .quote-modal-content {
+            background: linear-gradient(135deg, #3a2418 0%, #2a1810 100%);
+            margin: 10% auto;
+            padding: 30px;
+            border: 3px solid #8b2020;
+            border-radius: 15px;
+            width: 85%;
+            max-width: 600px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .quote-modal-close {
+            color: #f4e4bc;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quote-modal-close:hover {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        
+        .quote-modal h3 {
+            color: #d4af37;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .quote-modal .modal-quote {
+            font-size: 20px;
+            color: #f4e4bc;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+        
+        .quote-modal .modal-details {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .quote-modal .modal-details p {
+            color: #b8860b;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .quote-modal .modal-details strong {
+            color: #d4af37;
+        }
+        
+        .quote-modal .modal-importance {
+            background: rgba(139, 32, 32, 0.2);
+            border-left: 3px solid #8b2020;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .quote-modal .modal-importance h4 {
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .quote-modal .modal-importance p {
+            color: #f4e4bc;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        /* Preview Section */
+        .preview-box {
+            background: linear-gradient(135deg, rgba(139, 32, 32, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 2px solid #8b2020;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .preview-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+        
+        .preview-questions {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-question {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 5px;
+            color: #f4e4bc;
+            border-left: 3px solid #d4af37;
+        }
+        
+        .key-quote {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-style: italic;
+            color: #f4e4bc;
+            font-size: 16px;
+        }
+        
+        /* Show/Hide Answer Buttons */
+        .toggle-answer {
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-answer:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .answer-key {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(46, 125, 50, 0.2);
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            color: #f4e4bc;
+        }
+        
+        .answer-key.show {
+            display: block;
+        }
+        
+        /* Responsive Design - Optimized for iPad Mini 11 */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin: 0 70px;
+                padding: 30px 15px;
+            }
+            
+            .page-title {
+                font-size: 36px;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .themes-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            
+            .theme-card {
+                padding: 15px;
+            }
+            
+            .theme-card h4 {
+                font-size: 18px;
+            }
+            
+            .vocab-question {
+                padding: 15px;
+            }
+            
+            .vocab-word {
+                font-size: 22px;
+            }
+            
+            .context-quote {
+                font-size: 16px;
+                padding: 12px;
+            }
+            
+            .answer-option {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+            
+            .quote-text {
+                font-size: 16px;
+            }
+            
+            .activity-box {
+                padding: 20px;
+            }
+            
+            .theme-modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+            
+            .quote-modal-content {
+                width: 90%;
+                margin: 8% auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 20px 10px;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-sidebar, .right-sidebar {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/novel/tuck-everlasting/tuck-everlasting.html" class="back-button">Back</a>
+    
+    <!-- Decorative corner ornaments -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">🏠</div>
+    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">💧</div>
+    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">🍽️</div>
+    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">⚙️</div>
+    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">🐴</div>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item active">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="page-title">Chapters 10-11</h1>
+        <p class="subtitle">The Tuck Cottage & Supper and Doubts</p>
+        
+        <!-- Chapter Summary Section -->
+        <div class="content-section">
+            <h2 class="section-title">Chapter Summary</h2>
+            
+            <div class="chapter-summary">
+                <h3>Chapter 10: The Tuck Cottage</h3>
+                <ul>
+                    <li><strong>Winnie</strong> is amazed by the messy, comfortable Tuck home - so different from her orderly life</li>
+                    <li><strong>Mae</strong> proudly shows off their crafts and explains they must move soon</li>
+                    <li><strong>Jesse and Miles</strong> return from swimming, dripping wet and carefree</li>
+                </ul>
+            </div>
+            
+            <div class="chapter-summary">
+                <h3>Chapter 11: Supper and Doubts</h3>
+                <ul>
+                    <li><strong>Winnie's</strong> wonder turns to homesickness during the awkward meal</li>
+                    <li>She remembers the <strong>man in yellow</strong> saw her and feels hope</li>
+                    <li><strong>Tuck</strong> decides he must take Winnie on the pond to explain everything</li>
+                    <li><strong>Miles</strong> discovers their horse is stolen</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Important Themes Section -->
+        <div class="content-section">
+            <h2 class="section-title">Important Themes</h2>
+            
+            <div class="themes-grid">
+                <div class="theme-card" onclick="openThemeModal('order')">
+                    <h4>Order vs. Chaos</h4>
+                </div>
+                
+                <div class="theme-card" onclick="openThemeModal('mortality')">
+                    <h4>Mortality's Effect on Living</h4>
+                </div>
+                
+                <div class="theme-card" onclick="openThemeModal('belonging')">
+                    <h4>Belonging vs. Isolation</h4>
+                </div>
+            </div>
+            
+            <!-- Theme Modals -->
+            <div id="orderModal" class="theme-modal">
+                <div class="theme-modal-content">
+                    <span class="theme-modal-close" onclick="closeThemeModal('order')">&times;</span>
+                    <h3>Order vs. Chaos</h3>
+                    <p>The Foster home represents rigid control while the Tuck home shows carefree disorder</p>
+                </div>
+            </div>
+            
+            <div id="mortalityModal" class="theme-modal">
+                <div class="theme-modal-content">
+                    <span class="theme-modal-close" onclick="closeThemeModal('mortality')">&times;</span>
+                    <h3>Mortality's Effect on Living</h3>
+                    <p>The Tucks' immortality removes urgency from daily tasks</p>
+                </div>
+            </div>
+            
+            <div id="belongingModal" class="theme-modal">
+                <div class="theme-modal-content">
+                    <span class="theme-modal-close" onclick="closeThemeModal('belonging')">&times;</span>
+                    <h3>Belonging vs. Isolation</h3>
+                    <p>Winnie feels the discomfort of being an outsider</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Foreshadowing Section -->
+        <div class="content-section">
+            <h2 class="section-title">Foreshadowing</h2>
+            
+            <ul class="foreshadowing-list">
+                <li>"The pond's got answers" - Tuck will reveal important truths about immortality</li>
+                <li>The man in yellow's appearance suggests future conflict</li>
+                <li>The stolen horse hints at immediate danger</li>
+            </ul>
+        </div>
+        
+        <!-- Activities Section -->
+        <div class="content-section">
+            <h2 class="section-title">Activities</h2>
+            
+            <!-- Vocabulary Challenge -->
+            <div class="activity-box">
+                <h3 class="activity-title">Vocabulary Context Clues Challenge</h3>
+                <p class="instructions">Read each sentence from the novel. Use context clues to select the correct definition.</p>
+                
+                <div class="vocab-question">
+                    <div class="vocab-word">1. indomitable</div>
+                    <div class="context-quote">"The Foster women had made a fortress out of duty. Within it, they were indomitable."</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="checkAnswer(this, false)">a) Easily defeated or discouraged</div>
+                        <div class="answer-option" onclick="checkAnswer(this, true)">b) Impossible to defeat or subdue</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">c) Very messy and disorganized</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">d) Extremely tired and weak</div>
+                    </div>
+                </div>
+                
+                <div class="vocab-question">
+                    <div class="vocab-word">2. perilous</div>
+                    <div class="context-quote">"There was an open cabinet where dishes were stacked in perilous towers without the least regard for their varying dimensions."</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="checkAnswer(this, false)">a) Perfectly organized</div>
+                        <div class="answer-option" onclick="checkAnswer(this, true)">b) Full of danger or risk</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">c) Very colorful</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">d) Extremely tall</div>
+                    </div>
+                </div>
+                
+                <div class="vocab-question">
+                    <div class="vocab-word">3. revolutionary</div>
+                    <div class="context-quote">"And this was followed by another thought, far more revolutionary: 'Maybe they just don't care!'"</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="checkAnswer(this, false)">a) Spinning in circles</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">b) Very old and traditional</div>
+                        <div class="answer-option" onclick="checkAnswer(this, true)">c) Involving or causing complete change</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">d) Extremely boring</div>
+                    </div>
+                </div>
+                
+                <div class="vocab-question">
+                    <div class="vocab-word">4. elation</div>
+                    <div class="context-quote">"And in the silence, given time to think, Winnie felt her elation, and her thoughtless pleasure, wobble and collapse."</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="checkAnswer(this, true)">a) Great happiness and excitement</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">b) Deep sadness and grief</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">c) Extreme anger</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">d) Complete confusion</div>
+                    </div>
+                </div>
+                
+                <div class="vocab-question">
+                    <div class="vocab-word">5. cavernous</div>
+                    <div class="context-quote">"Beyond this was the bedroom... opposite its foot a cavernous oak wardrobe."</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="checkAnswer(this, false)">a) Very small and cramped</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">b) Brightly colored</div>
+                        <div class="answer-option" onclick="checkAnswer(this, true)">c) Like a large cave; vast and hollow</div>
+                        <div class="answer-option" onclick="checkAnswer(this, false)">d) Made of expensive materials</div>
+                    </div>
+                </div>
+                
+                <button class="toggle-answer" onclick="toggleAnswerKey()">Show Answer Key</button>
+                <div class="answer-key" id="answerKey">
+                    <strong>Answer Key:</strong> 1-b, 2-b, 3-c, 4-a, 5-c
+                </div>
+            </div>
+            
+            <!-- Quote Search Game -->
+            <div class="activity-box">
+                <h3 class="activity-title">Quote Search Game</h3>
+                <p class="instructions">Find these two essential quotes - one from each chapter. These are the most important lines that capture the heart of each chapter.</p>
+                
+                <div class="quote-box" onclick="openQuoteModal('quote1')">
+                    <div class="quote-text">"Life's got to be lived, no matter how long or short... We just go along, like everybody else, one day at a time."</div>
+                    <div class="quote-details">
+                        <p><strong>Speaker:</strong> Mae Tuck</p>
+                        <p><strong>Chapter:</strong> 10</p>
+                        <span class="quote-importance">Click to see why it's important</span>
+                    </div>
+                </div>
+                
+                <div class="quote-box" onclick="openQuoteModal('quote2')">
+                    <div class="quote-text">"The pond's got answers. Come along, child. Let's go out on the water."</div>
+                    <div class="quote-details">
+                        <p><strong>Speaker:</strong> Angus Tuck</p>
+                        <p><strong>Chapter:</strong> 11</p>
+                        <span class="quote-importance">Click to see why it's important</span>
+                    </div>
+                </div>
+                
+                <!-- Quote Modals -->
+                <div id="quote1Modal" class="quote-modal">
+                    <div class="quote-modal-content">
+                        <span class="quote-modal-close" onclick="closeQuoteModal('quote1')">&times;</span>
+                        <h3>Essential Quote - Chapter 10</h3>
+                        <div class="modal-quote">"Life's got to be lived, no matter how long or short... We just go along, like everybody else, one day at a time."</div>
+                        <div class="modal-details">
+                            <p><strong>Speaker:</strong> Mae Tuck</p>
+                            <p><strong>Chapter:</strong> 10</p>
+                        </div>
+                        <div class="modal-importance">
+                            <h4>Why This Quote Matters</h4>
+                            <p>This quote reveals the central paradox of the Tucks' immortality - they must pretend to live normally despite being frozen in time. It shows Mae's practical wisdom and highlights the burden of their eternal life.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="quote2Modal" class="quote-modal">
+                    <div class="quote-modal-content">
+                        <span class="quote-modal-close" onclick="closeQuoteModal('quote2')">&times;</span>
+                        <h3>Essential Quote - Chapter 11</h3>
+                        <div class="modal-quote">"The pond's got answers. Come along, child. Let's go out on the water."</div>
+                        <div class="modal-details">
+                            <p><strong>Speaker:</strong> Angus Tuck</p>
+                            <p><strong>Chapter:</strong> 11</p>
+                        </div>
+                        <div class="modal-importance">
+                            <h4>Why This Quote Matters</h4>
+                            <p>This line sets up the crucial philosophical conversation in Chapter 12 and shows Tuck taking responsibility for explaining their situation to Winnie. The pond becomes a symbol of life's flow and the natural cycle that the Tucks have been removed from.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Preview Section -->
+        <div class="content-section">
+            <div class="preview-box">
+                <h2 class="preview-title">Preview of What's Coming Next</h2>
+                <p style="color: #f4e4bc; margin-bottom: 20px;">Tuck will take Winnie out on the pond for a crucial conversation about life, death, and the wheel of existence. This philosophical discussion will be the heart of the novel's message about mortality.</p>
+                
+                <div class="preview-questions">
+                    <div class="preview-question">What "answers" might the pond provide?</div>
+                    <div class="preview-question">How will Tuck convince Winnie to keep their secret?</div>
+                    <div class="preview-question">What does the wheel metaphor mean?</div>
+                </div>
+                
+                <div class="key-quote">
+                    <strong>Key Quote to Remember:</strong><br>
+                    Watch for Tuck's explanation of the "wheel" - it's the most important metaphor in the entire novel!
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConquestStudents();
+            renderDailyStudents();
+        });
+        
+        // Global variables
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+        let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+        
+        // Team colors with glow
+        const teamColors = {
+            'prettyEggplant': '#ba68c8',     // Purple
+            'jiggleBoggle': '#81c784',       // Green
+            'bomi': '#ffd54f',               // Yellow
+            'handsomeJoon': '#ff6b6b',       // Red
+            'pinkie': '#f06292',             // Pink
+            'geniusIrene': '#4fc3f7'         // Blue
+        };
+        
+        // Navigation Functions
+        function goBack() {
+            window.location.href = '/novel/tuck-everlasting/tuck-everlasting.html';
+        }
+        
+        // Sidebar Functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Load students from Conquest
+        function loadConquestStudents() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) return;
+            
+            const teams = JSON.parse(conquestData);
+            const select = document.getElementById('studentSelect');
+            select.innerHTML = '<option value="">Select a scholar...</option>';
+            
+            Object.entries(teams).forEach(([teamKey, team]) => {
+                if (team.students) {
+                    team.students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.name;
+                        option.textContent = `${student.name} (${team.name})`;
+                        option.dataset.teamName = team.name;
+                        option.dataset.teamKey = teamKey;
+                        select.appendChild(option);
+                    });
+                }
+            });
+        }
+        
+        // Add student to daily treasury
+        function addStudentToDaily() {
+            const select = document.getElementById('studentSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!selectedOption || !selectedOption.value) {
+                showToast('Please select a scholar');
+                return;
+            }
+            
+            const studentName = selectedOption.value;
+            
+            if (dailyStudents.includes(studentName)) {
+                showToast('Scholar already in today\'s class');
+                return;
+            }
+            
+            dailyStudents.push(studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            renderDailyStudents();
+            select.value = '';
+            showToast(`${studentName} added to today's class`);
+        }
+        
+        // Remove student from daily treasury
+        function removeStudentFromDaily(studentName) {
+            dailyStudents = dailyStudents.filter(name => name !== studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            delete dailyTreasury[studentName];
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            
+            renderDailyStudents();
+            showToast(`${studentName} removed from today's class`);
+        }
+        
+        // Render daily students list
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            dailyStudents.forEach(studentName => {
+                const conquestData = localStorage.getItem('conquestTeamData');
+                let team = null;
+                let teamKey = null;
+                
+                if (conquestData) {
+                    const teams = JSON.parse(conquestData);
+                    for (const [key, teamData] of Object.entries(teams)) {
+                        const student = teamData.students?.find(s => s.name === studentName);
+                        if (student) {
+                            team = teamData;
+                            teamKey = key;
+                            break;
+                        }
+                    }
+                }
+                
+                const teamColor = teamColors[teamKey] || '#d4af37';
+                
+                const item = document.createElement('div');
+                item.className = 'student-item';
+                item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${team ? `<span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor}; background: ${teamColor}20;">${team.name}</span>` : ''}
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${dailyTreasury[studentName] || 0}</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Add 10 points when clicking on student
+        function addPointsToStudent(name) {
+            dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            renderDailyStudents();
+            
+            // Visual feedback
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                if (item.querySelector('.student-name').textContent === name) {
+                    item.style.animation = 'pulse 0.3s ease';
+                    const btn = item.querySelector('.points-btn');
+                    if (btn) {
+                        btn.style.animation = 'goldenGlow 0.3s ease';
+                    }
+                    setTimeout(() => {
+                        item.style.animation = '';
+                        if (btn) btn.style.animation = '';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Save to Conquest
+        function saveToConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No Conquest data found! Please set up teams first.');
+                return;
+            }
+            
+            const teams = JSON.parse(conquestData);
+            let totalPointsAdded = 0;
+            
+            // Add points to each student
+            Object.entries(dailyTreasury).forEach(([studentName, points]) => {
+                for (const teamKey in teams) {
+                    const team = teams[teamKey];
+                    const student = team.students?.find(s => s.name === studentName);
+                    if (student) {
+                        student.points = (student.points || 0) + points;
+                        totalPointsAdded += points;
+                        break;
+                    }
+                }
+            });
+            
+            // Save updated conquest data
+            localStorage.setItem('conquestTeamData', JSON.stringify(teams));
+            
+            // Clear daily treasury
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
+            dailyStudents = [];
+            dailyTreasury = {};
+            
+            renderDailyStudents();
+            showToast(`Treasury saved! ${totalPointsAdded} gold coins transferred to Conquest.`);
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Vocabulary Challenge Functions
+        function checkAnswer(element, isCorrect) {
+            // Remove any existing classes
+            const options = element.parentElement.querySelectorAll('.answer-option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+                opt.onclick = null;
+            });
+            
+            // Add appropriate class
+            if (isCorrect) {
+                element.classList.add('correct');
+                showToast('Correct! Well done!');
+            } else {
+                element.classList.add('incorrect');
+                showToast('Try again!');
+            }
+        }
+        
+        // Toggle Answer Key
+        function toggleAnswerKey() {
+            const answerKey = document.getElementById('answerKey');
+            answerKey.classList.toggle('show');
+        }
+        
+        // Theme Modal Functions
+        function openThemeModal(theme) {
+            document.getElementById(theme + 'Modal').style.display = 'block';
+        }
+        
+        function closeThemeModal(theme) {
+            document.getElementById(theme + 'Modal').style.display = 'none';
+        }
+        
+        // Quote Modal Functions
+        function openQuoteModal(quote) {
+            document.getElementById(quote + 'Modal').style.display = 'block';
+        }
+        
+        function closeQuoteModal(quote) {
+            document.getElementById(quote + 'Modal').style.display = 'none';
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('theme-modal')) {
+                event.target.style.display = 'none';
+            }
+            if (event.target.classList.contains('quote-modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

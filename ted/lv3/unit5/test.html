@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TED Level 3 - Unit 5 Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a0f0a;
+            min-height: 100vh;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 32, 32, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(184, 134, 11, 0.2) 0%, transparent 50%);
+            color: #f4e4bc;
+            overflow-x: hidden;
+        }
+        
+        /* Ancient particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 20s infinite;
+            font-size: 24px;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Corner ornaments */
+        .corner-ornament {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
+            z-index: 1;
+        }
+        
+        .corner-top-left { top: 0; left: 0; }
+        .corner-top-right { top: 0; right: 0; transform: rotate(90deg); }
+        .corner-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
+        .corner-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 12px 24px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .back-button::before {
+            content: '←';
+            font-size: 20px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 90;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-300px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #f4e4bc;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 15px 20px;
+            margin: 5px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            color: #f4e4bc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '◆';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #8b2020;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+            border-color: #d4af37;
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Daily Students List */
+        #dailyStudentsList {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .student-item {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 5px;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .student-item:hover {
+            background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            border-color: #d4af37;
+            transform: translateX(-2px);
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border: 1px solid;
+            border-radius: 3px;
+            font-weight: normal;
+            animation: subtleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 0 3px currentColor); 
+            }
+            50% { 
+                filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+            }
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        
+        .points-btn {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 2px solid #8b6914;
+            color: #ffd700;
+            padding: 8px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            font-family: 'Cinzel', serif;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .coin-icon {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(255, 215, 0, 0.4);
+            position: relative;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b4513;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .remove-student {
+            background: rgba(139, 0, 0, 0.4);
+            border: 1px solid #8b0000;
+            color: #ff6b6b;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-student:hover {
+            background: rgba(139, 0, 0, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+        
+        /* Sidebar Buttons */
+        .sidebar-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border-color: #2e7d32;
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
+            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        /* Test Container */
+        .test-container {
+            background: linear-gradient(135deg, #3a2418 0%, #2a1810 50%, #4a3428 100%);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Timer Section */
+        .timer-section {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timer-display {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 72px;
+            color: #d4af37;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 30px;
+            animation: timerGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes timerGlow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.6); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 40px rgba(212, 175, 55, 0.8), 0 0 50px rgba(139, 32, 32, 0.4); }
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .timer-button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            font-family: 'Cinzel', serif;
+        }
+        
+        .timer-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+        }
+        
+        .timer-button:active {
+            transform: translateY(0);
+        }
+        
+        .timer-button.stop {
+            background: linear-gradient(135deg, #8b2020 0%, #6b1818 100%);
+            box-shadow: 0 5px 20px rgba(139, 32, 32, 0.4);
+        }
+        
+        .timer-button.stop:hover {
+            box-shadow: 0 8px 30px rgba(139, 32, 32, 0.6);
+        }
+        
+        .timer-button.reset {
+            background: linear-gradient(135deg, #50c878 0%, #3cb371 100%);
+            box-shadow: 0 5px 20px rgba(80, 200, 120, 0.4);
+        }
+        
+        .timer-button.reset:hover {
+            box-shadow: 0 8px 30px rgba(80, 200, 120, 0.6);
+        }
+        
+        /* Audio Section */
+        .audio-section {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 28px;
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .section-title::before,
+        .section-title::after {
+            content: '◆';
+            color: #8b2020;
+            font-size: 24px;
+        }
+        
+        .audio-player {
+            background: rgba(26, 15, 10, 0.5);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .audio-player audio {
+            width: 100%;
+            max-width: 600px;
+            height: 50px;
+        }
+        
+        /* Custom audio controls styling */
+        audio::-webkit-media-controls-panel {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
+            color: #f4e4bc;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/ted/lv3/ted-lv3.html" class="back-button">Back to Level 3</a>
+    
+    <!-- Decorative corner ornaments -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
+    <div class="particle" style="left: 30%; animation-delay: 3s; color: #8b2020;">◆</div>
+    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
+    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
+    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item active">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="page-title">TED Level 3 - Unit 5 Test</h1>
+        <p class="subtitle">Listening & Comprehension Assessment</p>
+        
+        <div class="test-container">
+            <!-- Timer Section -->
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">3:00</div>
+                <div class="timer-controls">
+                    <button class="timer-button" onclick="startTimer()">Start</button>
+                    <button class="timer-button stop" onclick="stopTimer()">Stop</button>
+                    <button class="timer-button reset" onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+            
+            <!-- Audio Section -->
+            <div class="audio-section">
+                <h2 class="section-title">Audio Track</h2>
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="/ted/lv3/unit5/ted-lv3-u5.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Timer Variables
+        let timerInterval;
+        let totalSeconds = 180; // 3 minutes
+        let isRunning = false;
+        
+        // Timer Functions
+        function updateTimerDisplay() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+        }
+        
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(() => {
+                    if (totalSeconds > 0) {
+                        totalSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        stopTimer();
+                        playBeep();
+                        showToast('Time is up!');
+                    }
+                }, 1000);
+            }
+        }
+        
+        function stopTimer() {
+            isRunning = false;
+            clearInterval(timerInterval);
+        }
+        
+        function resetTimer() {
+            stopTimer();
+            totalSeconds = 180;
+            updateTimerDisplay();
+        }
+        
+        function playBeep() {
+            // Create audio context
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create oscillator for beep sound
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            // Connect nodes
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Set frequency and type
+            oscillator.frequency.value = 800; // Frequency in Hz
+            oscillator.type = 'sine';
+            
+            // Set volume
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            // Play the beep
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            
+            // Also try HTML5 audio as fallback
+            try {
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBi2Gy+7diDUHGGS47OmxdCELVrLk5KpTEQxSq+LoqGIUDE+m5OadaBgOUajb1Z5rGQ1Nr+Hgq3kgDECY3OC1ky4LC3Em0vu8rFwUCzU0bKHO8tKqWBULQJze6KZlGAhJsO7qqVALDle/8OSTWxAOXbnp46ddGgxVq+DjqGUXDVGu4OKePBMOUa3f3JNuIAxWfKHJ3rN9VxQKNl6PsL7AxLOJVhcJPz6HvNCwsIFRAj12quTnqGwfCDV7pNXUlHEfDFCo3NWbaxsLVKfj4qhgGQ1Qq97epmggCku43OGsfR8IJ12Xt7/AzKNrJQUvgtPwx3stBCuC1/PNeDEFL4fW8syEOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZl+Lv0LSDOwg9ndLy3KFvJwM6htDwx4IyBzqI0/DOdysFPY7P8syMOwcZ');
+                audio.volume = 0.3;
+                audio.play();
+            } catch (e) {
+                console.log('Audio fallback failed:', e);
+            }
+        }
+        
+        // Global variables
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+        let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+        
+        // Team colors with glow - matching template exactly
+        const teamColors = {
+            'prettyEggplant': '#ba68c8',     // Purple
+            'jiggleBoggle': '#81c784',       // Green
+            'bomi': '#ffd54f',               // Yellow
+            'handsomeJoon': '#ff6b6b',       // Red
+            'pinkie': '#f06292',             // Pink
+            'geniusIrene': '#4fc3f7'         // Blue
+        };
+        
+        // Sidebar Functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            overlay.classList.toggle('active');
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Load students from Conquest
+        function loadConquestStudents() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) return;
+            
+            const teams = JSON.parse(conquestData);
+            const select = document.getElementById('studentSelect');
+            select.innerHTML = '<option value="">Select a scholar...</option>';
+            
+            Object.entries(teams).forEach(([teamKey, team]) => {
+                if (team.students) {
+                    team.students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.name;
+                        option.textContent = `${student.name} (${team.name})`;
+                        option.dataset.teamName = team.name;
+                        option.dataset.teamKey = teamKey;
+                        select.appendChild(option);
+                    });
+                }
+            });
+        }
+        
+        // Add student to daily treasury
+        function addStudentToDaily() {
+            const select = document.getElementById('studentSelect');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (!selectedOption || !selectedOption.value) {
+                showToast('Please select a scholar');
+                return;
+            }
+            
+            const studentName = selectedOption.value;
+            
+            if (dailyStudents.includes(studentName)) {
+                showToast('Scholar already in today\'s class');
+                return;
+            }
+            
+            dailyStudents.push(studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            renderDailyStudents();
+            select.value = '';
+            showToast(`${studentName} added to today's class`);
+        }
+        
+        // Remove student from daily treasury
+        function removeStudentFromDaily(studentName) {
+            dailyStudents = dailyStudents.filter(name => name !== studentName);
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            
+            delete dailyTreasury[studentName];
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            
+            renderDailyStudents();
+            showToast(`${studentName} removed from today's class`);
+        }
+        
+        // Render daily students list
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            dailyStudents.forEach(studentName => {
+                const conquestData = localStorage.getItem('conquestTeamData');
+                let team = null;
+                let teamKey = null;
+                
+                if (conquestData) {
+                    const teams = JSON.parse(conquestData);
+                    for (const [key, teamData] of Object.entries(teams)) {
+                        const student = teamData.students?.find(s => s.name === studentName);
+                        if (student) {
+                            team = teamData;
+                            teamKey = key;
+                            break;
+                        }
+                    }
+                }
+                
+                const teamColor = teamColors[teamKey] || '#d4af37';
+                
+                const item = document.createElement('div');
+                item.className = 'student-item';
+                item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${team ? `<span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor}; background: ${teamColor}20;">${team.name}</span>` : ''}
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${dailyTreasury[studentName] || 0}</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Add 10 points when clicking on student
+        function addPointsToStudent(name) {
+            dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            renderDailyStudents();
+            
+            // Visual feedback
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                if (item.querySelector('.student-name').textContent === name) {
+                    item.style.animation = 'pulse 0.3s ease';
+                    const btn = item.querySelector('.points-btn');
+                    if (btn) {
+                        btn.style.animation = 'goldenGlow 0.3s ease';
+                    }
+                    setTimeout(() => {
+                        item.style.animation = '';
+                        if (btn) btn.style.animation = '';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Save to Conquest
+        function saveToConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No Conquest data found! Please set up teams first.');
+                return;
+            }
+            
+            const teams = JSON.parse(conquestData);
+            let totalPointsAdded = 0;
+            
+            // Add points to each student
+            Object.entries(dailyTreasury).forEach(([studentName, points]) => {
+                for (const teamKey in teams) {
+                    const team = teams[teamKey];
+                    const student = team.students?.find(s => s.name === studentName);
+                    if (student) {
+                        student.points = (student.points || 0) + points;
+                        totalPointsAdded += points;
+                        break;
+                    }
+                }
+            });
+            
+            // Save updated conquest data
+            localStorage.setItem('conquestTeamData', JSON.stringify(teams));
+            
+            // Clear daily treasury
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
+            dailyStudents = [];
+            dailyTreasury = {};
+            
+            renderDailyStudents();
+            showToast(`Treasury saved! ${totalPointsAdded} gold coins transferred to Conquest.`);
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConquestStudents();
+            renderDailyStudents();
+            updateTimerDisplay();
+        });
+        
+        // Animation Keyframes
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            
+            @keyframes goldenGlow {
+                0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+                50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
+                100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>

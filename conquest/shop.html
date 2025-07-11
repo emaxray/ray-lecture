@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant's Shop - Conquest of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Candlelight effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Team Selector */
+        .team-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
+        .team-select {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        
+        .team-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+        }
+        
+        .treasury-display {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 2px solid #ffd700;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 120px 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .shop-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+        }
+        
+        /* Shop Categories */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .category-btn.active {
+            background: rgba(212, 175, 55, 0.5);
+            border-color: #f4e4bc;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Shop Items Grid */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .shop-item {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shop-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+        }
+        
+        .item-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+        }
+        
+        .item-name {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            color: #f4e4bc;
+            margin-bottom: 10px;
+        }
+        
+        .item-description {
+            text-align: center;
+            color: #b8860b;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .item-price {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        
+        /* Quantity Controls */
+        .quantity-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .quantity-input {
+            width: 60px;
+            padding: 8px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 10px;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+        }
+        
+        .total-price {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            color: #b8860b;
+            margin-bottom: 15px;
+        }
+        
+        .total-price-value {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: none;
+            border-radius: 25px;
+            color: #1a0f0a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .buy-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .buy-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        /* Category Content */
+        .category-content {
+            display: none;
+        }
+        
+        .category-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast.error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #d32f2f 100%);
+            color: #fff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .shop-title {
+                font-size: 32px;
+            }
+            
+            .team-selector {
+                position: static;
+                margin: 20px auto;
+                align-items: center;
+            }
+            
+            .main-content {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/conquest/conquest-of-rayhaven.html" class="back-button">
+        <span>←</span> Back to Conquest
+    </a>
+    
+    <!-- Team Selector -->
+    <div class="team-selector">
+        <select class="team-select" id="teamSelect" onchange="selectTeam()">
+            <option value="">Select Your Team</option>
+            <option value="jiggleBoggle">Jiggle Boggle</option>
+            <option value="pinkie">Pinkie</option>
+            <option value="handsomeJoon">Handsome Joon</option>
+            <option value="bomi">Bomi</option>
+            <option value="geniusIrene">Genius Irene</option>
+            <option value="prettyEggplant">Pretty Eggplant</option>
+        </select>
+        <div class="treasury-display" id="treasuryDisplay" style="display: none;">
+            Available Gold: <span id="goldAmount">0</span>
+            <span class="coin-icon"></span>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="shop-title">The Merchant's Emporium</h1>
+        <p class="subtitle">Exchange thy gold for wondrous treasures!</p>
+        
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-btn active" onclick="switchCategory('utility')">🛠️ Stratagems</button>
+            <button class="category-btn" onclick="switchCategory('attack')">⚔️ Weapons of War</button>
+            <button class="category-btn" onclick="switchCategory('defense')">🛡️ Fortifications</button>
+            <button class="category-btn" onclick="switchCategory('miracle')">⚡ Divine Powers</button>
+        </div>
+        
+        <!-- Utility Category -->
+        <div id="utility" class="category-content active">
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-icon">🌉</div>
+                    <h3 class="item-name">Stone Bridge</h3>
+                    <p class="item-description">Ancient masonry spans the waters<br>Cross rivers and lakes with ease</p>
+                    <div class="item-price">
+                        500 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">500</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Stone Bridge', 500, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🐴</div>
+                    <h3 class="item-name">War Steeds</h3>
+                    <p class="item-description">Swift destriers from the northern plains<br>Travel to adjacent territories</p>
+                    <div class="item-price">
+                        500 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">500</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'War Steeds', 500, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🌀</div>
+                    <h3 class="item-name">Mystic Portal</h3>
+                    <p class="item-description">Arcane gateway of the ancients<br>Unlock portal transportation</p>
+                    <div class="item-price">
+                        1000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">1000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Mystic Portal', 1000, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🚚</div>
+                    <h3 class="item-name">Merchant Caravan</h3>
+                    <p class="item-description">Well-guarded supply train<br>Claim two territories instead of one</p>
+                    <div class="item-price">
+                        1000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">1000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Merchant Caravan', 1000, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">⛵</div>
+                    <h3 class="item-name">War Galley</h3>
+                    <p class="item-description">Master the seas with oaken might<br>Sail freely upon the waters (dice roll)</p>
+                    <div class="item-price">
+                        2000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">2000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'War Galley', 2000, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">📋</div>
+                    <h3 class="item-name">Decree of Sanctuary</h3>
+                    <p class="item-description">Royal edict of safe haven<br>Recruit one Human Shield to thy cause</p>
+                    <div class="item-price">
+                        2000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">2000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Decree of Sanctuary', 2000, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">⛓️</div>
+                    <h3 class="item-name">Chains of Conscription</h3>
+                    <p class="item-description">Bind captured foes to thy banner<br>Convert one enemy Peasant Soldier</p>
+                    <div class="item-price">
+                        3000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">3000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Chains of Conscription', 3000, 'utility')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">💰</div>
+                    <h3 class="item-name">Purse of Treachery</h3>
+                    <p class="item-description">Gold corrupts even loyal hearts<br>Turn one Tier 2-3 warrior to thy side</p>
+                    <div class="item-price">
+                        5000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">5000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Purse of Treachery', 5000, 'utility')">Purchase</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Attack Category -->
+        <div id="attack" class="category-content">
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-icon">⚔️</div>
+                    <h3 class="item-name">Baron's Armory</h3>
+                    <p class="item-description">Fine steel for thy warriors<br>+5 Attack to one territory</p>
+                    <div class="item-price">
+                        500 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">500</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Baron\'s Armory', 500, 'attack')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🐎</div>
+                    <h3 class="item-name">Knight's Cavalry</h3>
+                    <p class="item-description">Thunder of hooves, clash of steel<br>+10 Attack to one territory</p>
+                    <div class="item-price">
+                        1000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">1000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Knight\'s Cavalry', 1000, 'attack')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🏹</div>
+                    <h3 class="item-name">Engines of War</h3>
+                    <p class="item-description">Catapults and trebuchets of doom<br>+20 Attack to one territory</p>
+                    <div class="item-price">
+                        5000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">5000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Engines of War', 5000, 'attack')">Purchase</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Defense Category -->
+        <div id="defense" class="category-content">
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-icon">🛡️</div>
+                    <h3 class="item-name">Stalwart Garrison</h3>
+                    <p class="item-description">Loyal defenders of the realm<br>+5 Defense to one territory</p>
+                    <div class="item-price">
+                        100 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">100</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Stalwart Garrison', 100, 'defense')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🏰</div>
+                    <h3 class="item-name">Stone Ramparts</h3>
+                    <p class="item-description">Mighty walls of granite and mortar<br>+10 Defense per wall (6 max per land)</p>
+                    <div class="item-price">
+                        50 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">50</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Stone Ramparts', 50, 'defense')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🎯</div>
+                    <h3 class="item-name">Dwarven Ballista</h3>
+                    <p class="item-description">Precision-crafted siege defense<br>+20 Defense to one territory</p>
+                    <div class="item-price">
+                        3000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">3000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Dwarven Ballista', 3000, 'defense')">Purchase</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- God's Miracle Category -->
+        <div id="miracle" class="category-content">
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-icon">👹</div>
+                    <h3 class="item-name">Summon Fell Beasts</h3>
+                    <p class="item-description">Release vocabulary and grammar demons<br>Plague thy enemies with confusion</p>
+                    <div class="item-price">
+                        1000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">1000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Summon Fell Beasts', 1000, 'miracle')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">🌋</div>
+                    <h3 class="item-name">Wrath of the Earth</h3>
+                    <p class="item-description">The ground trembles and splits asunder<br>Obliterate one enemy territory</p>
+                    <div class="item-price">
+                        5000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">5000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Wrath of the Earth', 5000, 'miracle')">Purchase</button>
+                </div>
+                
+                <div class="shop-item">
+                    <div class="item-icon">⚡</div>
+                    <h3 class="item-name">Divine Apocalypse</h3>
+                    <p class="item-description">The heavens rain fire and brimstone<br>Annihilate all lands of one realm</p>
+                    <div class="item-price">
+                        1000000 <span class="coin-icon"></span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(this, -1)">-</button>
+                        <input type="number" class="quantity-input" value="1" min="1" max="99" onchange="updateTotal(this)">
+                        <button class="quantity-btn" onclick="updateQuantity(this, 1)">+</button>
+                    </div>
+                    <div class="total-price">
+                        Total: <span class="total-price-value">1000000</span> <span class="coin-icon"></span>
+                    </div>
+                    <button class="buy-btn" onclick="purchaseItems(this, 'Divine Apocalypse', 1000000, 'miracle')">Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        let currentTeam = null;
+        let conquestAPI = null;
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to get the conquest API from parent window
+            if (window.parent && window.parent.conquestShopAPI) {
+                conquestAPI = window.parent.conquestShopAPI;
+            }
+            
+            // Update buttons state
+            updatePurchaseButtons();
+        });
+        
+        // Select team
+        function selectTeam() {
+            const select = document.getElementById('teamSelect');
+            currentTeam = select.value;
+            
+            if (currentTeam) {
+                updateTreasuryDisplay();
+                document.getElementById('treasuryDisplay').style.display = 'flex';
+                updatePurchaseButtons();
+            } else {
+                document.getElementById('treasuryDisplay').style.display = 'none';
+                updatePurchaseButtons();
+            }
+        }
+        
+        // Update treasury display
+        function updateTreasuryDisplay() {
+            if (!currentTeam) return;
+            
+            // Get team data from localStorage
+            const teamData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+            
+            if (teamData[currentTeam]) {
+                const team = teamData[currentTeam];
+                const totalPoints = team.students.reduce((sum, student) => sum + student.points, 0);
+                const goldSpent = team.goldSpent || 0;
+                const availableGold = totalPoints - goldSpent;
+                
+                document.getElementById('goldAmount').textContent = availableGold;
+            } else {
+                document.getElementById('goldAmount').textContent = '0';
+            }
+        }
+        
+        // Switch category
+        function switchCategory(category) {
+            // Update buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.category-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(category).classList.add('active');
+        }
+        
+        // Purchase item
+        function purchaseItem(itemName, price, category) {
+            if (!currentTeam) {
+                showToast('Please select a team first!', true);
+                return;
+            }
+            
+            // Get current team data
+            const teamData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+            
+            if (!teamData[currentTeam]) {
+                showToast('Team data not found!', true);
+                return;
+            }
+            
+            const team = teamData[currentTeam];
+            const totalPoints = team.students.reduce((sum, student) => sum + student.points, 0);
+            const goldSpent = team.goldSpent || 0;
+            const availableGold = totalPoints - goldSpent;
+            
+            // Check if team has enough gold
+            if (availableGold < price) {
+                showToast('Insufficient gold!', true);
+                return;
+            }
+            
+            // Deduct gold by increasing goldSpent
+            team.goldSpent = goldSpent + price;
+            
+            // Save updated data
+            teamData[currentTeam] = team;
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+            
+            // Update display
+            updateTreasuryDisplay();
+            updatePurchaseButtons();
+            
+            // Show success message
+            showToast(`${itemName} purchased for ${price} gold!`);
+            
+            // Log purchase (you can expand this to track inventory)
+            console.log(`Team ${team.name} purchased ${itemName} for ${price} gold`);
+        }
+        
+        // Purchase multiple items
+        function purchaseItems(button, itemName, unitPrice, category) {
+            const shopItem = button.closest('.shop-item');
+            const quantity = parseInt(shopItem.querySelector('.quantity-input').value) || 1;
+            const totalPrice = unitPrice * quantity;
+            
+            if (!currentTeam) {
+                showToast('Please select a team first!', true);
+                return;
+            }
+            
+            // Get current team data
+            const teamData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+            
+            if (!teamData[currentTeam]) {
+                showToast('Team data not found!', true);
+                return;
+            }
+            
+            const team = teamData[currentTeam];
+            const totalPoints = team.students.reduce((sum, student) => sum + student.points, 0);
+            const goldSpent = team.goldSpent || 0;
+            const availableGold = totalPoints - goldSpent;
+            
+            // Check if team has enough gold
+            if (availableGold < totalPrice) {
+                showToast('Insufficient gold!', true);
+                return;
+            }
+            
+            // Deduct gold by increasing goldSpent
+            team.goldSpent = goldSpent + totalPrice;
+            
+            // Save updated data
+            teamData[currentTeam] = team;
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+            
+            // Update display
+            updateTreasuryDisplay();
+            updatePurchaseButtons();
+            
+            // Reset quantity to 1
+            shopItem.querySelector('.quantity-input').value = 1;
+            updateTotal(shopItem.querySelector('.quantity-input'));
+            
+            // Show success message
+            const itemText = quantity > 1 ? `${quantity} x ${itemName}` : itemName;
+            showToast(`${itemText} purchased for ${totalPrice} gold!`);
+            
+            // Log purchase
+            console.log(`Team ${team.name} purchased ${quantity} x ${itemName} for ${totalPrice} gold`);
+        }
+        
+        // Update quantity
+        function updateQuantity(button, change) {
+            const quantityInput = button.parentElement.querySelector('.quantity-input');
+            let currentValue = parseInt(quantityInput.value) || 1;
+            let newValue = currentValue + change;
+            
+            // Ensure value stays within bounds
+            if (newValue < 1) newValue = 1;
+            if (newValue > 99) newValue = 99;
+            
+            quantityInput.value = newValue;
+            updateTotal(quantityInput);
+        }
+        
+        // Update total price display
+        function updateTotal(input) {
+            const shopItem = input.closest('.shop-item');
+            const unitPriceText = shopItem.querySelector('.item-price').textContent;
+            const unitPrice = parseInt(unitPriceText.match(/\d+/)[0]);
+            const quantity = parseInt(input.value) || 1;
+            const totalPrice = unitPrice * quantity;
+            
+            shopItem.querySelector('.total-price-value').textContent = totalPrice;
+            
+            // Update button state
+            updateSingleButton(shopItem, totalPrice);
+        }
+        
+        // Update single button based on total price
+        function updateSingleButton(shopItem, totalPrice) {
+            if (!currentTeam) return;
+            
+            const button = shopItem.querySelector('.buy-btn');
+            const teamData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+            let availableGold = 0;
+            
+            if (teamData[currentTeam]) {
+                const team = teamData[currentTeam];
+                const totalPoints = team.students.reduce((sum, student) => sum + student.points, 0);
+                const goldSpent = team.goldSpent || 0;
+                availableGold = totalPoints - goldSpent;
+            }
+            
+            if (availableGold >= totalPrice) {
+                button.disabled = false;
+                button.textContent = 'Purchase';
+            } else {
+                button.disabled = true;
+                button.textContent = 'Insufficient Gold';
+            }
+        }
+        
+        // Update purchase buttons based on available gold
+        function updatePurchaseButtons() {
+            const shopItems = document.querySelectorAll('.shop-item');
+            
+            if (!currentTeam) {
+                shopItems.forEach(item => {
+                    const btn = item.querySelector('.buy-btn');
+                    btn.disabled = true;
+                    btn.textContent = 'Select Team';
+                });
+                return;
+            }
+            
+            // Get available gold
+            const teamData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+            let availableGold = 0;
+            
+            if (teamData[currentTeam]) {
+                const team = teamData[currentTeam];
+                const totalPoints = team.students.reduce((sum, student) => sum + student.points, 0);
+                const goldSpent = team.goldSpent || 0;
+                availableGold = totalPoints - goldSpent;
+            }
+            
+            shopItems.forEach(item => {
+                const quantityInput = item.querySelector('.quantity-input');
+                const quantity = parseInt(quantityInput.value) || 1;
+                const unitPriceText = item.querySelector('.item-price').textContent;
+                const unitPrice = parseInt(unitPriceText.match(/\d+/)[0]);
+                const totalPrice = unitPrice * quantity;
+                
+                const btn = item.querySelector('.buy-btn');
+                
+                if (availableGold >= totalPrice) {
+                    btn.disabled = false;
+                    btn.textContent = 'Purchase';
+                } else {
+                    btn.disabled = true;
+                    btn.textContent = 'Insufficient Gold';
+                }
+            });
+        }
+        
+        // Show toast notification
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

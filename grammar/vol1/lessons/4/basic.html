@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: Articles - Basic Homework - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-250px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Overlay for mobile/tablet */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.4);
+            border-color: #f4e4bc;
+        }
+        
+        .sidebar-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            margin: 0 70px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .homework-title {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #b8860b;
+        }
+        
+        /* Set Selection */
+        .set-selection {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .set-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 20px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .set-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .set-btn.active {
+            background: rgba(212, 175, 55, 0.5);
+            border-color: #f4e4bc;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Instructions Box */
+        .instructions-box {
+            background: rgba(139, 105, 20, 0.2);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .instructions-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+        }
+        
+        .instructions-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d4af37;
+        }
+        
+        /* Question Container */
+        .questions-container {
+            display: none;
+        }
+        
+        .questions-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Question Card */
+        .question-card {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-number {
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #f4e4bc;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            margin-left: 80px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #f4e4bc;
+        }
+        
+        /* Show Answer Button */
+        .show-answer-btn {
+            background: rgba(79, 195, 247, 0.3);
+            border: 2px solid #4fc3f7;
+            color: #87ceeb;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-left: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .show-answer-btn:hover {
+            background: rgba(79, 195, 247, 0.5);
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* Answer Box */
+        .answer-box {
+            background: rgba(129, 199, 132, 0.2);
+            border: 2px solid #81c784;
+            border-radius: 10px;
+            padding: 20px;
+            margin-left: 80px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .answer-box.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .answer-text {
+            font-size: 22px;
+            color: #81c784;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* Reasoning Box */
+        .reasoning-box {
+            background: rgba(79, 195, 247, 0.1);
+            border: 2px solid #4fc3f7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-left: 80px;
+            display: none;
+        }
+        
+        .reasoning-box.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .reasoning-title {
+            font-size: 18px;
+            color: #87ceeb;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .reasoning-text {
+            font-size: 16px;
+            color: #f4e4bc;
+            line-height: 1.6;
+        }
+        
+        .rule-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            padding: 2px 10px;
+            font-size: 14px;
+            color: #d4af37;
+            margin-right: 10px;
+        }
+        
+        /* Extra Review Section */
+        .extra-review {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 3px solid #8b6914;
+        }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .review-instructions {
+            background: rgba(186, 104, 200, 0.2);
+            border: 2px solid #ba68c8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .review-instructions p {
+            font-size: 18px;
+            color: #f4e4bc;
+            line-height: 1.6;
+        }
+        
+        /* Summary Homework */
+        .summary-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 3px solid #8b6914;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(180, 140, 40, 0.3) 100%);
+            border: 3px solid #d4af37;
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-requirements {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .requirement-item {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .requirement-number {
+            background: #d4af37;
+            color: #1a0f0a;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .example-sentence {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #8b6914;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-style: italic;
+            color: #b8860b;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 60px 10px 20px;
+            }
+            
+            .homework-title {
+                font-size: 32px;
+            }
+            
+            .set-selection {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .question-text {
+                margin-left: 60px;
+                font-size: 18px;
+            }
+            
+            .answer-box,
+            .reasoning-box {
+                margin-left: 0;
+            }
+        }
+        .student-item {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+            position: relative;
+        }
+        
+        .student-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid;
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .coin-input {
+            width: 80px;
+            padding: 12px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+            min-height: 45px;
+        }
+        
+        .remove-student {
+            background: rgba(139, 20, 20, 0.3);
+            border: 2px solid #8b4514;
+            color: #ff6b6b;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .remove-student:hover {
+            background: rgba(200, 50, 50, 0.4);
+            box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: 2px solid #8b6914;
+            color: #1a0f0a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 60px 10px 20px;
+            }
+            
+            .homework-title {
+                font-size: 32px;
+            }
+            
+            .set-selection {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .question-text {
+                margin-left: 60px;
+                font-size: 18px;
+            }
+            
+            .answer-box,
+            .reasoning-box {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/grammar/vol1/grammar-vol1.html" class="back-button">
+        <span>←</span> Back to Grammar Vol 1
+    </a>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item active">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="homework-title">Lesson 4: Articles - Basic Homework</h1>
+        <p class="subtitle">Master the art of a, an, and the</p>
+        
+        <!-- Instructions Box -->
+        <div class="instructions-box">
+            <h2 class="instructions-title">📜 Instructions</h2>
+            <p class="instructions-text">
+                Complete the homework at home. Answers and reasoning are provided.<br>
+                Be ready to explain your answers verbally in class!<br>
+                Remember: Articles are used with SINGULAR COUNTABLE NOUNS!
+            </p>
+        </div>
+        
+        <!-- Set Selection -->
+        <div class="set-selection">
+            <button class="set-btn" id="oddSetBtn" onclick="showSet('odd')">
+                Odd Numbers<br>
+                <span style="font-size: 14px; color: #b8860b;">(1, 3, 5, 7, 9...)</span>
+            </button>
+            <button class="set-btn" id="evenSetBtn" onclick="showSet('even')">
+                Even Numbers<br>
+                <span style="font-size: 14px; color: #b8860b;">(2, 4, 6, 8, 10...)</span>
+            </button>
+        </div>
+        
+        <!-- Odd Questions Container -->
+        <div id="oddQuestions" class="questions-container">
+            <!-- Question 1 -->
+            <div class="question-card">
+                <div class="question-number">1</div>
+                <p class="question-text">I found _____ book that I once had read.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer1')">Show Answer</button>
+                <div class="answer-box" id="answer1">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ②</span>
+                        "that I once had read" tells us this is a SPECIFIC book - we know which one!<br>
+                        THE = specific/known (like a pronoun)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-card">
+                <div class="question-number">3</div>
+                <p class="question-text">She bought _____ scarf in the department store.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer3')">Show Answer</button>
+                <div class="answer-box" id="answer3">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">First mention</span>
+                        First time mentioning the scarf = unknown/random<br>
+                        A = ONE + RANDOM (we don't know which scarf yet)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-card">
+                <div class="question-number">5</div>
+                <p class="question-text">We have to go straight in _____ west to find a land.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer5')">Show Answer</button>
+                <div class="answer-box" id="answer5">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ①</span>
+                        Directions (north, south, east, west) are UNIQUE - only one west exists!<br>
+                        THE = unique things everyone knows
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question-card">
+                <div class="question-number">7</div>
+                <p class="question-text">The poor _____ to be cared for by our government.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer7')">Show Answer</button>
+                <div class="answer-box" id="answer7">
+                    <p class="answer-text">have</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ⑤</span>
+                        THE + adjective = plural people<br>
+                        "The poor" = poor people (plural) → use HAVE not HAS
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question-card">
+                <div class="question-number">9</div>
+                <p class="question-text">We have _____ same reason to meet him.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer9')">Show Answer</button>
+                <div class="answer-box" id="answer9">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ④</span>
+                        "same" = only one exists<br>
+                        Words like same, only, first, last, best → always use THE
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="question-card">
+                <div class="question-number">11</div>
+                <p class="question-text">_____ my teacher asked me not to be late.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer11')">Show Answer</button>
+                <div class="answer-box" id="answer11">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Possessive Rule</span>
+                        "my" is a possessive → NO article before possessives<br>
+                        Never: "the my" or "a my" - it's just "my teacher"
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="question-card">
+                <div class="question-number">13</div>
+                <p class="question-text">We can discuss the issue before _____ dinner.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer13')">Show Answer</button>
+                <div class="answer-box" id="answer13">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Lazy Rule ②</span>
+                        Meals (breakfast, lunch, dinner) → NO article<br>
+                        People are lazy with daily meals!
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question-card">
+                <div class="question-number">15</div>
+                <p class="question-text">We have to go there by _____ taxi in order to be on time.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer15')">Show Answer</button>
+                <div class="answer-box" id="answer15">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Transportation Rule</span>
+                        BY + transportation → NO article<br>
+                        by taxi, by bus, by car (but: in a taxi, on the bus)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 17 -->
+            <div class="question-card">
+                <div class="question-number">17</div>
+                <p class="question-text">I'm so full with _____ heavy breakfast.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer17')">Show Answer</button>
+                <div class="answer-box" id="answer17">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Modified Meal</span>
+                        "heavy" modifies "breakfast" → lazy rule DOESN'T apply<br>
+                        With adjectives: a heavy breakfast, a delicious lunch
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 19 -->
+            <div class="question-card">
+                <div class="question-number">19</div>
+                <p class="question-text">I will go to a world trip with _____ bicycle.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer19')">Show Answer</button>
+                <div class="answer-box" id="answer19">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Preposition Difference</span>
+                        WITH bicycle (not BY) → need article<br>
+                        A = one random bicycle
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 21 -->
+            <div class="question-card">
+                <div class="question-number">21</div>
+                <p class="question-text">There is _____ American cultural center in my town.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer21')">Show Answer</button>
+                <div class="answer-box" id="answer21">
+                    <p class="answer-text">an</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">A vs AN</span>
+                        American = 어메리칸 (starts with vowel sound)<br>
+                        Use AN before vowel sounds
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 23 -->
+            <div class="question-card">
+                <div class="question-number">23</div>
+                <p class="question-text">Tony was chosen to be _____ MVP by newspaper reporters.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer23')">Show Answer</button>
+                <div class="answer-box" id="answer23">
+                    <p class="answer-text">an</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Pronunciation Rule</span>
+                        MVP = "em-vee-pee" (starts with 엠)<br>
+                        Vowel sound → use AN
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 25 -->
+            <div class="question-card">
+                <div class="question-number">25</div>
+                <p class="question-text">Tony was chosen to be _____ most valuable player by newspaper reporters.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer25')">Show Answer</button>
+                <div class="answer-box" id="answer25">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ④</span>
+                        "most" = superlative → always use THE<br>
+                        the best, the worst, the most valuable
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 27 -->
+            <div class="question-card">
+                <div class="question-number">27</div>
+                <p class="question-text">This is _____ news to me.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer27')">Show Answer</button>
+                <div class="answer-box" id="answer27">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Uncountable</span>
+                        "news" is UNCOUNTABLE (no singular/plural)<br>
+                        Articles only with SINGULAR COUNTABLE nouns
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 29 -->
+            <div class="question-card">
+                <div class="question-number">29</div>
+                <p class="question-text">_____ Ms. Park called you this morning.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer29')">Show Answer</button>
+                <div class="answer-box" id="answer29">
+                    <p class="answer-text">A</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ③</span>
+                        A + name = "어떤" (some/unknown person)<br>
+                        "A Ms. Park" = some Ms. Park (we don't know which one)
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Even Questions Container -->
+        <div id="evenQuestions" class="questions-container">
+            <!-- Question 2 -->
+            <div class="question-card">
+                <div class="question-number">2</div>
+                <p class="question-text">Would you mind opening _____ window?</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer2')">Show Answer</button>
+                <div class="answer-box" id="answer2">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ③</span>
+                        Context makes it clear - we both know which window<br>
+                        THE = specific (probably pointing or obvious from context)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-card">
+                <div class="question-number">4</div>
+                <p class="question-text">He started playing _____ violin in front of people.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer4')">Show Answer</button>
+                <div class="answer-box" id="answer4">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ④</span>
+                        Musical instruments → always use THE<br>
+                        play the piano, play the guitar, play the violin
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question-card">
+                <div class="question-number">6</div>
+                <p class="question-text">Our office is on _____ first floor of the building.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer6')">Show Answer</button>
+                <div class="answer-box" id="answer6">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Ordinal Numbers</span>
+                        Ordinal numbers (first, second, third) → always use THE<br>
+                        Only one "first floor" exists in a building
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question-card">
+                <div class="question-number">8</div>
+                <p class="question-text">He caught her by _____ wrist.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer8')">Show Answer</button>
+                <div class="answer-box" id="answer8">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Body Parts</span>
+                        Body parts with "by" → use THE<br>
+                        by the hand, by the arm (specific body part)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question-card">
+                <div class="question-number">10</div>
+                <p class="question-text">I enjoyed playing _____ baseball in weekend.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer10')">Show Answer</button>
+                <div class="answer-box" id="answer10">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Lazy Rule ①</span>
+                        Sports → NO article<br>
+                        play basketball, play soccer, play baseball
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="question-card">
+                <div class="question-number">12</div>
+                <p class="question-text">_____ woman called Sally visited your house.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer12')">Show Answer</button>
+                <div class="answer-box" id="answer12">
+                    <p class="answer-text">A</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">First Mention</span>
+                        Introducing Sally for the first time<br>
+                        A = one unknown woman (named Sally)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question-card">
+                <div class="question-number">14</div>
+                <p class="question-text">Our kids always goes to _____ school at 7 am.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer14')">Show Answer</button>
+                <div class="answer-box" id="answer14">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Lazy Rule ④</span>
+                        "go to school" = activity/purpose (studying)<br>
+                        vs "go to the school" = specific building
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 16 -->
+            <div class="question-card">
+                <div class="question-number">16</div>
+                <p class="question-text">Hey, Sam, let's get out and play _____ baseball.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer16')">Show Answer</button>
+                <div class="answer-box" id="answer16">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Lazy Rule ①</span>
+                        Sports → NO article<br>
+                        Same as question 10: play baseball
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 18 -->
+            <div class="question-card">
+                <div class="question-number">18</div>
+                <p class="question-text">Can you tell me how to get to _____ school?</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer18')">Show Answer</button>
+                <div class="answer-box" id="answer18">
+                    <p class="answer-text">the</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Specific Building</span>
+                        Asking for directions → specific school building<br>
+                        THE = the school we both know about
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 20 -->
+            <div class="question-card">
+                <div class="question-number">20</div>
+                <p class="question-text">Stop watching TV and go to _____ bed.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer20')">Show Answer</button>
+                <div class="answer-box" id="answer20">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Lazy Rule ④</span>
+                        "go to bed" = activity (sleeping)<br>
+                        Common daily activities → NO article
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 22 -->
+            <div class="question-card">
+                <div class="question-number">22</div>
+                <p class="question-text">I need to wear _____ uniform to go to school.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer22')">Show Answer</button>
+                <div class="answer-box" id="answer22">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Special 유 Sound</span>
+                        uniform = 유니폼 (starts with ㅠ sound)<br>
+                        유 sound = consonant → use A not AN
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 24 -->
+            <div class="question-card">
+                <div class="question-number">24</div>
+                <p class="question-text">He has _____ useful tool to fix the broken door.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer24')">Show Answer</button>
+                <div class="answer-box" id="answer24">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Special 유 Sound</span>
+                        useful = 유스풀 (starts with ㅠ sound)<br>
+                        유 sound = consonant → use A not AN
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 26 -->
+            <div class="question-card">
+                <div class="question-number">26</div>
+                <p class="question-text">In this special desert there is _____ water.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer26')">Show Answer</button>
+                <div class="answer-box" id="answer26">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Uncountable</span>
+                        "water" is UNCOUNTABLE<br>
+                        Articles only with SINGULAR COUNTABLE nouns
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 28 -->
+            <div class="question-card">
+                <div class="question-number">28</div>
+                <p class="question-text">I have _____ eight-year-old brothers.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer28')">Show Answer</button>
+                <div class="answer-box" id="answer28">
+                    <p class="answer-text">X (no article)</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Plural</span>
+                        "brothers" is PLURAL<br>
+                        Articles only with SINGULAR countable nouns
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Question 30 -->
+            <div class="question-card">
+                <div class="question-number">30</div>
+                <p class="question-text">Kate takes a painting lesson once _____ week.</p>
+                <button class="show-answer-btn" onclick="showAnswer('answer30')">Show Answer</button>
+                <div class="answer-box" id="answer30">
+                    <p class="answer-text">a</p>
+                </div>
+                <div class="reasoning-box">
+                    <p class="reasoning-title">📚 Reasoning:</p>
+                    <p class="reasoning-text">
+                        <span class="rule-tag">Rule ②</span>
+                        A = per/each (매, ~마다)<br>
+                        once a week, twice a day, three times a year
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Extra Review Section -->
+        <div class="extra-review">
+            <h2 class="section-title">📚 Extra Review Questions</h2>
+            <div class="review-instructions">
+                <p style="font-size: 20px; margin-bottom: 20px;">
+                    <strong>Why these questions?</strong><br>
+                    These are the MOST CONFUSING questions students often get wrong!
+                </p>
+                <p>
+                    Study these explanations carefully to understand:<br>
+                    • Common mistakes and how to avoid them<br>
+                    • Special rules that aren't obvious<br>
+                    • Tricky patterns in English articles
+                </p>
+            </div>
+            
+            <!-- For Odd Number Students -->
+            <div id="oddReview" class="questions-container active">
+                <h3 style="text-align: center; color: #d4af37; margin: 30px 0; font-size: 28px;">
+                    📖 Extra Study for Odd Numbers Students
+                </h3>
+                
+                <!-- Review Question 7 -->
+                <div class="question-card">
+                    <div class="question-number">7</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students often write "has" because they think "the poor" is singular!
+                    </p>
+                    <p class="question-text">The poor _____ to be cared for by our government.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review7')">Show Answer</button>
+                    <div class="answer-box" id="review7">
+                        <p class="answer-text">have</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) THE + adjective = plural people group<br>
+                            2) "The poor" = "Poor people" (plural)<br>
+                            3) Similar examples: the rich, the young, the elderly<br>
+                            4) Always use plural verb (have, are, were)<br><br>
+                            <strong>Memory Trick:</strong> "The poor" = "They" not "It"!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 11 -->
+                <div class="question-card">
+                    <div class="question-number">11</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students want to add "The" before "my"!
+                    </p>
+                    <p class="question-text">_____ my teacher asked me not to be late.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review11')">Show Answer</button>
+                    <div class="answer-box" id="review11">
+                        <p class="answer-text">X (no article)</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) Possessives (my, your, his, her) block articles<br>
+                            2) Never: "the my" or "a my" - grammatically impossible<br>
+                            3) Without "my": "The teacher asked me..." ✓<br>
+                            4) One determiner rule: only one of (article/possessive/demonstrative)<br><br>
+                            <strong>Remember:</strong> MY already points to which teacher!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 17 -->
+                <div class="question-card">
+                    <div class="question-number">17</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students remember "no article with meals" but forget adjectives change the rule!
+                    </p>
+                    <p class="question-text">I'm so full with _____ heavy breakfast.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review17')">Show Answer</button>
+                    <div class="answer-box" id="review17">
+                        <p class="answer-text">a</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) Plain meal: "eat breakfast" ✓ (lazy rule)<br>
+                            2) Modified meal: "eat a heavy breakfast" ✓<br>
+                            3) Adjectives break the lazy rule!<br>
+                            4) Other examples: a quick lunch, a delicious dinner<br><br>
+                            <strong>Rule:</strong> Adjective + meal = need article!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 23 -->
+                <div class="question-card">
+                    <div class="question-number">23</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students see "M" and think consonant = "a"!
+                    </p>
+                    <p class="question-text">Tony was chosen to be _____ MVP by newspaper reporters.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review23')">Show Answer</button>
+                    <div class="answer-box" id="review23">
+                        <p class="answer-text">an</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) MVP = "em-vee-pee" (엠브이피)<br>
+                            2) Starts with vowel sound (엠) → AN<br>
+                            3) Other examples: an FBI agent, an NBA player<br>
+                            4) But: a CEO (씨이오 - starts with ㅆ)<br><br>
+                            <strong>Tip:</strong> Say it in Korean first!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 29 -->
+                <div class="question-card">
+                    <div class="question-number">29</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students think names never need articles!
+                    </p>
+                    <p class="question-text">_____ Ms. Park called you this morning.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review29')">Show Answer</button>
+                    <div class="answer-box" id="review29">
+                        <p class="answer-text">A</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) "A + name" = some unknown person with that name<br>
+                            2) Translation: "어떤 박 선생님이" (some Ms. Park)<br>
+                            3) vs "Ms. Park called" = the Ms. Park we know<br>
+                            4) Used when: multiple people same name, unknown caller<br><br>
+                            <strong>Context:</strong> The speaker doesn't know this Ms. Park!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- For Even Number Students -->
+            <div id="evenReview" class="questions-container">
+                <h3 style="text-align: center; color: #d4af37; margin: 30px 0; font-size: 28px;">
+                    📖 Extra Study for Even Numbers Students
+                </h3>
+                
+                <!-- Review Question 4 -->
+                <div class="question-card">
+                    <div class="question-number">4</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students forget musical instruments ALWAYS use "the"!
+                    </p>
+                    <p class="question-text">He started playing _____ violin in front of people.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review4')">Show Answer</button>
+                    <div class="answer-box" id="review4">
+                        <p class="answer-text">the</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) ALL musical instruments use THE<br>
+                            2) play the piano, the guitar, the drums<br>
+                            3) Exception: when counting ("I bought a piano")<br>
+                            4) Rule applies even with modifiers: play the electric guitar<br><br>
+                            <strong>No exceptions:</strong> Even "play the triangle"!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 10 -->
+                <div class="question-card">
+                    <div class="question-number">10</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Some students add "the" thinking it's a specific sport!
+                    </p>
+                    <p class="question-text">I enjoyed playing _____ baseball in weekend.</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review10')">Show Answer</button>
+                    <div class="answer-box" id="review10">
+                        <p class="answer-text">X (no article)</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) ALL sports: NO article (lazy rule)<br>
+                            2) play tennis, play golf, play cricket<br>
+                            3) Exception: "play a game of baseball" (not the sport itself)<br>
+                            4) Also: do yoga, do karate (activities)<br><br>
+                            <strong>Remember:</strong> Sports = daily activity = lazy rule!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 14 vs 18 -->
+                <div class="question-card">
+                    <div class="question-number">14 vs 18</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Same word "school" but different meanings = different articles!
+                    </p>
+                    <p class="question-text">Compare: "go to _____ school" vs "get to _____ school"</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review1418')">Show Answer</button>
+                    <div class="answer-box" id="review1418">
+                        <p class="answer-text">X (no article) vs the</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) "go to school" = purpose/activity (studying) → NO article<br>
+                            2) "get to the school" = physical building → THE<br>
+                            3) Similar: go to church (worship) vs go to the church (building)<br>
+                            4) Context changes everything!<br><br>
+                            <strong>Key:</strong> Activity vs Building!
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 22 & 24 -->
+                <div class="question-card">
+                    <div class="question-number">22 & 24</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students see "u" and think vowel = "an"!
+                    </p>
+                    <p class="question-text">The special "유" sound: uniform, useful, university</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review2224')">Show Answer</button>
+                    <div class="answer-box" id="review2224">
+                        <p class="answer-text">All use "a" not "an"</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) These words start with 유 (yu) sound, not 우 (u)<br>
+                            2) 유 = consonant sound (like "yes")<br>
+                            3) a uniform, a useful tool, a university<br>
+                            4) Compare: an umbrella (엄브렐라 - vowel sound)<br><br>
+                            <strong>Test:</strong> Say it in Korean - does it start with ㅇ or ㅠ?
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Review Question 27 & 28 -->
+                <div class="question-card">
+                    <div class="question-number">27 & 28</div>
+                    <p style="background: rgba(255, 152, 0, 0.2); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 16px;">
+                        ⚠️ <strong>Why tricky?</strong> Students forget to check if it's countable AND singular!
+                    </p>
+                    <p class="question-text">Why no article? "This is _____ news" & "I have _____ brothers"</p>
+                    <button class="show-answer-btn" onclick="showAnswer('review2728')">Show Answer</button>
+                    <div class="answer-box" id="review2728">
+                        <p class="answer-text">X (no article) for both</p>
+                    </div>
+                    <div class="reasoning-box">
+                        <p class="reasoning-title">🎯 Advanced Analysis:</p>
+                        <p class="reasoning-text">
+                            1) Articles ONLY with SINGULAR + COUNTABLE<br>
+                            2) "news" = uncountable (like water, advice, information)<br>
+                            3) "brothers" = plural (not singular)<br>
+                            4) Remember: ONE thing that we can count!<br><br>
+                            <strong>Check both:</strong> Is it ONE? Can we count it?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Homework Section -->
+        <div class="summary-section">
+            <h2 class="section-title">✍️ Summary Homework</h2>
+            <div class="summary-box">
+                <h3 style="font-family: 'Cinzel', serif; font-size: 28px; color: #f4e4bc; margin-bottom: 25px; text-align: center;">
+                    Create Your Own Compound Sentences
+                </h3>
+                
+                <div class="summary-requirements">
+                    <h4 style="color: #d4af37; margin-bottom: 20px;">Requirements:</h4>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-number">📝</div>
+                        <div>
+                            <strong style="font-size: 20px; color: #ffd700;">Write 5 COMPOUND SENTENCES total</strong><br>
+                            Each sentence must be at least 14 words long<br>
+                            Use connecting words like: and, but, so, because, when, after, before
+                        </div>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-number">✓</div>
+                        <div>
+                            <strong>Include ALL article types in your 5 sentences:</strong><br>
+                            • At least one sentence with "A/AN"<br>
+                            • At least one sentence with "THE"<br>
+                            • At least one sentence with NO article (lazy rule or uncountable/plural)
+                        </div>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-number">⭐</div>
+                        <div>
+                            <strong>Bonus Challenge:</strong><br>
+                            Try to include different article rules we learned<br>
+                            (musical instruments, sports, meals, unique things, etc.)
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;">Example Compound Sentences:</h4>
+                    <div class="example-sentence">
+                        <p style="margin-bottom: 15px;">
+                            1. "I saw <strong>an</strong> elephant at the zoo yesterday, and it was eating <strong>∅</strong> peanuts from visitors' hands."<br>
+                            <span style="font-size: 14px; color: #8b6914;">(AN + vowel sound, NO article with plural)</span>
+                        </p>
+                        
+                        <p style="margin-bottom: 15px;">
+                            2. "My sister plays <strong>the</strong> piano beautifully, but she never wants to perform in <strong>∅</strong> public concerts."<br>
+                            <span style="font-size: 14px; color: #8b6914;">(THE + musical instrument, NO article with abstract noun)</span>
+                        </p>
+                        
+                        <p>
+                            3. "We had <strong>a</strong> delicious dinner at the new restaurant, so we decided to go there again."<br>
+                            <span style="font-size: 14px; color: #8b6914;">(A + adjective + meal breaks lazy rule)</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 15px; padding: 20px;">
+                    <h4 style="color: #ffd700; text-align: center; margin-bottom: 15px;">📏 Length Check Tip</h4>
+                    <p style="font-size: 18px; text-align: center; color: #f4e4bc;">
+                        Count your words! Each sentence needs 14+ words.<br>
+                        Use Word Count in your computer or count by hand.<br>
+                        <strong>Short sentence? Add details with "because," "when," or "and"!</strong>
+                    </p>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <p style="font-size: 20px; color: #f4e4bc;">
+                        📓 Write your 5 sentences in your notebook<br>
+                        🗣️ Practice reading them aloud<br>
+                        💡 Be ready to explain your article choices in class!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Show/hide answer functionality
+        function showAnswer(answerId) {
+            const answerBox = document.getElementById(answerId);
+            answerBox.classList.add('visible');
+            
+            // Also show the reasoning box (next sibling)
+            const reasoningBox = answerBox.nextElementSibling;
+            if (reasoningBox && reasoningBox.classList.contains('reasoning-box')) {
+                reasoningBox.classList.add('visible');
+            }
+            
+            // Hide the show answer button
+            const button = answerBox.previousElementSibling;
+            if (button && button.classList.contains('show-answer-btn')) {
+                button.style.display = 'none';
+            }
+        }
+        
+        // Show different question sets
+        function showSet(setType) {
+            // Hide all question containers
+            document.querySelectorAll('.questions-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.set-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected set
+            if (setType === 'odd') {
+                document.getElementById('oddQuestions').classList.add('active');
+                document.getElementById('oddSetBtn').classList.add('active');
+                // Also show odd review questions
+                const oddReview = document.getElementById('oddReview');
+                if (oddReview) oddReview.classList.add('active');
+                const evenReview = document.getElementById('evenReview');
+                if (evenReview) evenReview.classList.remove('active');
+            } else {
+                document.getElementById('evenQuestions').classList.add('active');
+                document.getElementById('evenSetBtn').classList.add('active');
+                // Also show even review questions
+                const evenReview = document.getElementById('evenReview');
+                if (evenReview) evenReview.classList.add('active');
+                const oddReview = document.getElementById('oddReview');
+                if (oddReview) oddReview.classList.remove('active');
+            }
+        }
+        
+        // Daily treasury object to track today's students
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+        let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+        
+        // Load all students from Conquest data
+        function loadAllStudentsFromConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (conquestData) {
+                const teamData = JSON.parse(conquestData);
+                const students = [];
+                
+                // Extract all students from teams
+                Object.entries(teamData).forEach(([teamKey, team]) => {
+                    team.students.forEach(student => {
+                        if (student.name !== 'Donation') {
+                            students.push({
+                                name: student.name,
+                                team: teamKey
+                            });
+                        }
+                    });
+                });
+                
+                // Sort alphabetically
+                return students.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            return [];
+        }
+        
+        // Team information for badges
+        const teamInfo = {
+            'jiggleBoggle': { name: 'Jiggle Boggle', color: '#81c784' },
+            'pinkie': { name: 'Pinkie', color: '#f06292' },
+            'handsomeJoon': { name: 'Handsome Joon', color: '#ff6b6b' },
+            'bomi': { name: 'Bomi', color: '#ffd54f' },
+            'geniusIrene': { name: 'Genius Irene', color: '#4fc3f7' },
+            'prettyEggplant': { name: 'Pretty Eggplant', color: '#ba68c8' }
+        };
+        
+        // Populate student dropdown
+        function populateStudentDropdown() {
+            const select = document.getElementById('studentSelect');
+            select.innerHTML = '<option value="">Select a scholar...</option>';
+            
+            const allStudents = loadAllStudentsFromConquest();
+            
+            allStudents.forEach(student => {
+                // Only show students not already in daily list
+                if (!dailyStudents.includes(student.name)) {
+                    const option = document.createElement('option');
+                    option.value = student.name;
+                    option.dataset.team = student.team;
+                    option.textContent = student.name;
+                    select.appendChild(option);
+                }
+            });
+        }
+        
+        // Add student to daily treasury
+        function addStudentToDaily() {
+            const select = document.getElementById('studentSelect');
+            const studentName = select.value;
+            
+            if (studentName && !dailyStudents.includes(studentName)) {
+                dailyStudents.push(studentName);
+                dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+                
+                // Save to localStorage
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                // Refresh display
+                renderDailyStudents();
+                populateStudentDropdown();
+                
+                // Reset dropdown
+                select.value = '';
+            }
+        }
+        
+        // Remove student from daily treasury
+        function removeStudentFromDaily(studentName) {
+            const index = dailyStudents.indexOf(studentName);
+            if (index > -1) {
+                dailyStudents.splice(index, 1);
+                delete dailyTreasury[studentName];
+                
+                // Save to localStorage
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                // Refresh display
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+        }
+        
+        // Get student's team
+        function getStudentTeam(studentName) {
+            const allStudents = loadAllStudentsFromConquest();
+            const student = allStudents.find(s => s.name === studentName);
+            return student ? student.team : null;
+        }
+        
+        // Render daily students
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            container.innerHTML = '';
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+                return;
+            }
+            
+            dailyStudents.forEach(studentName => {
+                const teamKey = getStudentTeam(studentName);
+                const team = teamInfo[teamKey];
+                
+                const item = document.createElement('div');
+                item.className = 'student-item';
+                
+                item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ''}
+                    </div>
+                    <div class="coin-display">
+                        <span class="coin-icon"></span>
+                        <input 
+                            type="number" 
+                            class="coin-input" 
+                            min="0" 
+                            step="10"
+                            value="${dailyTreasury[studentName] || 0}"
+                            onchange="updateDailyTreasury('${studentName}', this.value)"
+                            onclick="addPointsToStudent('${studentName}')"
+                        >
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Update daily treasury
+        function updateDailyTreasury(name, value) {
+            dailyTreasury[name] = parseInt(value) || 0;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        }
+        
+        // Add 10 points when clicking on student
+        function addPointsToStudent(name) {
+            dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            renderDailyStudents();
+            
+            // Visual feedback
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                if (item.querySelector('.student-name').textContent === name) {
+                    item.style.animation = 'pulse 0.3s ease';
+                    setTimeout(() => {
+                        item.style.animation = '';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Save to Conquest
+        function saveToConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No Conquest data found!');
+                return;
+            }
+            
+            const teamData = JSON.parse(conquestData);
+            let totalPointsAdded = 0;
+            
+            // Update each student's points in their team
+            Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+                if (dailyPoints > 0) {
+                    // Find which team the student belongs to
+                    for (const [teamKey, team] of Object.entries(teamData)) {
+                        const studentIndex = team.students.findIndex(s => s.name === studentName);
+                        if (studentIndex !== -1) {
+                            // Add daily points to existing points
+                            teamData[teamKey].students[studentIndex].points += dailyPoints;
+                            totalPointsAdded += dailyPoints;
+                            break;
+                        }
+                    }
+                }
+            });
+            
+            // Save updated conquest data
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+            
+            // Reset daily data
+            dailyStudents = [];
+            dailyTreasury = {};
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
+            
+            // Refresh display
+            renderDailyStudents();
+            populateStudentDropdown();
+            
+            showToast(`✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`);
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Sidebar Toggle Functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isExpanded = sidebar.classList.contains('expanded');
+            
+            if (isExpanded) {
+                sidebar.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                document.getElementById('rightSidebar').classList.remove('expanded');
+                sidebar.classList.add('expanded');
+                overlay.classList.add('active');
+            }
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isExpanded = sidebar.classList.contains('expanded');
+            
+            if (isExpanded) {
+                sidebar.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                document.getElementById('leftSidebar').classList.remove('expanded');
+                sidebar.classList.add('expanded');
+                overlay.classList.add('active');
+            }
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-initialize from localStorage to ensure sync
+            dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+            dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+            
+            populateStudentDropdown();
+            renderDailyStudents();
+            
+            // Show odd questions by default
+            showSet('odd');
+        });
+        
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

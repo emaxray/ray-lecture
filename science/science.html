@@ -1,0 +1,3275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Library - Comprehensive Template</title>
+            <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <style>
+        /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== 
+           
+           PURPOSE: Sets up the foundation for the entire page
+           CUSTOMIZE: Change font families, base colors, background gradients
+           
+           Key Variables:
+           - Primary Gold: #d4af37
+           - Light Gold: #f4e4bc  
+           - Dark Gold: #b8860b
+           - Team Colors: Defined in JavaScript teamInfo object
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;           /* CUSTOMIZE: Change main font */
+            background: #1a1a1a;                    /* CUSTOMIZE: Base background color */
+            color: #d4af37;                         /* CUSTOMIZE: Default text color */
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+            font-size: 12px;
+        }
+
+        /* ======================
+           ✨ SPECIAL EFFECTS & ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Creates the medieval atmosphere with candlelight and particles
+           CUSTOMIZE: Adjust animation speeds, particle counts, flicker intensity
+           
+           Components:
+           - Candlelight overlay (::before pseudo-element)
+           - Floating particles (.particle class)
+           - Corner ornaments (decorative SVG elements)
+        */
+        
+        /* Candlelight flickering effect - creates warm atmospheric lighting */
+        body::before { 
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;    /* CUSTOMIZE: Change flicker speed */
+            z-index: 1;            
+        }
+        
+        /* CUSTOMIZE: Adjust flicker intensity and timing */
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }    /* Base opacity */
+            25% { opacity: 0.9; }         /* Bright moment */
+            50% { opacity: 0.75; }        /* Dim moment */
+            75% { opacity: 0.85; }        /* Medium bright */
+        }
+        
+        /* Floating particles - decorative elements that float upward */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;    /* CUSTOMIZE: Change float speed */
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;                          /* CUSTOMIZE: Particle visibility */
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Decorative corner ornaments - SVG-based decorative elements */
+        .corner-ornament {
+            position: fixed;
+            width: 120px;                              /* CUSTOMIZE: Ornament size */
+            height: 120px;
+            opacity: 0.3;                              /* CUSTOMIZE: Ornament visibility */
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+            background-size: contain;
+            z-index: 1;
+        }
+        
+        /* CUSTOMIZE: Adjust corner ornament positions */
+        .corner-top-left {
+            top: 20px;
+            left: 70px;
+        }
+        
+        .corner-top-right {
+            top: 20px;
+            right: 70px;
+            transform: scaleX(-1);
+        }
+        
+        .corner-bottom-left {
+            bottom: 20px;
+            left: 70px;
+            transform: scaleY(-1);
+        }
+        
+        .corner-bottom-right {
+            bottom: 20px;
+            right: 70px;
+            transform: scale(-1, -1);
+        }
+
+        /* ======================
+           🔙 NAVIGATION & BACK BUTTON
+           ====================== 
+           
+           PURPOSE: Provides navigation controls
+           CUSTOMIZE: Position, styling, hover effects
+           
+           Usage: Add onclick="goBack()" to any back button
+        */
+        
+         .back-button {
+            position: fixed;
+            top: 20px;                                 /* CUSTOMIZE: Vertical position */
+            left: 20px;                                /* CUSTOMIZE: Horizontal position */
+            background: rgba(212, 175, 55, 0.2);      /* CUSTOMIZE: Background color */
+            border: 2px solid #8b6914;                /* CUSTOMIZE: Border color */
+            color: #f4e4bc;                            /* CUSTOMIZE: Text color */
+            padding: 12px 24px;                       /* CUSTOMIZE: Button size */
+            font-family: 'Cinzel', serif;             /* CUSTOMIZE: Font */
+            font-size: 16px;                          /* CUSTOMIZE: Font size */
+            font-weight: 600;
+                 text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+/* .back-button::before {
+            content: '←';                          
+        CUSTOMIZE: Back arrow icon            
+        font-size: 20px;
+        } */
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);      /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        /* ======================
+           📱 SIDEBAR SYSTEM
+           ====================== 
+           
+           PURPOSE: Collapsible navigation and student management panels
+           CUSTOMIZE: Widths, colors, animations, content
+           
+           Components:
+           - Toggle buttons (left/right sides)
+           - Overlay for mobile
+           - Left sidebar (navigation)
+           - Right sidebar (student management)
+           
+           JavaScript Functions:
+           - toggleLeftSidebar()
+           - toggleRightSidebar()
+           - closeSidebars()
+        */
+        
+        /* Sidebar toggle buttons - visible buttons to open/close sidebars */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;                               /* CUSTOMIZE: Button width */
+            height: 120px;                             /* CUSTOMIZE: Button height */
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;                 /* Makes text vertical */
+            text-orientation: mixed;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                          /* CUSTOMIZE: Font size */
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;                               /* CUSTOMIZE: Hover width expansion */
+        }
+        
+        .sidebar-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        /* Mobile overlay - darkens background when sidebar is open */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);           /* CUSTOMIZE: Overlay opacity */
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ======================
+           📋 LEFT SIDEBAR (NAVIGATION)
+           ====================== 
+           
+           PURPOSE: Main navigation menu
+           CUSTOMIZE: Width, menu items, styling
+           
+           Structure:
+           - Header with title and close button
+           - Navigation items (.nav-item)
+           - Decorative background pattern
+           
+           To Add Menu Items:
+           <a href="your-link.html" class="nav-item">Menu Item Name</a>
+        */
+        
+        .left-sidebar {
+            width: 250px;                              /* CUSTOMIZE: Sidebar width */
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 200;
+            transform: translateX(-250px);             /* Hidden by default */
+        }
+        
+        /* Decorative background pattern for left sidebar */
+        .left-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);                  /* Visible when expanded */
+        }
+        
+        /* Sidebar header - contains title and close button */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;                             /* CUSTOMIZE: Header padding */
+            border-bottom: 1px solid #8b6914;
+            position: relative;
+        }
+        
+        /* Animated underline effect for header */
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; width: 50px; }
+            50% { opacity: 1; width: 100px; }
+        }
+        
+        /* Close button styling */
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;                             /* CUSTOMIZE: Content padding */
+        }
+        
+        /* Navigation items - individual menu links */
+        .nav-item {
+            display: block;
+            padding: 12px 15px;                        /* CUSTOMIZE: Item padding */
+            margin: 8px 0;                             /* CUSTOMIZE: Item spacing */
+            background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Item background */
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;                            /* CUSTOMIZE: Text color */
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;                           /* CUSTOMIZE: Font size */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative diamond icon that appears on hover */
+        .nav-item::before {
+            content: '◆';                              /* CUSTOMIZE: Icon character */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #f4e4bc;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);       /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);                /* Slides right on hover */
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;    /* CUSTOMIZE: Title font */
+            font-size: 20px;                          /* CUSTOMIZE: Title size */
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+
+        /* ======================
+           👥 RIGHT SIDEBAR (STUDENT MANAGEMENT)
+           ====================== 
+           
+           PURPOSE: Daily student points tracking and management
+           CUSTOMIZE: Width, colors, button styles
+           
+           Components:
+           - Student dropdown selector
+           - Daily student list
+           - Action buttons (save, reset, export)
+           
+           JavaScript Integration:
+           - Connects to localStorage 'conquestTeamData'
+           - Manages 'dailyStudents' and 'dailyTreasury'
+           - Functions: addStudentToDaily(), removeStudentFromDaily(), etc.
+        */
+        
+        .right-sidebar {
+    width: 350px;                              /* CUSTOMIZE: Sidebar width */
+    background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+    border-left: 2px solid #8b6914;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    z-index: 100;
+    transform: translateX(350px);              /* Hidden by default */
+}
+
+.right-sidebar.expanded {
+    transform: translateX(0);                  /* Visible when expanded */
+}
+
+.points-title {
+    font-family: 'Cinzel', serif;             /* CUSTOMIZE: Title font */
+    font-size: 24px;                          /* CUSTOMIZE: Title size */
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f4e4bc;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    border-bottom: 1px solid #8b6914;
+    padding-bottom: 15px;
+}
+
+/* Section subtitles for better organization */
+.section-subtitle {
+    font-family: 'Uncial Antiqua', cursive;
+    font-size: 16px;
+    color: #d4af37;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    position: relative;
+    padding: 0 20px;
+}
+
+/* Decorative elements for section titles */
+.section-subtitle::before,
+.section-subtitle::after {
+    content: "◆";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #8b6914;
+}
+
+.section-subtitle::before {
+    left: 0;
+}
+
+.section-subtitle::after {
+    right: 0;
+}
+
+/* Decorative divider between sections */
+.divider-ornament {
+    width: 100%;
+    height: 30px;
+    margin: 20px 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.5;
+}
+
+/* Class Selection Section */
+.add-class-section {
+    background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Section background */
+    border: 1px solid #8b6914;
+    border-radius: 5px;
+    padding: 20px;                             /* CUSTOMIZE: Section padding */
+    margin-bottom: 0;
+}
+
+/* Class dropdown selector */
+.class-select {
+    width: 100%;
+    padding: 15px;                             /* CUSTOMIZE: Dropdown padding */
+    background: rgba(139, 105, 20, 0.3);       /* CUSTOMIZE: Dropdown background */
+    border: 2px solid #8b6914;
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;                           /* CUSTOMIZE: Font size */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    min-height: 50px;
+    -webkit-appearance: none;
+    appearance: none;
+    /* Custom dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 20px;
+    padding-right: 45px;
+}
+
+.class-select option {
+    background: #2a1810;                       /* CUSTOMIZE: Option background */
+    color: #f4e4bc;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Student Selection Section */
+.add-student-section {
+    background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Section background */
+    border: 1px solid #8b6914;
+    border-radius: 5px;
+    padding: 20px;                             /* CUSTOMIZE: Section padding */
+    margin-bottom: 0;
+}
+
+/* Student dropdown selector */
+.student-select {
+    width: 100%;
+    padding: 15px;                             /* CUSTOMIZE: Dropdown padding */
+    background: rgba(139, 105, 20, 0.3);       /* CUSTOMIZE: Dropdown background */
+    border: 2px solid #8b6914;
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;                           /* CUSTOMIZE: Font size */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    min-height: 50px;
+    -webkit-appearance: none;
+    appearance: none;
+    /* Custom dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 20px;
+    padding-right: 45px;
+}
+
+.student-select option {
+    background: #2a1810;                       /* CUSTOMIZE: Option background */
+    color: #f4e4bc;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Add button (used for both class and student) */
+.add-student-to-daily {
+    width: 100%;
+    padding: 18px;                             /* CUSTOMIZE: Button padding */
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);      /* CUSTOMIZE: Button background */
+    border: 2px solid #d4af37;
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;                           /* CUSTOMIZE: Font size */
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 55px;
+}
+
+.add-student-to-daily:hover {
+    background: rgba(212, 175, 55, 0.5);       /* CUSTOMIZE: Hover background */
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+        /* ======================
+           👤 STUDENT DISPLAY SYSTEM
+           ====================== 
+           
+           PURPOSE: Shows daily students with points and controls
+           CUSTOMIZE: Layout, colors, team badge styling
+           
+           Structure:
+           - Student info (name, team badge)
+           - Points button (shows current points, adds 10 on click)
+           - Remove button (removes from daily list)
+           
+           JavaScript Functions:
+           - renderDailyStudents() - creates the student list
+           - addPointsToStudent() - adds points and visual feedback
+           - removeStudentFromDaily() - removes student from list
+        */
+        
+        .student-item {
+            background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Student item background */
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;                             /* CUSTOMIZE: Item padding */
+            margin: 15px 0;                            /* CUSTOMIZE: Item spacing */
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;                          /* CUSTOMIZE: Minimum height */
+            position: relative;
+        }
+        
+        .student-item:hover {
+            background: rgba(212, 175, 55, 0.3);       /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        
+        .student-name {
+            font-size: 16px;                           /* CUSTOMIZE: Name font size */
+            color: #f4e4bc;
+        }
+        
+        /* Team badges - color-coded team identification */
+        .team-badge {
+            font-size: 12px;                           /* CUSTOMIZE: Badge font size */
+            padding: 2px 6px;                          /* CUSTOMIZE: Badge padding */
+            border-radius: 7px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);            /* CUSTOMIZE: Badge background */
+            border: 1px solid;
+            width: 80px;   
+            /* Colors set dynamically by JavaScript based on team */
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;                                 /* CUSTOMIZE: Spacing between elements */
+        }
+        
+        /* Points button - shows current points and adds more when clicked */
+/*         .points-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 12px;                        / CUSTOMIZE: Button padding /
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 1px solid #d4af37;
+            border-radius: 30px;                       / CUSTOMIZE: Button roundness /
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+            min-width: 70px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;                           / CUSTOMIZE: Font size /
+            font-weight: bold;
+            color: #f4e4bc;
+        } */
+
+        .points-btn {
+    display: flex;
+    align-items: center;
+    gap: 20px;                                  /* Reduced from 10px */
+    padding: 6px 10px;                         /* Reduced from 12px 12px */
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+    border: 1px solid #d4af37;
+    border-radius: 20px;                       /* Reduced from 30px */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 36px;                          /* Reduced from 50px */
+    min-width: 60px;                           /* Reduced from 70px */
+    font-family: 'Cinzel', serif;
+    font-size: 14px;                           /* Reduced from 18px */
+    font-weight: bold;
+    color: #f4e4bc;
+}
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            transform: scale(1.05);                    /* Slight growth on hover */
+        }
+        
+        .points-btn:active {
+            transform: scale(0.95);                    /* Slight shrink when clicked */
+        }
+        
+        .points-value {
+            font-size: 16px;                           /* CUSTOMIZE: Points number size */
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        /* Coin icon - decorative gold coin */
+        .coin-icon {
+            width: 12px;                               /* CUSTOMIZE: Coin size */
+            height: 12px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';                              /* CUSTOMIZE: Coin symbol */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 7px;
+        }
+        
+        /* Remove student button */
+        .remove-student {
+            background: rgba(139, 20, 20, 0.3);        /* CUSTOMIZE: Remove button color */
+            border: 2px solid #8b4514;
+            color: #ff6b6b;
+            width: 45px;                               /* CUSTOMIZE: Button size */
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            font-size: 24px;                           /* CUSTOMIZE: X size */
+            font-weight: bold;
+        }
+        
+        .remove-student:hover {
+            background: rgba(200, 50, 50, 0.4);
+            box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+        }
+        
+        /* Action buttons container */
+        .sidebar-buttons {
+            display: flex;
+            gap: 10px;                                 /* CUSTOMIZE: Button spacing */
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* General action button styling */
+        .action-btn {
+            width: 100%;
+            padding: 15px;                             /* CUSTOMIZE: Button padding */
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                           /* CUSTOMIZE: Font size */
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+           transition: all 0.3s ease;
+            text-align: center;
+            min-height: 55px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);               /* Lifts on hover */
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Save button - special green styling */
+        .save-btn {
+             background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border-color: #2e7d32;
+        }
+        
+        .save-btn:hover {
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Empty state message */
+      
+        /* Daily students list container */
+#dailyStudentsList {
+    min-height: 200px;
+    margin-bottom: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #b8860b;
+    font-style: italic;
+    background: rgba(139, 105, 20, 0.1);
+    border-radius: 5px;
+    border: 1px dashed #8b6914;
+}
+        /* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    color: #1a0f0a;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+        /* ======================
+           🏠 MAIN CONTENT AREA
+           ====================== 
+           
+           PURPOSE: Primary content display area
+           CUSTOMIZE: Layout, spacing, title styling
+           
+           Structure:
+           - Title and subtitle
+           - Content containers (books, sections, etc.)
+           - Responsive margins for sidebars
+        */
+        
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;                        /* CUSTOMIZE: Content padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0 70px;                            /* CUSTOMIZE: Sidebar margins */
+        }
+        
+        .library-title {
+            font-family: 'Cinzel', serif;             /* CUSTOMIZE: Title font */
+            font-size: 48px;                          /* CUSTOMIZE: Title size */
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        /* Decorative stars around title */
+        .library-title::before,
+        .library-title::after {
+            content: "✦";                              /* CUSTOMIZE: Star character */
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;                           /* CUSTOMIZE: Star size */
+            color: #d4af37;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        .library-title::before {
+            left: -50px;                               /* CUSTOMIZE: Left star position */
+        }
+        
+        .library-title::after {
+            right: -50px;                              /* CUSTOMIZE: Right star position */
+            animation-delay: 1.5s;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2) rotate(180deg); }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 20px;                           /* CUSTOMIZE: Subtitle size */
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+            position: relative;
+            padding: 0 80px;
+        }
+        
+        /* Decorative lines beside subtitle */
+        .subtitle::before,
+        .subtitle::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 60px;                               /* CUSTOMIZE: Line length */
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+        }
+        
+        .subtitle::before {
+            left: 0;
+        }
+        
+        .subtitle::after {
+            right: 0;
+        }
+
+        /* ======================
+           📚 CONTENT DISPLAY SYSTEMS
+           ====================== 
+           
+           PURPOSE: Different ways to display content (books, cards, etc.)
+           CUSTOMIZE: Grid layouts, item styling, hover effects
+           
+           Usage:
+           Insert Content Specific Cards here with  @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        */
+            /* Books container - displays content as 3D book spines */
+.books-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.book {
+    position: relative;
+    width: 200px;
+    height: 280px;
+    background: linear-gradient(90deg, #3a2418 0%, #2a1810 5%, #4a3428 10%, #3a2418 90%, #2a1810 100%);
+    border-radius: 5px 15px 15px 5px;
+    box-shadow: 
+        5px 5px 15px rgba(0,0,0,0.6),
+        inset -2px 0 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Book spine binding line */
+.book::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 5%;
+    bottom: 5%;
+    width: 3px;
+    background: linear-gradient(90deg, rgba(139, 105, 20, 0.3), transparent);
+}
+
+/* Book shimmer effect */
+.book::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.book:hover::after {
+    opacity: 1;
+    top: -100%;
+    left: -100%;
+}
+
+.book:hover {
+    transform: translateY(-10px) rotateY(-5deg);
+    box-shadow: 
+        10px 15px 25px rgba(0,0,0,0.8),
+        inset -2px 0 5px rgba(0,0,0,0.3),
+        0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+.book-spine {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    color: #f4e4bc;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    padding: 20px 10px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Decorative ornaments on books */
+.book-ornament {
+    position: absolute;
+    width: 80%;
+    height: 20px;
+    left: 10%;
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='m10,10 Q25,5 40,10 T70,10 T100,10' fill='none' stroke='%23d4af37' stroke-width='1'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%23d4af37'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.book-ornament-top {
+    top: 20px;
+}
+
+.book-ornament-bottom {
+    bottom: 20px;
+}
+
+/* Coming soon book styling */
+.coming-soon {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.coming-soon:hover {
+    transform: none;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+}
+
+.coming-soon::after {
+    content: 'Coming Soon';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    background: rgba(0,0,0,0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+        /* ======================
+           📱 RESPONSIVE DESIGN
+           ====================== 
+           
+           PURPOSE: Adapt layout for different screen sizes
+           CUSTOMIZE: Breakpoints, mobile-specific styling
+           
+           Breakpoints:
+           - 1024px: Tablet landscape
+           - 768px: Tablet portrait and mobile
+        */
+        
+        /* Tablet styles */
+        @media (max-width: 1024px) {
+            .books-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 20px;
+            }
+            
+            .book {
+                width: 150px;
+                height: 220px;
+            }
+            
+            .book-spine {
+                font-size: 16px;
+            }
+            
+            .library-title {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .right-sidebar {
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .right-sidebar.expanded {
+                transform: translateX(0);
+                right: 0;
+                left: auto;
+            }
+            
+            .sidebar-toggle {
+                width: 60px;
+                height: 140px;
+                font-size: 18px;
+            }
+            
+            .student-item {
+                margin: 20px 0;
+            }
+            
+            .sidebar-buttons {
+                gap: 15px;
+            }
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 20px 10px;
+            }
+            
+            .library-title {
+                font-size: 28px;
+            }
+            
+            .books-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .sections-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .section-card {
+                min-height: 200px;
+                padding: 30px;
+            }
+        }
+
+        /* ======================
+           🎬 UTILITY ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Reusable animation effects
+           CUSTOMIZE: Timing, intensity, easing
+           
+           Available Animations:
+           - pulse: Gentle scaling effect
+           - goldenGlow: Golden lighting effect
+        */
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }              /* CUSTOMIZE: Pulse intensity */
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes goldenGlow {
+            0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }    /* CUSTOMIZE: Glow intensity */
+            100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+        }
+        
+         @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        /* Adventure Game Styles */
+    .adventure-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Party Display */
+    .party-display {
+        background: linear-gradient(180deg, rgba(42, 24, 16, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+        border: 2px solid #8b6914;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .party-title {
+        font-family: 'Cinzel', serif;
+        font-size: 24px;
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .party-members {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .party-member {
+        background: rgba(139, 105, 20, 0.3);
+        border: 1px solid #8b6914;
+        border-radius: 20px;
+        padding: 5px 15px;
+        font-size: 14px;
+        color: #f4e4bc;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .party-member:hover {
+        background: rgba(212, 175, 55, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .party-member.answering {
+        animation: pulse 1s infinite;
+        border-color: #ffd700;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .party-member.correct {
+        background: rgba(46, 125, 50, 0.5);
+        border-color: #81c784;
+    }
+
+    .member-points {
+        font-size: 12px;
+        color: #d4af37;
+        margin-left: 5px;
+    }
+
+    /* Adventure Map */
+    .adventure-map {
+        background: rgba(26, 15, 10, 0.8);
+        border: 3px solid #8b6914;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        position: relative;
+        min-height: 200px;
+        overflow-x: auto;
+    }
+
+    .map-path {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 800px;
+        margin: 20px auto;
+        position: relative;
+    }
+
+    .map-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #8b6914 0%, #8b6914 50%, #666 50%, #666 100%);
+        background-size: 20px 4px;
+        animation: pathMove 2s linear infinite;
+        z-index: 1;
+    }
+
+    @keyframes pathMove {
+        0% { background-position: 0 0; }
+        100% { background-position: 20px 0; }
+    }
+
+    .stage-node {
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.8), rgba(139, 105, 20, 0.9));
+        border: 3px solid #d4af37;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 30px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stage-node:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    }
+
+    .stage-node.completed {
+        background: radial-gradient(circle, rgba(46, 125, 50, 0.8), rgba(27, 94, 32, 0.9));
+        border-color: #81c784;
+    }
+
+    .stage-node.current {
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    }
+
+    .stage-node.locked {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: radial-gradient(circle, rgba(66, 66, 66, 0.8), rgba(33, 33, 33, 0.9));
+    }
+
+    .stage-node.boss {
+        width: 120px;
+        height: 120px;
+        font-size: 50px;
+        background: radial-gradient(circle, rgba(139, 32, 32, 0.8), rgba(180, 0, 0, 0.9));
+        border-color: #ff6b6b;
+    }
+
+    .stage-label {
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Cinzel', serif;
+        font-size: 12px;
+        color: #d4af37;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* Party Stats */
+    .party-stats {
+        background: linear-gradient(90deg, rgba(42, 24, 16, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+        border: 2px solid #8b6914;
+        border-radius: 30px;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .stat-icon {
+        font-size: 24px;
+    }
+
+    .stat-value {
+        font-family: 'Cinzel', serif;
+        font-size: 18px;
+        color: #ffd700;
+    }
+
+    /* Battle Screen */
+    .battle-screen {
+        background: linear-gradient(180deg, rgba(42, 24, 16, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+        border: 2px solid #8b6914;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .battle-title {
+        font-family: 'Uncial Antiqua', cursive;
+        font-size: 32px;
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Enemy Display */
+    .enemy-display {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .enemy-sprite {
+        font-size: 100px;
+        margin-bottom: 20px;
+        animation: enemyFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes enemyFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .enemy-name {
+        font-family: 'Cinzel', serif;
+        font-size: 24px;
+        color: #ff6b6b;
+        margin-bottom: 10px;
+    }
+
+    /* Health Bars */
+    .health-bar-container {
+        background: rgba(0,0,0,0.5);
+        border: 2px solid #8b6914;
+        border-radius: 20px;
+        height: 30px;
+        overflow: hidden;
+        margin: 10px auto;
+        position: relative;
+        max-width: 400px;
+    }
+
+    .health-bar {
+        height: 100%;
+        transition: width 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .health-bar.enemy {
+        background: linear-gradient(90deg, #b71c1c, #ef5350);
+    }
+
+    .health-bar.party {
+        background: linear-gradient(90deg, #2e7d32, #81c784);
+    }
+
+    .health-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Cinzel', serif;
+        font-weight: bold;
+        color: #f4e4bc;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* Knowledge Scroll */
+    .knowledge-scroll {
+        background: linear-gradient(to bottom, #f4e4bc, #e8d7a3);
+        border: 2px solid #8b6914;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+        color: #2a1810;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .knowledge-scroll::before {
+        content: '📜';
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 30px;
+        background: #1a1a1a;
+        padding: 0 10px;
+    }
+
+    .scroll-title {
+        font-family: 'Cinzel', serif;
+        font-size: 20px;
+        color: #8b4513;
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    /* Challenge Display */
+    .challenge-display {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .challenge-question {
+        font-size: 24px;
+        color: #ffd700;
+        margin-bottom: 30px;
+        font-family: 'Cinzel', serif;
+    }
+
+    .challenge-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .challenge-option {
+        background: rgba(139, 105, 20, 0.3);
+        border: 2px solid #8b6914;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 18px;
+        color: #f4e4bc;
+    }
+
+    .challenge-option:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        background: rgba(212, 175, 55, 0.4);
+    }
+
+    .challenge-option.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    /* Damage Animation */
+    .damage-number {
+        position: absolute;
+        font-size: 36px;
+        font-weight: bold;
+        color: #ff6b6b;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        animation: damageFloat 1s ease-out forwards;
+        pointer-events: none;
+    }
+
+    @keyframes damageFloat {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+    }
+
+    /* Action Button */
+    .action-button {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 105, 20, 0.5) 100%);
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        padding: 15px 40px;
+        font-family: 'Cinzel', serif;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 5px;
+        display: inline-block;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.6) 0%, rgba(139, 105, 20, 0.7) 100%);
+    }
+
+    .action-button.primary {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.6) 0%, rgba(27, 94, 32, 0.7) 100%);
+        border-color: #81c784;
+    }
+
+    /* Victory Screen */
+    .victory-screen {
+        text-align: center;
+        padding: 40px;
+        display: none;
+    }
+
+    .victory-title {
+        font-family: 'Uncial Antiqua', cursive;
+        font-size: 48px;
+        color: #ffd700;
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    /* Student Selector */
+    .student-selector {
+        background: rgba(212, 175, 55, 0.1);
+        border: 2px solid #d4af37;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .selector-title {
+        font-family: 'Cinzel', serif;
+        font-size: 20px;
+        color: #ffd700;
+        margin-bottom: 15px;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .map-path {
+            min-width: auto;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .map-line {
+            display: none;
+        }
+        
+        .stage-node {
+            width: 70px;
+            height: 70px;
+            font-size: 25px;
+        }
+        
+        .enemy-sprite {
+            font-size: 60px;
+        }
+        
+        .challenge-options {
+            grid-template-columns: 1fr;
+        }
+    }
+        .party-member.fallen {
+    opacity: 0.5;
+    background: rgba(139, 20, 20, 0.3);
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
+.member-hp {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.revival-shrine {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(27, 94, 32, 0.2) 100%);
+    border: 2px solid #81c784;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+    </style>
+</head>
+<body>
+    <!-- 🎨 DECORATIVE ELEMENTS -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+    
+    <!-- back button NAVIGATION -->
+  <button class="back-button" onclick="goBack()">Back to Library</button> 
+    
+    <!-- 📱 SIDEBAR SYSTEM -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">MENU</div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">POINTS</div>
+    
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- 📋 LEFT SIDEBAR (NAVIGATION) -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- 🔧 CUSTOMIZE: Add your navigation links here -->
+             <a href="/index.html" class="nav-item active">Library</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+              <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Speaking</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/review/review.html" class="nav-item">Review</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="points-title">Daily Points</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+    <!-- Section Title for Class Selection -->
+    <h3 class="section-subtitle">Quick Add by Class</h3>
+    
+    <!-- Class Selection Section -->
+    <div class="add-class-section">
+        <select class="class-select" id="classSelect">
+            <option value="">Select a class...</option>
+            <option value="m1">Monday 1 (m1)</option>
+            <option value="m2">Monday 2 (m2)</option>
+            <option value="tu1">Tuesday 1 (tu1)</option>
+            <option value="tu2">Tuesday 2 (tu2)</option>
+            <option value="w1">Wednesday 1 (w1)</option>
+            <option value="w2">Wednesday 2 (w2)</option>
+            <option value="th1">Thursday 1 (th1)</option>
+            <option value="th2">Thursday 2 (th2)</option>
+            <option value="s1">Saturday 1 (s1)</option>
+            <option value="s2">Saturday 2 (s2)</option>
+        </select>
+        <button class="add-student-to-daily" onclick="addClassToDaily()">Add Entire Class</button>
+    </div>
+    
+    <div class="divider-ornament"></div>
+    
+    <!-- Section Title for Individual Students -->
+    <h3 class="section-subtitle">Add Individual Student</h3>
+    
+    <!-- Individual Student Selection -->
+    <div class="add-student-section">
+        <select class="student-select" id="studentSelect">
+            <option value="">Select a scholar...</option>
+        </select>
+        <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Daily Points</button>
+    </div>
+    
+    <div class="divider-ornament"></div>
+    
+    <!-- Section Title for Active Students -->
+    <h3 class="section-subtitle">Today's Scholars</h3>
+    
+    <!-- Daily Students List -->
+    <div id="dailyStudentsList">
+        <div class="empty-state">No scholars in today's class yet.<br>Add students from the options above.</div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="sidebar-buttons">
+        <button class="action-btn" onclick="resetDailyTreasury()">Reset All Points</button>
+        <button class="action-btn save-btn" onclick="saveToConquest()">Save to Conquest</button>
+        <button class="action-btn">Export Data</button>
+    </div>
+</div>
+ </div>       
+    
+    <!-- 🏠 MAIN CONTENT -->
+<div class="main-content">
+<!--     Content Specific div class -->
+   <div class="adventure-container" id="botanicalAdventure">
+    <!-- Game Title -->
+    <h1 class="library-title">🌿 The Botanical Quest 🌿</h1>
+    <p class="subtitle">Journey together through the plant kingdoms!</p>
+
+    <!-- Party Display -->
+    <div class="party-display" id="partyDisplay">
+        <h3 class="party-title">⚔️ Your Adventuring Party ⚔️</h3>
+        <div class="party-members" id="partyMembers">
+            <!-- Party members will be loaded from daily treasury -->
+        </div>
+        <div style="text-align: center;">
+            <button class="action-button primary" onclick="startAdventure()">Begin Adventure!</button>
+        </div>
+    </div>
+
+    <!-- Party Stats Bar -->
+    <div class="party-stats" id="partyStats" style="display: none;">
+        <div class="stat-item">
+            <span class="stat-icon">👥</span>
+            <span class="stat-value" id="partySize">0 Heroes</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">⚔️</span>
+            <span class="stat-value" id="totalDamage">0 Damage Dealt</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">🏆</span>
+            <span class="stat-value" id="stagesComplete">0/5 Stages</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">⭐</span>
+            <span class="stat-value" id="totalPoints">0 Points</span>
+        </div>
+    </div>
+
+    <!-- Adventure Map -->
+    <div class="adventure-map" id="adventureMap" style="display: none;">
+        <div class="map-path">
+            <div class="map-line"></div>
+            
+            <!-- Stage 1: Basic Plants -->
+            <div class="stage-node current" onclick="enterStage(1)" id="stage1">
+                🌱
+                <span class="stage-label">Plant Basics</span>
+            </div>
+            
+            <!-- Stage 2: Cell Structure -->
+            <div class="stage-node locked" onclick="enterStage(2)" id="stage2">
+                🔬
+                <span class="stage-label">Cell Secrets</span>
+            </div>
+            
+            <!-- Stage 3: Seedless Plants -->
+            <div class="stage-node locked" onclick="enterStage(3)" id="stage3">
+                🌿
+                <span class="stage-label">Ancient Plants</span>
+            </div>
+            
+            <!-- Stage 4: Seed Plants -->
+            <div class="stage-node locked" onclick="enterStage(4)" id="stage4">
+                🌻
+                <span class="stage-label">Seed Power</span>
+            </div>
+            
+            <!-- Stage 5: Final Boss -->
+            <div class="stage-node locked boss" onclick="enterStage(5)" id="stage5">
+                🐉
+                <span class="stage-label">Plant Dragon</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battle Screen -->
+    <div class="battle-screen" id="battleScreen">
+        <h2 class="battle-title" id="battleTitle">Stage Title</h2>
+        
+        <!-- Enemy Display -->
+        <div class="enemy-display" id="enemyDisplay">
+            <div class="enemy-sprite" id="enemySprite">🌱</div>
+            <div class="enemy-name" id="enemyName">Enemy Name</div>
+            <div class="health-bar-container">
+                <div class="health-bar enemy" id="enemyHealthBar" style="width: 100%"></div>
+                <div class="health-text" id="enemyHealthText">100/100 HP</div>
+            </div>
+        </div>
+
+        <!-- Challenge Content -->
+        <div id="challengeContent">
+            <!-- Dynamic content loads here -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="text-align: center;" id="battleActions">
+            <!-- Battle actions load here -->
+        </div>
+    </div>
+
+    <!-- Victory Screen -->
+    <div class="victory-screen" id="victoryScreen">
+        <h1 class="victory-title">🏆 Victory! 🏆</h1>
+        <div class="knowledge-scroll">
+            <div class="scroll-title">Quest Complete!</div>
+            <div class="scroll-content" id="victoryStats">
+                <!-- Victory statistics will appear here -->
+            </div>
+        </div>
+        <button class="action-button primary" onclick="saveAndReturn()">Save Progress & Return</button>
+    </div>
+</div>
+    
+    
+    <!-- 📢 NOTIFICATION SYSTEM -->
+    <div class="toast" id="toast"></div>
+    
+    <script>
+      /* ======================
+   🎯 STUDENT MANAGEMENT SYSTEM
+   ====================== 
+   
+   PURPOSE: Manages daily student points and integrates with conquest system
+   
+   🔧 CUSTOMIZATION GUIDE:
+   
+   1. TEAM SETUP:
+   - Modify teamInfo object to match your team names and colors
+   - Teams are automatically loaded from localStorage 'conquestTeamData'
+   
+   2. POINT SYSTEM:
+   - Default: 10 points per click (change in addPointsToStudent function)
+   - Modify point increments in addPointsToStudent()
+   
+   3. STORAGE:
+   - Uses localStorage for persistence
+   - 'conquestTeamData' = main student/team data
+   - 'dailyStudents' = today's active students
+   - 'dailyTreasury' = today's point tracking
+   
+   4. INTEGRATION:
+   - Works with existing conquest system
+   - saveToConquest() transfers daily points to main system
+   - Automatically syncs with team data
+*/
+
+// Daily treasury object to track today's students
+let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+
+// Load all students from Conquest data
+function loadAllStudentsFromConquest() {
+    const conquestData = localStorage.getItem('conquestTeamData');
+    if (conquestData) {
+        const teamData = JSON.parse(conquestData);
+        const students = [];
+        
+        // Extract all students from teams
+        Object.entries(teamData).forEach(([teamKey, team]) => {
+            team.students.forEach(student => {
+                if (student.name !== 'Donation') {
+                    students.push({
+                        name: student.name,
+                        team: teamKey,
+                        classes: student.classes || [] // Include classes data
+                    });
+                }
+            });
+        });
+        
+        // Sort alphabetically
+        return students.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return [];
+}
+
+// 🔧 CUSTOMIZE: Team information for badges
+const teamInfo = {
+    'jiggleBoggle': { name: 'Jiggle Boggle', color: '#81c784' },
+    'pinkie': { name: 'Pinkie', color: '#f06292' },
+    'handsomeJoon': { name: 'Handsome Joon', color: '#ff6b6b' },
+    'bomi': { name: 'Bomi', color: '#ffd54f' },
+    'geniusIrene': { name: 'Genius Irene', color: '#4fc3f7' },
+    'prettyEggplant': { name: 'Pretty Eggplant', color: '#ba68c8' }
+};
+
+// Function to toggle left sidebar
+function toggleLeftSidebar() {
+    const sidebar = document.getElementById('leftSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isExpanded = sidebar.classList.contains('expanded');
+    
+    if (isExpanded) {
+        sidebar.classList.remove('expanded');
+        overlay.classList.remove('active');
+    } else {
+        document.getElementById('rightSidebar').classList.remove('expanded');
+        sidebar.classList.add('expanded');
+        overlay.classList.add('active');
+    }
+}
+
+// Function to toggle right sidebar
+function toggleRightSidebar() {
+    const sidebar = document.getElementById('rightSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isExpanded = sidebar.classList.contains('expanded');
+    
+    if (isExpanded) {
+        sidebar.classList.remove('expanded');
+        overlay.classList.remove('active');
+    } else {
+        document.getElementById('leftSidebar').classList.remove('expanded');
+        sidebar.classList.add('expanded');
+        overlay.classList.add('active');
+    }
+}
+
+// Function to close all sidebars
+function closeSidebars() {
+    document.getElementById('leftSidebar').classList.remove('expanded');
+    document.getElementById('rightSidebar').classList.remove('expanded');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+// Populate student dropdown
+function populateStudentDropdown() {
+    const select = document.getElementById('studentSelect');
+    select.innerHTML = '<option value="">Select a scholar...</option>';
+    
+    const allStudents = loadAllStudentsFromConquest();
+    
+    allStudents.forEach(student => {
+        // Only show students not already in daily list
+        if (!dailyStudents.includes(student.name)) {
+            const option = document.createElement('option');
+            option.value = student.name;
+            option.dataset.team = student.team;
+            option.textContent = student.name;
+            select.appendChild(option);
+        }
+    });
+}
+
+// Add student to daily treasury
+function addStudentToDaily() {
+    const select = document.getElementById('studentSelect');
+    const studentName = select.value;
+    
+    if (studentName && !dailyStudents.includes(studentName)) {
+        dailyStudents.push(studentName);
+        dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+        
+        // Save to localStorage
+        localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+        localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        
+        // Refresh display
+        renderDailyStudents();
+        populateStudentDropdown();
+        
+        // Reset dropdown
+        select.value = '';
+    }
+}
+
+// Function to add entire class to daily list
+function addClassToDaily() {
+    const select = document.getElementById('classSelect');
+    const className = select.value;
+    
+    console.log('=== ADD CLASS TO DAILY DEBUG ===');
+    console.log('Selected class:', className);
+    console.log('Current dailyStudents:', dailyStudents);
+    
+    if (!className) {
+        showToast('Please select a class first!');
+        return;
+    }
+    
+    const conquestData = localStorage.getItem('conquestTeamData');
+    if (!conquestData) {
+        showToast('No student data found!');
+        return;
+    }
+    
+    const teamData = JSON.parse(conquestData);
+    console.log('Loaded teamData:', teamData);
+    
+    let addedCount = 0;
+    let skippedCount = 0;
+    let totalStudentsChecked = 0;
+    
+    // Loop through all teams and students
+    Object.entries(teamData).forEach(([teamKey, team]) => {
+        console.log(`Checking team: ${teamKey}`);
+        
+        if (!team.students) {
+            console.log(`No students array in team ${teamKey}`);
+            return;
+        }
+        
+        team.students.forEach(student => {
+            totalStudentsChecked++;
+            console.log(`Checking student: ${student.name}, Classes:`, student.classes);
+            
+            // Skip if no classes array
+            if (!student.classes) {
+                console.log(`- No classes array for ${student.name}`);
+                return;
+            }
+            
+            // Check if student is in the selected class
+            const isInClass = student.classes.some(c => {
+                const matches = c.toLowerCase() === className.toLowerCase();
+                console.log(`  - Comparing "${c}" with "${className}": ${matches}`);
+                return matches;
+            });
+            
+            if (isInClass && student.name !== 'Donation') {
+                console.log(`✓ ${student.name} is in class ${className}`);
+                
+                if (!dailyStudents.includes(student.name)) {
+                    dailyStudents.push(student.name);
+                    dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                    addedCount++;
+                    console.log(`  → Added to daily list`);
+                } else {
+                    skippedCount++;
+                    console.log(`  → Already in daily list`);
+                }
+            }
+        });
+    });
+    
+    console.log(`Total students checked: ${totalStudentsChecked}`);
+    console.log(`Added: ${addedCount}, Skipped: ${skippedCount}`);
+    
+    // Save and update display
+    if (addedCount > 0) {
+        localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+        localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        renderDailyStudents();
+        populateStudentDropdown();
+    }
+    
+    // Reset dropdown
+    select.value = '';
+    
+    // Show result message
+    if (addedCount > 0 && skippedCount > 0) {
+        showToast(`✨ Added ${addedCount} students! (${skippedCount} already in class)`);
+    } else if (addedCount > 0) {
+        showToast(`✨ Added ${addedCount} students to today's class!`);
+    } else if (skippedCount > 0) {
+        showToast('All students from this class are already added!');
+    } else {
+        showToast(`No students found for ${className.toUpperCase()}`);
+        console.log('NO STUDENTS FOUND - Check the console output above');
+    }
+}
+
+// Remove student from daily treasury
+function removeStudentFromDaily(studentName) {
+    const index = dailyStudents.indexOf(studentName);
+    if (index > -1) {
+        dailyStudents.splice(index, 1);
+        delete dailyTreasury[studentName];
+        
+        // Save to localStorage
+        localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+        localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        
+        // Refresh display
+        renderDailyStudents();
+        populateStudentDropdown();
+    }
+}
+
+// Get student's team
+function getStudentTeam(studentName) {
+    const allStudents = loadAllStudentsFromConquest();
+    const student = allStudents.find(s => s.name === studentName);
+    return student ? student.team : null;
+}
+
+// Render daily students
+function renderDailyStudents() {
+    const container = document.getElementById('dailyStudentsList');
+    container.innerHTML = '';
+    
+    if (dailyStudents.length === 0) {
+        container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+        return;
+    }
+    
+    dailyStudents.forEach(studentName => {
+        const teamKey = getStudentTeam(studentName);
+        const team = teamInfo[teamKey];
+        
+        const item = document.createElement('div');
+        item.className = 'student-item';
+        
+        item.innerHTML = `
+            <div class="student-info">
+                <span class="student-name">${studentName}</span>
+                ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ''}
+            </div>
+            <div class="coin-display">
+                <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                    <span class="points-value">${dailyTreasury[studentName] || 0}</span>
+                    <span class="coin-icon"></span>
+                </button>
+                <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+            </div>
+        `;
+        
+        container.appendChild(item);
+    });
+}
+
+// Update daily treasury
+function updateDailyTreasury(name, value) {
+    dailyTreasury[name] = parseInt(value) || 0;
+    localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+}
+
+// 🔧 CUSTOMIZE: Add points when clicking on student (default: 10 points)
+function addPointsToStudent(name) {
+    const pointsToAdd = 10;                    // CUSTOMIZE: Change points per click
+    dailyTreasury[name] = (dailyTreasury[name] || 0) + pointsToAdd;
+    localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+    renderDailyStudents();
+    
+    // Visual feedback
+    const studentItems = document.querySelectorAll('.student-item');
+    studentItems.forEach(item => {
+        if (item.querySelector('.student-name').textContent === name) {
+            item.style.animation = 'pulse 0.3s ease';
+            const btn = item.querySelector('.points-btn');
+            if (btn) {
+                btn.style.animation = 'goldenGlow 0.3s ease';
+            }
+            setTimeout(() => {
+                item.style.animation = '';
+                if (btn) btn.style.animation = '';
+            }, 300);
+        }
+    });
+}
+
+// Save to Conquest
+function saveToConquest() {
+    const conquestData = localStorage.getItem('conquestTeamData');
+    if (!conquestData) {
+        showToast('No Conquest data found!');
+        return;
+    }
+    
+    const teamData = JSON.parse(conquestData);
+    let totalPointsAdded = 0;
+    
+    // Update each student's points in their team
+    Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+        if (dailyPoints > 0) {
+            // Find which team the student belongs to
+            for (const [teamKey, team] of Object.entries(teamData)) {
+                const studentIndex = team.students.findIndex(s => s.name === studentName);
+                if (studentIndex !== -1) {
+                    // Add daily points to existing points
+                    teamData[teamKey].students[studentIndex].points += dailyPoints;
+                    totalPointsAdded += dailyPoints;
+                    break;
+                }
+            }
+        }
+    });
+    
+    // Save updated conquest data
+    localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+    
+    // Reset daily data
+    dailyStudents = [];
+    dailyTreasury = {};
+    localStorage.removeItem('dailyStudents');
+    localStorage.removeItem('dailyTreasury');
+    
+    // Refresh display
+    renderDailyStudents();
+    populateStudentDropdown();
+    
+    showToast(`✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`);
+}
+
+// Reset daily treasury
+function resetDailyTreasury() {
+    if (confirm('Are you sure you want to clear today\'s class? This will remove all students and their daily points!')) {
+        // Clear the data
+        dailyStudents = [];
+        dailyTreasury = {};
+        
+        // Clear from localStorage
+        localStorage.removeItem('dailyStudents');
+        localStorage.removeItem('dailyTreasury');
+        
+        // Force a refresh of the display
+        renderDailyStudents();
+        populateStudentDropdown();
+        
+        showToast('Daily treasury cleared!');
+    }
+}
+
+// Show toast notification
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);                                  // CUSTOMIZE: Toast display duration
+}
+
+// Go back function
+function goBack() {
+    window.history.back();
+}
+
+// Close sidebars when clicking on a nav item
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', closeSidebars);
+});
+
+// Handle touch events for better tablet experience
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const swipeThreshold = 50;                 // CUSTOMIZE: Swipe sensitivity
+    const leftSidebar = document.getElementById('leftSidebar');
+    const rightSidebar = document.getElementById('rightSidebar');
+    
+    // Swipe right to open left sidebar
+    if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+        leftSidebar.classList.add('expanded');
+        document.getElementById('sidebarOverlay').classList.add('active');
+    }
+    
+    // Swipe left to open right sidebar
+    if (touchStartX - touchEndX > swipeThreshold && touchStartX > window.innerWidth - 50) {
+        rightSidebar.classList.add('expanded');
+        document.getElementById('sidebarOverlay').classList.add('active');
+    }
+}
+
+// 🔧 CUSTOMIZE: Add floating particles (decorative effect)
+function createParticles() {
+    const particleCount = 20;                  // CUSTOMIZE: Number of particles
+    const particleSymbols = ['✦', '◆', '❋', '✧']; // CUSTOMIZE: Particle symbols
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.innerHTML = particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+        particle.style.color = '#d4af37';
+        particle.style.fontSize = Math.random() * 10 + 10 + 'px';
+        document.body.appendChild(particle);
+    }
+}
+
+// ======================
+// ADVENTURE GAME CODE
+// ======================
+
+// Game State
+let adventureState = {
+    party: [],
+    currentStage: 0,
+    stagesCompleted: [],
+    enemies: {},
+    selectedStudent: null,
+    totalDamage: 0,
+    totalPoints: 0,
+    currentEnemy: null,
+    currentChallenge: null,
+    fallenHeroes: []
+};
+
+// Stage Data
+const stages = {
+    1: {
+        name: "The Garden Guardian",
+        enemy: {
+            name: "Chloro-Knight",
+            sprite: "🌱",
+            hp: 200,
+            maxHp: 200
+        },
+        challenges: [
+            {
+                question: "What do all plants have that animal cells don't?",
+                options: ["Cell Wall", "Nucleus", "Cytoplasm", "Cell Membrane"],
+                correct: 0,
+                damage: 25,
+                explanation: "Cell walls made of cellulose give plants structure!"
+            },
+            {
+                question: "What are plants called because they make their own food?",
+                options: ["Consumers", "Decomposers", "Producers", "Predators"],
+                correct: 2,
+                damage: 25,
+                explanation: "Producers make their own food using sunlight!"
+            },
+            {
+                question: "What green structures in plant cells make food?",
+                options: ["Mitochondria", "Chloroplasts", "Ribosomes", "Vacuoles"],
+                correct: 1,
+                damage: 25,
+                explanation: "Chloroplasts are the green food factories!"
+            },
+            {
+                question: "What waxy layer protects plant leaves from water loss?",
+                options: ["Cuticle", "Epidermis", "Cortex", "Bark"],
+                correct: 0,
+                damage: 25,
+                explanation: "The cuticle is a waxy protective layer!"
+            },
+            {
+                question: "What process do plants use to make food?",
+                options: ["Respiration", "Digestion", "Photosynthesis", "Fermentation"],
+                correct: 2,
+                damage: 25,
+                explanation: "Photosynthesis converts light energy into food!"
+            },
+            {
+                question: "Plants are multicellular. What does this mean?",
+                options: ["One cell", "Many cells", "No cells", "Dead cells"],
+                correct: 1,
+                damage: 25,
+                explanation: "Multicellular means made of many cells working together!"
+            },
+            {
+                question: "What do mature plant cells store in vacuoles?",
+                options: ["Air", "Oil", "Sap", "Blood"],
+                correct: 2,
+                damage: 25,
+                explanation: "Vacuoles store a watery liquid called sap!"
+            },
+            {
+                question: "Which organelle is found in plant cells but NOT animal cells?",
+                options: ["Nucleus", "Cell wall", "Mitochondria", "Cytoplasm"],
+                correct: 1,
+                damage: 25,
+                explanation: "Cell walls provide support and protection to plant cells!"
+            },
+            {
+                question: "What color are most chloroplasts?",
+                options: ["Red", "Blue", "Green", "Yellow"],
+                correct: 2,
+                damage: 25,
+                explanation: "Chloroplasts contain green chlorophyll!"
+            },
+            {
+                question: "What do plants need for photosynthesis besides sunlight?",
+                options: ["Only oxygen", "Carbon dioxide and water", "Only nitrogen", "Only minerals"],
+                correct: 1,
+                damage: 25,
+                explanation: "Plants need CO₂ and H₂O along with sunlight!"
+            }
+        ]
+    },
+    2: {
+        name: "The Cellular Sentinel",
+        enemy: {
+            name: "Cell Wall Warrior",
+            sprite: "🔬",
+            hp: 200,
+            maxHp: 200
+        },
+        challenges: [
+            {
+                question: "What is cellulose?",
+                options: ["A type of sugar", "Material that makes cell walls", "Plant food", "A green pigment"],
+                correct: 1,
+                damage: 25,
+                explanation: "Cellulose is the strong material in plant cell walls!"
+            },
+            {
+                question: "Plants evolved from which ancient organisms?",
+                options: ["Bacteria", "Fungi", "Green Algae", "Animals"],
+                correct: 2,
+                damage: 25,
+                explanation: "All plants evolved from ancient green algae!"
+            },
+            {
+                question: "Which adaptation helps plants live on dry land?",
+                options: ["Gills", "Fins", "Vascular tissue", "Scales"],
+                correct: 2,
+                damage: 25,
+                explanation: "Vascular tissue transports water throughout the plant!"
+            },
+            {
+                question: "What do plants release as a waste product of photosynthesis?",
+                options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Water"],
+                correct: 1,
+                damage: 25,
+                explanation: "Plants release oxygen, which we breathe!"
+            },
+            {
+                question: "What are the tiny openings in leaves called?",
+                options: ["Pores", "Stomata", "Holes", "Gaps"],
+                correct: 1,
+                damage: 25,
+                explanation: "Stomata allow gases to enter and exit the leaf!"
+            },
+            {
+                question: "What makes cellulose strong and rigid in woody plants?",
+                options: ["Chlorophyll", "Starch", "Lignin", "Sugar"],
+                correct: 2,
+                damage: 25,
+                explanation: "Lignin strengthens cellulose in wood!"
+            },
+            {
+                question: "How do plants on land get water differently than aquatic plants?",
+                options: ["From air", "Through roots", "From other plants", "They don't need water"],
+                correct: 1,
+                damage: 25,
+                explanation: "Land plants absorb water through their roots!"
+            },
+            {
+                question: "What guards the stomata openings?",
+                options: ["Root cells", "Stem cells", "Guard cells", "Flower cells"],
+                correct: 2,
+                damage: 25,
+                explanation: "Guard cells control the size of stomata!"
+            },
+            {
+                question: "What increased in the atmosphere as land plants spread?",
+                options: ["Carbon dioxide", "Oxygen", "Methane", "Nitrogen"],
+                correct: 1,
+                damage: 25,
+                explanation: "Oxygen increased as plants spread across land!"
+            },
+            {
+                question: "What evidence shows plants and green algae are related?",
+                options: ["Same size", "DNA similarities", "Same habitat", "Same color"],
+                correct: 1,
+                damage: 25,
+                explanation: "DNA similarities prove their evolutionary connection!"
+            }
+        ]
+    },
+    3: {
+        name: "The Moss Monster",
+        enemy: {
+            name: "Bryophyte Beast",
+            sprite: "🌿",
+            hp: 200,
+            maxHp: 200
+        },
+        challenges: [
+            {
+                question: "What do nonvascular plants use instead of roots?",
+                options: ["Stems", "Leaves", "Rhizoids", "Branches"],
+                correct: 2,
+                damage: 25,
+                explanation: "Rhizoids anchor bryophytes to surfaces!"
+            },
+            {
+                question: "Which is a nonvascular seedless plant?",
+                options: ["Fern", "Pine tree", "Moss", "Rose"],
+                correct: 2,
+                damage: 25,
+                explanation: "Mosses are nonvascular - no tubes for water!"
+            },
+            {
+                question: "Why do mosses stay small?",
+                options: ["They don't like sunlight", "No vascular tissue", "They're baby plants", "Magic"],
+                correct: 1,
+                damage: 25,
+                explanation: "Without vascular tissue, they can't transport water far!"
+            },
+            {
+                question: "Which plant has fronds?",
+                options: ["Moss", "Liverwort", "Fern", "Hornwort"],
+                correct: 2,
+                damage: 25,
+                explanation: "Ferns have leaves called fronds!"
+            },
+            {
+                question: "What do seedless plants use to reproduce?",
+                options: ["Seeds", "Flowers", "Spores", "Fruits"],
+                correct: 2,
+                damage: 25,
+                explanation: "Seedless plants reproduce using spores!"
+            },
+            {
+                question: "How do materials move in nonvascular plants?",
+                options: ["Through tubes", "By osmosis and diffusion", "They don't move", "Through roots"],
+                correct: 1,
+                damage: 25,
+                explanation: "Materials move cell to cell by osmosis and diffusion!"
+            },
+            {
+                question: "What's special about hornwort cells?",
+                options: ["No chloroplasts", "One chloroplast per cell", "Purple chloroplasts", "Square chloroplasts"],
+                correct: 1,
+                damage: 25,
+                explanation: "Hornworts have just ONE chloroplast per cell!"
+            },
+            {
+                question: "Where do mosses typically grow?",
+                options: ["Hot deserts", "Shady, damp places", "Ocean floor", "Mountain peaks"],
+                correct: 1,
+                damage: 25,
+                explanation: "Mosses love shady, moist environments!"
+            },
+            {
+                question: "What shape are liverworts named after?",
+                options: ["Heart", "Liver", "Kidney", "Brain"],
+                correct: 1,
+                damage: 25,
+                explanation: "Liverworts resemble flattened liver lobes!"
+            },
+            {
+                question: "Which ancient plants formed fossil fuels?",
+                options: ["Modern flowers", "Giant ancient ferns", "Tiny mosses", "Grass"],
+                correct: 1,
+                damage: 25,
+                explanation: "Ancient giant ferns formed our coal deposits!"
+            }
+        ]
+    },
+    4: {
+        name: "The Seed Sorcerer",
+        enemy: {
+            name: "Angiosperm Wizard",
+            sprite: "🌻",
+            hp: 200,
+            maxHp: 200
+        },
+        challenges: [
+            {
+                question: "Which vascular tissue carries water UP?",
+                options: ["Phloem", "Xylem", "Cambium", "Cortex"],
+                correct: 1,
+                damage: 25,
+                explanation: "Xylem carries water UP - X marks the top!"
+            },
+            {
+                question: "Gymnosperms have seeds in...",
+                options: ["Flowers", "Fruits", "Cones", "Leaves"],
+                correct: 2,
+                damage: 25,
+                explanation: "Gymnosperms like pine trees have seeds in cones!"
+            },
+            {
+                question: "Parallel leaf veins indicate a...",
+                options: ["Dicot", "Monocot", "Gymnosperm", "Bryophyte"],
+                correct: 1,
+                damage: 25,
+                explanation: "Monocots have parallel leaf veins!"
+            },
+            {
+                question: "How many years do perennial plants live?",
+                options: ["One", "Two", "Many", "Zero"],
+                correct: 2,
+                damage: 25,
+                explanation: "Perennials live for many years, like trees!"
+            },
+            {
+                question: "Flower parts in groups of 4 or 5 indicate a...",
+                options: ["Monocot", "Dicot", "Moss", "Fern"],
+                correct: 1,
+                damage: 25,
+                explanation: "Dicots have flower parts in 4s or 5s!"
+            },
+            {
+                question: "Which tissue transports sugar DOWN from leaves?",
+                options: ["Xylem", "Phloem", "Cambium", "Epidermis"],
+                correct: 1,
+                damage: 25,
+                explanation: "Phloem flows food down from the leaves!"
+            },
+            {
+                question: "What produces new vascular tissue?",
+                options: ["Leaves", "Flowers", "Cambium", "Roots"],
+                correct: 2,
+                damage: 25,
+                explanation: "Cambium is the growth layer between xylem and phloem!"
+            },
+            {
+                question: "How many cotyledons do monocots have?",
+                options: ["None", "One", "Two", "Three"],
+                correct: 1,
+                damage: 25,
+                explanation: "Monocots have one cotyledon (seed leaf)!"
+            },
+            {
+                question: "Annual plants complete their life cycle in...",
+                options: ["One season", "Two seasons", "Three seasons", "Many years"],
+                correct: 0,
+                damage: 25,
+                explanation: "Annuals grow, flower, produce seeds, and die in one season!"
+            },
+            {
+                question: "What kind of stem tissue is in bundles scattered throughout monocots?",
+                options: ["Cambium", "Cork", "Vascular tissue", "Pith"],
+                correct: 2,
+                damage: 25,
+                explanation: "Monocots have scattered vascular bundles!"
+            }
+        ]
+    },
+    5: {
+        name: "FINAL BOSS: The Plant Dragon",
+        enemy: {
+            name: "Chlorophyll Dragon",
+            sprite: "🐉",
+            hp: 200,
+            maxHp: 200,
+            isBoss: true
+        },
+        challenges: [
+            {
+                question: "BOSS: What transports sugar DOWN from leaves?",
+                options: ["Xylem", "Phloem", "Stomata", "Cuticle"],
+                correct: 1,
+                damage: 25,
+                explanation: "Phloem flows food down from the leaves!"
+            },
+            {
+                question: "BOSS: Which plants dominated Earth before flowering plants?",
+                options: ["Mosses", "Algae", "Giant ferns", "Grasses"],
+                correct: 2,
+                damage: 25,
+                explanation: "Ancient giant ferns formed our coal deposits!"
+            },
+            {
+                question: "BOSS: What's unique about hornwort cells?",
+                options: ["No chloroplasts", "One chloroplast per cell", "Purple chloroplasts", "Square chloroplasts"],
+                correct: 1,
+                damage: 25,
+                explanation: "Hornworts have just ONE chloroplast per cell!"
+            },
+            {
+                question: "BOSS: What plant chemical strengthens wood?",
+                options: ["Cellulose", "Chlorophyll", "Lignin", "Starch"],
+                correct: 2,
+                damage: 25,
+                explanation: "Lignin makes cellulose stronger and more rigid!"
+            },
+            {
+                question: "ULTIMATE: What percentage of plants are vascular?",
+                options: ["50%", "70%", "90%", "30%"],
+                correct: 2,
+                damage: 25,
+                explanation: "Over 90% of plant species are vascular plants!"
+            },
+            {
+                question: "BOSS: What are the two types of vascular tissue?",
+                options: ["Root and stem", "Xylem and phloem", "Leaf and flower", "Wood and bark"],
+                correct: 1,
+                damage: 25,
+                explanation: "Xylem and phloem transport water and nutrients!"
+            },
+            {
+                question: "BOSS: Biennial plants complete their life cycle in...",
+                options: ["One year", "Two years", "Three years", "Many years"],
+                correct: 1,
+                damage: 25,
+                explanation: "Biennials take two growing seasons to complete their cycle!"
+            },
+            {
+                question: "BOSS: What cells help regulate sieve-tube elements?",
+                options: ["Guard cells", "Companion cells", "Root cells", "Stem cells"],
+                correct: 1,
+                damage: 25,
+                explanation: "Companion cells control sieve-tube element function!"
+            },
+            {
+                question: "BOSS: Which layer of leaf cells does most photosynthesis?",
+                options: ["Epidermis", "Spongy mesophyll", "Palisade mesophyll", "Cuticle"],
+                correct: 2,
+                damage: 25,
+                explanation: "Palisade mesophyll cells are the main photosynthesis sites!"
+            },
+            {
+                question: "ULTIMATE CHALLENGE: What did land plants evolve from?",
+                options: ["Blue-green algae", "Red algae", "Green algae", "Brown algae"],
+                correct: 2,
+                damage: 25,
+                explanation: "All land plants evolved from ancient green algae ancestors!"
+            }
+        ]
+    }
+};
+
+// Load party members from daily treasury
+function loadPartyMembers() {
+    const dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+    const dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+    
+    adventureState.party = dailyStudents.map(name => ({
+        name: name,
+        points: dailyTreasury[name] || 0,
+        hp: 3,
+        maxHp: 3
+    }));
+    
+    displayParty();
+}
+
+// Display party members
+function displayParty() {
+    const partyDiv = document.getElementById('partyMembers');
+    
+    if (adventureState.party.length === 0) {
+        partyDiv.innerHTML = '<p style="color: #b8860b;">No adventurers in the party! Add students to daily treasury first.</p>';
+        document.querySelector('.action-button.primary').style.display = 'none';
+        return;
+    }
+    
+    partyDiv.innerHTML = adventureState.party.map(member => {
+        const isDead = member.hp <= 0;
+        return `
+            <div class="party-member ${isDead ? 'fallen' : ''}" data-member="${member.name}">
+                ${member.name} 
+                <span class="member-points">(${member.points} pts)</span>
+                <span class="member-hp" style="color: ${member.hp <= 1 ? '#ff6b6b' : '#81c784'};">
+                    ${isDead ? '💀' : '❤️'.repeat(member.hp)}
+                </span>
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('partySize').textContent = `${adventureState.party.length} Heroes`;
+}
+
+// Start adventure
+function startAdventure() {
+    if (adventureState.party.length === 0) {
+        showToast('Add students to daily treasury first!');
+        return;
+    }
+    
+    document.getElementById('partyDisplay').style.display = 'none';
+    document.getElementById('partyStats').style.display = 'flex';
+    document.getElementById('adventureMap').style.display = 'block';
+    
+    showToast('Your adventure begins! Click on the first stage to start.');
+}
+
+// Enter stage
+function enterStage(stageNum) {
+    const stageNode = document.getElementById(`stage${stageNum}`);
+    
+    if (stageNode.classList.contains('locked')) {
+        showToast('Complete previous stages first!');
+        return;
+    }
+    
+    adventureState.currentStage = stageNum;
+    const stage = stages[stageNum];
+    
+    // Initialize enemy
+    adventureState.currentEnemy = {...stage.enemy};
+    adventureState.enemies[stageNum] = adventureState.currentEnemy;
+    
+    // Show battle screen
+    document.getElementById('adventureMap').style.display = 'none';
+    document.getElementById('battleScreen').style.display = 'block';
+    
+    // Setup battle
+    document.getElementById('battleTitle').textContent = stage.name;
+    document.getElementById('enemySprite').textContent = stage.enemy.sprite;
+    document.getElementById('enemyName').textContent = stage.enemy.name;
+    updateEnemyHealth();
+    
+    // Start with story or first challenge
+    if (stageNum === 5) {
+        showBossIntro();
+    } else {
+        showNextChallenge();
+    }
+}
+
+// Show boss intro
+function showBossIntro() {
+    const content = document.getElementById('challengeContent');
+    content.innerHTML = `
+        <div class="knowledge-scroll">
+            <div class="scroll-title">⚠️ FINAL BOSS ENCOUNTER ⚠️</div>
+            <div class="scroll-content">
+                <p><strong>The Chlorophyll Dragon awaits!</strong></p>
+                <p>This ancient guardian protects the deepest secrets of the plant kingdom.</p>
+                <p>Only the most knowledgeable adventurers can defeat it!</p>
+                <p><em>Each correct answer deals massive damage!</em></p>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('battleActions').innerHTML = `
+        <button class="action-button primary" onclick="showNextChallenge()">
+            Challenge the Dragon!
+        </button>
+    `;
+}
+
+// Show next challenge
+function showNextChallenge() {
+    const stage = stages[adventureState.currentStage];
+    const challenges = stage.challenges;
+    
+    // Check if any party members are still alive
+    const aliveMembers = adventureState.party.filter(m => m.hp > 0);
+    if (aliveMembers.length === 0) {
+        document.getElementById('challengeContent').innerHTML = `
+            <div class="knowledge-scroll">
+                <div class="scroll-title">💀 Total Party Wipe! 💀</div>
+                <div class="scroll-content">
+                    <p>All heroes have fallen in battle!</p>
+                    <p>The ${stages[adventureState.currentStage].enemy.name} stands victorious...</p>
+                    <p style="margin-top: 20px; color: #ff6b6b;">Game Over - No heroes remain!</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('battleActions').innerHTML = `
+            <button class="action-button primary" onclick="showVictory()">
+                View Final Results
+            </button>
+        `;
+        return;
+    }
+    
+    // Find next unanswered challenge
+    let challengeIndex = -1;
+    for (let i = 0; i < challenges.length; i++) {
+        if (!challenges[i].answered) {
+            challengeIndex = i;
+            break;
+        }
+    }
+    
+    if (challengeIndex === -1) {
+        // Stage complete
+        completeStage();
+        return;
+    }
+    
+    const challenge = challenges[challengeIndex];
+    adventureState.currentChallenge = {challenge, index: challengeIndex};
+    
+    const content = document.getElementById('challengeContent');
+    content.innerHTML = `
+        <div class="challenge-display">
+            <div class="challenge-question">${challenge.question}</div>
+            <div class="student-selector">
+                <div class="selector-title">Choose an Adventurer to Answer!</div>
+                <div class="party-members">
+    ${adventureState.party.map(member => {
+        const isDead = member.hp <= 0;
+        return `
+            <div class="party-member ${isDead ? 'fallen' : ''}" 
+                 onclick="${isDead ? '' : `selectAnswerer('${member.name}')`}">
+                ${member.name} ${isDead ? '💀' : `(${member.hp} HP)`}
+            </div>
+        `;
+    }).join('')}
+</div>
+            </div>
+            <div class="challenge-options">
+                ${challenge.options.map((option, index) => `
+                    <div class="challenge-option disabled" onclick="submitAnswer(${index})">
+                        ${option}
+                    </div>
+                `).join('')}
+            </div>
+            <div id="challengeFeedback"></div>
+        </div>
+    `;
+    
+    document.getElementById('battleActions').innerHTML = '';
+}
+
+// Select answerer
+function selectAnswerer(studentName) {
+    const member = adventureState.party.find(m => m.name === studentName);
+    if (!member || member.hp <= 0) {
+        showToast('This hero has fallen! Choose another adventurer.');
+        return;
+    }
+    
+    // FIXED: Set the selected student
+    adventureState.selectedStudent = studentName;
+    
+    // Update visual feedback
+    document.querySelectorAll('.party-member').forEach(member => {
+        member.classList.remove('answering');
+        if (member.textContent.includes(studentName)) {
+            member.classList.add('answering');
+        }
+    });
+    
+    // Enable answer options
+    document.querySelectorAll('.challenge-option').forEach(option => {
+        option.classList.remove('disabled');
+    });
+    
+    showToast(`${studentName} steps forward to answer!`);
+}
+
+// Submit answer
+function submitAnswer(answerIndex) {
+    if (!adventureState.selectedStudent) {
+        showToast('Choose an adventurer first!');
+        return;
+    }
+    
+    const {challenge, index} = adventureState.currentChallenge;
+    const correct = answerIndex === challenge.correct;
+    
+    // Mark as answered
+    stages[adventureState.currentStage].challenges[index].answered = true;
+    
+    // Disable options
+    document.querySelectorAll('.challenge-option').forEach(option => {
+        option.classList.add('disabled');
+    });
+    
+    if (correct) {
+        // Deal damage
+        dealDamage(challenge.damage);
+        
+        // Award points
+        const points = 10; // Always 10 points now
+        awardPoints(adventureState.selectedStudent, points);
+        
+        // Show feedback
+        document.getElementById('challengeFeedback').innerHTML = `
+            <div class="knowledge-scroll" style="margin-top: 20px;">
+                <div class="scroll-title">✅ Critical Hit! -${challenge.damage} HP!</div>
+                <div class="scroll-content">${challenge.explanation}</div>
+            </div>
+        `;
+        
+        // Update student visual
+        document.querySelectorAll('.party-member').forEach(member => {
+            if (member.textContent.includes(adventureState.selectedStudent)) {
+                member.classList.add('correct');
+            }
+        });
+        
+    } else {
+        // Find the student and reduce HP
+        const member = adventureState.party.find(m => m.name === adventureState.selectedStudent);
+        if (member) {
+            member.hp--;
+            
+            if (member.hp <= 0) {
+                adventureState.fallenHeroes.push(member.name);
+                showToast(`☠️ ${member.name} has fallen in battle!`);
+            } else {
+                showToast(`💔 ${member.name} takes damage! ${member.hp} HP remaining!`);
+            }
+            
+            // Update party display
+            displayParty();
+        }
+        
+        document.getElementById('challengeFeedback').innerHTML = `
+            <p style="color: #ef5350; text-align: center; font-size: 20px; margin-top: 20px;">
+                ❌ Miss! The enemy strikes back!
+                ${member && member.hp > 0 ? `<br>${member.name} has ${member.hp} HP left!` : ''}
+            </p>
+        `;
+    }
+    
+    // Continue button
+    setTimeout(() => {
+        document.getElementById('battleActions').innerHTML = `
+            <button class="action-button primary" onclick="continueAdventure()">
+                Continue Battle →
+            </button>
+        `;
+    }, 1500);
+}
+
+// Deal damage to enemy
+function dealDamage(damage) {
+    adventureState.currentEnemy.hp -= damage;
+    adventureState.totalDamage += damage;
+    
+    if (adventureState.currentEnemy.hp < 0) {
+        adventureState.currentEnemy.hp = 0;
+    }
+    
+    updateEnemyHealth();
+    
+    // Show damage number
+    const enemyDiv = document.getElementById('enemyDisplay');
+    const damageNum = document.createElement('div');
+    damageNum.className = 'damage-number';
+    damageNum.textContent = `-${damage}`;
+    damageNum.style.left = '50%';
+    damageNum.style.top = '50%';
+    enemyDiv.appendChild(damageNum);
+    
+    setTimeout(() => damageNum.remove(), 1000);
+    
+    // Update stats
+    document.getElementById('totalDamage').textContent = `${adventureState.totalDamage} Damage Dealt`;
+}
+
+// Update enemy health bar
+function updateEnemyHealth() {
+    const enemy = adventureState.currentEnemy;
+    const healthPercent = (enemy.hp / enemy.maxHp) * 100;
+    
+    document.getElementById('enemyHealthBar').style.width = `${healthPercent}%`;
+    document.getElementById('enemyHealthText').textContent = `${enemy.hp}/${enemy.maxHp} HP`;
+    
+    // Change color at low health
+    if (healthPercent < 30) {
+        document.getElementById('enemyHealthBar').style.background = 'linear-gradient(90deg, #d32f2f, #ff5252)';
+    }
+}
+
+// Award points
+function awardPoints(studentName, points) {
+    // Update party member
+    const member = adventureState.party.find(m => m.name === studentName);
+    if (member) {
+        member.points += points;
+    }
+    
+    // Update daily treasury
+    const dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+    dailyTreasury[studentName] = (dailyTreasury[studentName] || 0) + points;
+    localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+    
+    // Update total
+    adventureState.totalPoints += points;
+    document.getElementById('totalPoints').textContent = `${adventureState.totalPoints} Points`;
+    
+    showToast(`+${points} points for ${studentName}!`);
+}
+
+// Continue adventure
+function continueAdventure() {
+    adventureState.selectedStudent = null;
+    
+    // Reset visuals
+    document.querySelectorAll('.party-member').forEach(member => {
+        member.classList.remove('answering', 'correct');
+    });
+    
+    if (adventureState.currentEnemy.hp <= 0) {
+        completeStage();
+    } else {
+        showNextChallenge();
+    }
+}
+
+// Complete stage
+function completeStage() {
+    const stageNum = adventureState.currentStage;
+    const enemyDefeated = adventureState.currentEnemy.hp <= 0;
+    
+    adventureState.stagesCompleted.push(stageNum);
+    
+    // Update map
+    document.getElementById(`stage${stageNum}`).classList.remove('current');
+    document.getElementById(`stage${stageNum}`).classList.add('completed');
+    
+    // Show appropriate message based on whether enemy was defeated
+    const content = document.getElementById('challengeContent');
+    
+    if (enemyDefeated) {
+        content.innerHTML = `
+            <div class="knowledge-scroll">
+                <div class="scroll-title">🎉 Stage Complete! 🎉</div>
+                <div class="scroll-content">
+                    <p><strong>${stages[stageNum].enemy.name} Defeated!</strong></p>
+                    <p>Your party has proven their knowledge!</p>
+                    ${stageNum === 5 ? '<p style="font-size: 24px; color: #ffd700;">🏆 YOU ARE THE CHAMPIONS! 🏆</p>' : ''}
+                </div>
+            </div>
+        `;
+    } else {
+        // Enemy survives - party takes damage
+        adventureState.party.forEach(member => {
+            if (member.hp > 0) {
+                member.hp--;
+                if (member.hp <= 0) {
+                    adventureState.fallenHeroes.push(member.name);
+                }
+            }
+        });
+        
+        content.innerHTML = `
+            <div class="knowledge-scroll">
+                <div class="scroll-title">⚔️ Tactical Retreat! ⚔️</div>
+                <div class="scroll-content">
+                    <p><strong>The ${stages[stageNum].enemy.name} survives!</strong></p>
+                    <p>Your party escapes but everyone takes 1 damage!</p>
+                    <p style="color: #ff6b6b;">Party members take damage from the retreat!</p>
+                    ${adventureState.fallenHeroes.length > 0 ? `<p>Fallen heroes: ${adventureState.fallenHeroes.filter((h, i, arr) => arr.lastIndexOf(h) === i).join(', ')}</p>` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
+    // NO REVIVALS - Heroes stay dead!
+    
+    document.getElementById('battleActions').innerHTML = `
+        <button class="action-button primary" onclick="${stageNum === 5 ? 'showVictory()' : 'returnToMap()'}">
+            ${stageNum === 5 ? 'Claim Victory!' : 'Continue Journey →'}
+        </button>
+    `;
+    
+    // Update progress
+    document.getElementById('stagesComplete').textContent = `${adventureState.stagesCompleted.length}/5 Stages`;
+    
+    // Unlock next stage
+    if (stageNum < 5) {
+        document.getElementById(`stage${stageNum + 1}`).classList.remove('locked');
+        document.getElementById(`stage${stageNum + 1}`).classList.add('current');
+    }
+}
+
+// Return to map
+function returnToMap() {
+    document.getElementById('battleScreen').style.display = 'none';
+    document.getElementById('adventureMap').style.display = 'block';
+    
+    // Reset challenge answers for replay
+    const stage = stages[adventureState.currentStage];
+    stage.challenges.forEach(c => delete c.answered);
+}
+
+// Show victory screen
+function showVictory() {
+    document.getElementById('battleScreen').style.display = 'none';
+    document.getElementById('victoryScreen').style.display = 'block';
+    
+    // Calculate stats
+    const topScorer = adventureState.party.reduce((a, b) => a.points > b.points ? a : b);
+    
+    document.getElementById('victoryStats').innerHTML = `
+        <p style="font-size: 20px; margin-bottom: 20px;">The Plant Dragon has been defeated!</p>
+        <p><strong>Party Statistics:</strong></p>
+        <p>🎯 Total Damage Dealt: ${adventureState.totalDamage}</p>
+        <p>⭐ Total Points Earned: ${adventureState.totalPoints}</p>
+        <p>👑 MVP: ${topScorer.name} (${topScorer.points} points)</p>
+        <hr style="margin: 20px 0; border-color: #8b6914;">
+        <p><strong>Individual Scores:</strong></p>
+        ${adventureState.party.map(m => `<p>${m.name}: ${m.points} points</p>`).join('')}
+    `;
+}
+
+// Save and return
+function saveAndReturn() {
+    showToast('Adventure complete! Points saved to daily treasury.');
+    setTimeout(() => {
+        window.location.href = '/index.html';
+    }, 2000);
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    // Re-initialize from localStorage to ensure sync
+    dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+    dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+    
+    populateStudentDropdown();
+    renderDailyStudents();
+    createParticles();
+    loadPartyMembers();
+});
+    </script>
+</body>
+</html>

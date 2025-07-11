@@ -1,0 +1,2634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Library - Comprehensive Template</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <style>
+        /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== 
+           
+           PURPOSE: Sets up the foundation for the entire page
+           CUSTOMIZE: Change font families, base colors, background gradients
+           
+           Key Variables:
+           - Primary Gold: #d4af37
+           - Light Gold: #f4e4bc  
+           - Dark Gold: #b8860b
+           - Team Colors: Defined in JavaScript teamInfo object
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;           /* CUSTOMIZE: Change main font */
+            background: #1a1a1a;                    /* CUSTOMIZE: Base background color */
+            color: #d4af37;                         /* CUSTOMIZE: Default text color */
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+            font-size: 12px;
+        }
+
+        /* ======================
+           ✨ SPECIAL EFFECTS & ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Creates the medieval atmosphere with candlelight and particles
+           CUSTOMIZE: Adjust animation speeds, particle counts, flicker intensity
+           
+           Components:
+           - Candlelight overlay (::before pseudo-element)
+           - Floating particles (.particle class)
+           - Corner ornaments (decorative SVG elements)
+        */
+        
+        /* Candlelight flickering effect - creates warm atmospheric lighting */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;    /* CUSTOMIZE: Change flicker speed */
+            z-index: 1;
+        }
+        
+        /* CUSTOMIZE: Adjust flicker intensity and timing */
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }    /* Base opacity */
+            25% { opacity: 0.9; }         /* Bright moment */
+            50% { opacity: 0.75; }        /* Dim moment */
+            75% { opacity: 0.85; }        /* Medium bright */
+        }
+        
+        /* Floating particles - decorative elements that float upward */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;    /* CUSTOMIZE: Change float speed */
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;                          /* CUSTOMIZE: Particle visibility */
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Decorative corner ornaments - SVG-based decorative elements */
+        .corner-ornament {
+            position: fixed;
+            width: 120px;                              /* CUSTOMIZE: Ornament size */
+            height: 120px;
+            opacity: 0.3;                              /* CUSTOMIZE: Ornament visibility */
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+            background-size: contain;
+            z-index: 1;
+        }
+        
+        /* CUSTOMIZE: Adjust corner ornament positions */
+        .corner-top-left {
+            top: 20px;
+            left: 70px;
+        }
+        
+        .corner-top-right {
+            top: 20px;
+            right: 70px;
+            transform: scaleX(-1);
+        }
+        
+        .corner-bottom-left {
+            bottom: 20px;
+            left: 70px;
+            transform: scaleY(-1);
+        }
+        
+        .corner-bottom-right {
+            bottom: 20px;
+            right: 70px;
+            transform: scale(-1, -1);
+        }
+
+        /* ======================
+           🔙 NAVIGATION & BACK BUTTON
+           ====================== 
+           
+           PURPOSE: Provides navigation controls
+           CUSTOMIZE: Position, styling, hover effects
+           
+           Usage: Add onclick="goBack()" to any back button
+        */
+        
+        .back-button {
+            position: fixed;
+            top: 20px;                                 /* CUSTOMIZE: Vertical position */
+            left: 20px;                                /* CUSTOMIZE: Horizontal position */
+            background: rgba(212, 175, 55, 0.2);      /* CUSTOMIZE: Background color */
+            border: 2px solid #8b6914;                /* CUSTOMIZE: Border color */
+            color: #f4e4bc;                            /* CUSTOMIZE: Text color */
+            padding: 12px 24px;                       /* CUSTOMIZE: Button size */
+            font-family: 'Cinzel', serif;             /* CUSTOMIZE: Font */
+            font-size: 16px;                          /* CUSTOMIZE: Font size */
+            font-weight: 600;
+                 text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+/*         .back-button::before {
+            content: '←';                              /* CUSTOMIZE: Back arrow icon */
+/*             font-size: 20px;
+        } */
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);      /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        /* ======================
+           📱 SIDEBAR SYSTEM
+           ====================== 
+           
+           PURPOSE: Collapsible navigation and student management panels
+           CUSTOMIZE: Widths, colors, animations, content
+           
+           Components:
+           - Toggle buttons (left/right sides)
+           - Overlay for mobile
+           - Left sidebar (navigation)
+           - Right sidebar (student management)
+           
+           JavaScript Functions:
+           - toggleLeftSidebar()
+           - toggleRightSidebar()
+           - closeSidebars()
+        */
+        
+        /* Sidebar toggle buttons - visible buttons to open/close sidebars */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;                               /* CUSTOMIZE: Button width */
+            height: 120px;                             /* CUSTOMIZE: Button height */
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;                 /* Makes text vertical */
+            text-orientation: mixed;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                          /* CUSTOMIZE: Font size */
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;                               /* CUSTOMIZE: Hover width expansion */
+        }
+        
+        .sidebar-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        /* Mobile overlay - darkens background when sidebar is open */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);           /* CUSTOMIZE: Overlay opacity */
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ======================
+           📋 LEFT SIDEBAR (NAVIGATION)
+           ====================== 
+           
+           PURPOSE: Main navigation menu
+           CUSTOMIZE: Width, menu items, styling
+           
+           Structure:
+           - Header with title and close button
+           - Navigation items (.nav-item)
+           - Decorative background pattern
+           
+           To Add Menu Items:
+           <a href="your-link.html" class="nav-item">Menu Item Name</a>
+        */
+        
+        .left-sidebar {
+            width: 250px;                              /* CUSTOMIZE: Sidebar width */
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 200;
+            transform: translateX(-250px);             /* Hidden by default */
+        }
+        
+        /* Decorative background pattern for left sidebar */
+        .left-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);                  /* Visible when expanded */
+        }
+        
+        /* Sidebar header - contains title and close button */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;                             /* CUSTOMIZE: Header padding */
+            border-bottom: 1px solid #8b6914;
+            position: relative;
+        }
+        
+        /* Animated underline effect for header */
+        .sidebar-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; width: 50px; }
+            50% { opacity: 1; width: 100px; }
+        }
+        
+        /* Close button styling */
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;                             /* CUSTOMIZE: Content padding */
+        }
+        
+        /* Navigation items - individual menu links */
+        .nav-item {
+            display: block;
+            padding: 12px 15px;                        /* CUSTOMIZE: Item padding */
+            margin: 8px 0;                             /* CUSTOMIZE: Item spacing */
+            background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Item background */
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;                            /* CUSTOMIZE: Text color */
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;                           /* CUSTOMIZE: Font size */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative diamond icon that appears on hover */
+        .nav-item::before {
+            content: '◆';                              /* CUSTOMIZE: Icon character */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: #f4e4bc;
+        }
+        
+        .nav-item:hover::before {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);       /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);                /* Slides right on hover */
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;    /* CUSTOMIZE: Title font */
+            font-size: 20px;                          /* CUSTOMIZE: Title size */
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+
+        /* ======================
+           👥 RIGHT SIDEBAR (STUDENT MANAGEMENT)
+           ====================== 
+           
+           PURPOSE: Daily student points tracking and management
+           CUSTOMIZE: Width, colors, button styles
+           
+           Components:
+           - Student dropdown selector
+           - Daily student list
+           - Action buttons (save, reset, export)
+           
+           JavaScript Integration:
+           - Connects to localStorage 'conquestTeamData'
+           - Manages 'dailyStudents' and 'dailyTreasury'
+           - Functions: addStudentToDaily(), removeStudentFromDaily(), etc.
+        */
+        
+        .right-sidebar {
+            width: 350px;                              /* CUSTOMIZE: Sidebar width */
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);              /* Hidden by default */
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);                  /* Visible when expanded */
+        }
+        
+        .points-title {
+            font-family: 'Cinzel', serif;             /* CUSTOMIZE: Title font */
+            font-size: 24px;                          /* CUSTOMIZE: Title size */
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+
+        /* ======================
+           📝 STUDENT SELECTION SYSTEM
+           ====================== 
+           
+           PURPOSE: Add students to daily tracking
+           CUSTOMIZE: Dropdown styling, button appearance
+           
+           JavaScript Functions:
+           - populateStudentDropdown() - fills dropdown with available students
+           - addStudentToDaily() - adds selected student to daily list
+        */
+        
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Section background */
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;                             /* CUSTOMIZE: Section padding */
+            margin-bottom: 20px;
+        }
+        
+        /* Student dropdown selector */
+        .student-select {
+            width: 100%;
+            padding: 15px;                             /* CUSTOMIZE: Dropdown padding */
+            background: rgba(139, 105, 20, 0.3);       /* CUSTOMIZE: Dropdown background */
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                           /* CUSTOMIZE: Font size */
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            /* Custom dropdown arrow */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+        
+        .student-select option {
+            background: #2a1810;                       /* CUSTOMIZE: Option background */
+            color: #f4e4bc;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        /* Add student button */
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;                             /* CUSTOMIZE: Button padding */
+            background: rgba(212, 175, 55, 0.3);       /* CUSTOMIZE: Button background */
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                           /* CUSTOMIZE: Font size */
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+        }
+        
+        .add-student-to-daily:hover {
+            background: rgba(212, 175, 55, 0.5);       /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        /* ======================
+           👤 STUDENT DISPLAY SYSTEM
+           ====================== 
+           
+           PURPOSE: Shows daily students with points and controls
+           CUSTOMIZE: Layout, colors, team badge styling
+           
+           Structure:
+           - Student info (name, team badge)
+           - Points button (shows current points, adds 10 on click)
+           - Remove button (removes from daily list)
+           
+           JavaScript Functions:
+           - renderDailyStudents() - creates the student list
+           - addPointsToStudent() - adds points and visual feedback
+           - removeStudentFromDaily() - removes student from list
+        */
+        
+        .student-item {
+            background: rgba(139, 105, 20, 0.2);       /* CUSTOMIZE: Student item background */
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;                             /* CUSTOMIZE: Item padding */
+            margin: 15px 0;                            /* CUSTOMIZE: Item spacing */
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;                          /* CUSTOMIZE: Minimum height */
+            position: relative;
+        }
+        
+        .student-item:hover {
+            background: rgba(212, 175, 55, 0.3);       /* CUSTOMIZE: Hover background */
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        
+        .student-name {
+            font-size: 16px;                           /* CUSTOMIZE: Name font size */
+            color: #f4e4bc;
+        }
+        
+        /* Team badges - color-coded team identification */
+        .team-badge {
+            font-size: 12px;                           /* CUSTOMIZE: Badge font size */
+            padding: 2px 8px;                          /* CUSTOMIZE: Badge padding */
+            border-radius: 10px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);            /* CUSTOMIZE: Badge background */
+            border: 1px solid;
+            /* Colors set dynamically by JavaScript based on team */
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;                                 /* CUSTOMIZE: Spacing between elements */
+        }
+        
+        /* Points button - shows current points and adds more when clicked */
+/*         .points-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 12px;                        / CUSTOMIZE: Button padding /
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+            border: 1px solid #d4af37;
+            border-radius: 30px;                       / CUSTOMIZE: Button roundness /
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 50px;
+            min-width: 70px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;                           / CUSTOMIZE: Font size /
+            font-weight: bold;
+            color: #f4e4bc;
+        } */
+
+        .points-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;                                  /* Reduced from 10px */
+    padding: 8px 14px;                         /* Reduced from 12px 12px */
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
+    border: 1px solid #d4af37;
+    border-radius: 20px;                       /* Reduced from 30px */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 36px;                          /* Reduced from 50px */
+    min-width: 60px;                           /* Reduced from 70px */
+    font-family: 'Cinzel', serif;
+    font-size: 14px;                           /* Reduced from 18px */
+    font-weight: bold;
+    color: #f4e4bc;
+}
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            transform: scale(1.05);                    /* Slight growth on hover */
+        }
+        
+        .points-btn:active {
+            transform: scale(0.95);                    /* Slight shrink when clicked */
+        }
+        
+        .points-value {
+            font-size: 16px;                           /* CUSTOMIZE: Points number size */
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        /* Coin icon - decorative gold coin */
+        .coin-icon {
+            width: 12px;                               /* CUSTOMIZE: Coin size */
+            height: 12px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';                              /* CUSTOMIZE: Coin symbol */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 7px;
+        }
+        
+        /* Remove student button */
+        .remove-student {
+            background: rgba(139, 20, 20, 0.3);        /* CUSTOMIZE: Remove button color */
+            border: 2px solid #8b4514;
+            color: #ff6b6b;
+            width: 45px;                               /* CUSTOMIZE: Button size */
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            font-size: 24px;                           /* CUSTOMIZE: X size */
+            font-weight: bold;
+        }
+        
+        .remove-student:hover {
+            background: rgba(200, 50, 50, 0.4);
+            box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+        }
+        
+        /* Action buttons container */
+        .sidebar-buttons {
+            display: flex;
+            gap: 10px;                                 /* CUSTOMIZE: Button spacing */
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        /* General action button styling */
+        .action-btn {
+            width: 100%;
+            padding: 18px;                             /* CUSTOMIZE: Button padding */
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: 2px solid #8b6914;
+            color: #1a0f0a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;                           /* CUSTOMIZE: Font size */
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 55px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);               /* Lifts on hover */
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Save button - special green styling */
+        .save-btn {
+            background: linear-gradient(135deg, #46a049 0%, #2e7d32 100%);
+            border-color: #2e7d32;
+            color: #fff;
+        }
+        
+        .save-btn:hover {
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.5);
+        }
+        
+        /* Empty state message */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;                        /* CUSTOMIZE: Empty state padding */
+            color: #b8860b;
+            font-style: italic;
+        }
+
+        /* ======================
+           🏠 MAIN CONTENT AREA
+           ====================== 
+           
+           PURPOSE: Primary content display area
+           CUSTOMIZE: Layout, spacing, title styling
+           
+           Structure:
+           - Title and subtitle
+           - Content containers (books, sections, etc.)
+           - Responsive margins for sidebars
+        */
+        
+        .main-content {
+            flex: 1;
+            padding: 20px 10px;
+            margin: 0 50px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .conquest-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #b8860b;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .tab-btn:hover::before {
+            opacity: 1;
+            top: -100%;
+            left: -100%;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn.active {
+            background: rgba(212, 175, 55, 0.5);
+            border-color: #f4e4bc;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Teams Grid */
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .team-card {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+        
+        .team-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Team specific colors */
+        /* Jiggle Boggle - Green */
+        .team-jiggleBoggle { border-color: #81c784; }
+        .team-jiggleBoggle .team-name { color: #81c784; }
+        .team-jiggleBoggle .team-rank { background: #81c784; }
+        
+        /* Pinkie - Pink */
+        .team-pinkie { border-color: #f06292; }
+        .team-pinkie .team-name { color: #f06292; }
+        .team-pinkie .team-rank { background: #f06292; }
+        
+        /* Handsome Joon - Red */
+        .team-handsomeJoon { border-color: #ff6b6b; }
+        .team-handsomeJoon .team-name { color: #ff6b6b; }
+        .team-handsomeJoon .team-rank { background: #ff6b6b; }
+        
+        /* Bomi - Yellow */
+        .team-bomi { border-color: #ffd54f; }
+        .team-bomi .team-name { color: #ffd54f; }
+        .team-bomi .team-rank { background: #ffd54f; }
+        
+        /* Genius Irene - Blue */
+        .team-geniusIrene { border-color: #4fc3f7; }
+        .team-geniusIrene .team-name { color: #4fc3f7; }
+        .team-geniusIrene .team-rank { background: #4fc3f7; }
+        
+        /* Pretty Eggplant - Purple */
+        .team-prettyEggplant { border-color: #ba68c8; }
+        .team-prettyEggplant .team-name { color: #ba68c8; }
+        .team-prettyEggplant .team-rank { background: #ba68c8; }
+        
+        /* Rank Info Button */
+        .rank-info-btn {
+            position: fixed;
+            top: 90px;
+            left: 10px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rank-info-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Baron styling - Special styling for team leaders */
+        .baron-item {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%) !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        
+        .baron-item .student-name {
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Rank Info Modal */
+        .rank-info-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .rank-info-content {
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 3px solid #8b6914;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+            position: relative;
+        }
+        
+        .rank-info-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .rank-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .rank-table th {
+            background: rgba(212, 175, 55, 0.3);
+            color: #f4e4bc;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            border: 1px solid #8b6914;
+        }
+        
+        .rank-table td {
+            padding: 10px;
+            border: 1px solid rgba(139, 105, 20, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .rank-table tr:hover td {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .tier-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        
+        .tier-baron { background: #9400d3; color: #f4e4bc; }
+        .tier-base { background: #654321; color: #f4e4bc; }
+        .tier-2 { background: #c0c0c0; color: #1a0f0a; }
+        .tier-3 { background: #cd853f; color: #1a0f0a; }
+        .tier-4 { background: #ffd700; color: #1a0f0a; }
+        
+        .rank-name {
+            font-weight: bold;
+            font-size: 13px;
+            color: #d4af37;
+        }
+        
+        .rank-requirement {
+            color: #b8860b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        
+        .close-info-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .close-info-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .rank-branches {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .branch-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .branch-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .class-change-note {
+            background: rgba(139, 20, 20, 0.3);
+            border: 2px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .class-change-note h4 {
+            color: #ff6b6b;
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-family: 'Uncial Antiqua', cursive;
+        }
+        
+        /* Human Shield styling */
+        .human-shield-item {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(101, 67, 33, 0.3) 100%) !important;
+            border: 1px solid #8b4513 !important;
+            opacity: 0.8;
+        }
+        
+        .human-shield-item .student-name {
+            color: #cd853f;
+            font-style: italic;
+        }
+        
+        .human-shield-item .rank-select {
+            background: rgba(139, 69, 19, 0.3);
+            border-color: #8b4513;
+            color: #cd853f;
+        }
+        
+        /* Land controls */
+        .land-stat {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .land-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .land-controls {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .land-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .land-btn:hover {
+            background: #d4af37;
+            color: #1a0f0a;
+        }
+        
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .team-name {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .team-rank {
+            font-size: 16px;
+            color: #1a0f0a;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .team-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: #b8860b;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        .gold-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            text-align: center;
+        }
+        
+        .gold-stat-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .rank-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-size: 11px;
+        }
+        
+        .rank-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .coin-icon {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        
+        .students-section {
+            margin-top: 15px;
+        }
+        
+        .students-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .students-title {
+            font-size: 14px;
+            color: #d4af37;
+        }
+        
+        .add-student-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 6px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-student-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+        
+        .conquest-student-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(139, 105, 20, 0.5);
+            border-radius: 6px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+            transition: all 0.3s ease;
+            min-height: 36px;
+        }
+        
+        .conquest-student-item:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #d4af37;
+            transform: translateY(-1px);
+        }
+        
+        .conquest-student-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .student-name {
+            font-size: 10px;
+            color: #f4e4bc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .student-rank {
+            font-size: 16px;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .student-rank:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+        
+        .rank-icon {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .rank-select {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .rank-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+        }
+        
+        .student-controls {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .student-points {
+            font-size: 11px;
+            font-weight: bold;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        /* Points Controls */
+        .points-controls {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .conquest-points-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        
+        .conquest-points-btn:hover {
+            background: #d4af37;
+            color: #1a0f0a;
+        }
+        
+        /* Shop Link Button */
+        .shop-link {
+            display: block;
+            width: 250px;
+            margin: 30px auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: none;
+            border-radius: 25px;
+            color: #1a0f0a;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .shop-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Statistics Tab */
+        .stats-container {
+            background: rgba(42, 30, 20, 0.5);
+            border: 2px solid #8b6914;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .leaderboard-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-rank {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d4af37;
+            min-width: 40px;
+        }
+        
+        .leaderboard-team {
+            flex: 1;
+            font-size: 14px;
+            margin-left: 15px;
+            color: #f4e4bc;
+        }
+        
+        .leaderboard-score {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            border-radius: 8px;
+            padding: 20px;
+            width: 350px;
+            max-width: 90%;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        .modal-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #f4e4bc;
+        }
+        
+        .modal input {
+            width: 100%;
+            padding: 8px;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .modal button {
+            padding: 8px 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            font-size: 13px;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Save Controls */
+        .save-controls {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
+        }
+        
+        .save-btn {
+            background: #d4af37;
+            color: #1a0f0a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn.undo-btn {
+            background: #9a7d2e;
+        }
+        
+        .save-btn.undo-btn:hover:not(:disabled) {
+            background: #b8972f;
+        }
+        
+        .save-btn.undo-btn:disabled {
+            background: #555;
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* iPad Mini specific adjustments */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .main-content {
+                margin: 0 45px;
+                padding: 15px 5px;
+            }
+            
+            .conquest-title {
+                font-size: 28px;
+            }
+            
+            .teams-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rank-branches {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 1024px) and (orientation: landscape) {
+            .teams-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .team-card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Back Button -->
+    <a href="/index.html" class="back-button">Back</a> 
+    
+    <!-- Rank Info Button -->
+    <button class="rank-info-btn" onclick="showRankInfo()">
+        <span>📜</span> Rank Info
+    </button>
+    
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Menu</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item active">Conquest</a>
+        </div>
+    </div>
+        
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="conquest-title">Conquest of Rayhaven</h1>
+        <p class="subtitle">Track thy team's glory and manage the scholar's treasury</p>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('teams')">Team Rankings</button>
+            <button class="tab-btn" onclick="switchTab('stats')">Battle Statistics</button>
+        </div>
+        
+        <!-- Teams Tab -->
+        <div id="teams" class="tab-content active">
+            <div class="teams-grid" id="teamsGrid">
+                <!-- Teams will be generated dynamically -->
+            </div>
+            
+            <!-- Shop Link -->
+            <a href="/conquest/shop.html" class="shop-link">
+                Visit the Merchant's Shop →
+            </a>
+        </div>
+        
+        <!-- Statistics Tab -->
+        <div id="stats" class="tab-content">
+            <div class="stats-container">
+                <h2 style="text-align: center; color: #d4af37; margin-bottom: 20px; font-size: 20px;">Team Leaderboard</h2>
+                <div class="leaderboard" id="leaderboard">
+                    <!-- Leaderboard will be generated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Student Modal -->
+    <div id="addStudentModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Add New Scholar</h3>
+            <input type="text" id="studentNameInput" placeholder="Enter scholar's name...">
+            <input type="number" id="studentPointsInput" placeholder="Starting points (default: 0)">
+            <div class="modal-buttons">
+                <button onclick="confirmAddStudent()">Add Scholar</button>
+                <button onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Controls -->
+    <div class="save-controls">
+        <button class="save-btn undo-btn" onclick="undoLastAction()" disabled>↶ Undo</button>
+        <button class="save-btn" onclick="saveData()">💾 Save</button>
+        <button class="save-btn" onclick="resetData()">🔄 Reset</button>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Rank Information Modal -->
+    <div id="rankInfoModal" class="rank-info-modal">
+        <div class="rank-info-content">
+            <button class="close-info-btn" onclick="closeRankInfo()">×</button>
+            <h2 class="rank-info-title">Military Rank System</h2>
+            
+            <table class="rank-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Ranks</th>
+                        <th>Requirements</th>
+                        <th>Combat Bonuses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tier-badge tier-baron">Special</span></td>
+                        <td><span class="rank-name">👑 Baron</span></td>
+                        <td><span class="rank-requirement">Master of Domain<br>(Team Leader)</span></td>
+                        <td><span class="rank-requirement">Leadership bonuses<br>+Team morale</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge" style="background: #8b4513; color: #f4e4bc;">Starter</span></td>
+                        <td><span class="rank-name">🥩 Human Shield</span></td>
+                        <td><span class="rank-requirement">Under 500 Gold</span></td>
+                        <td><span class="rank-requirement" style="color: #cd853f;">No bonuses<br>(Meat shield for others)</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tier-badge tier-base">Base</span></td>
+                        <td><span class="rank-name">🌾 Peasant Soldier</span></td>
+                        <td><span class="rank-requirement">500 Gold</span></td>
+                        <td><span class="rank-requirement">No combat bonuses</span></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><span class="tier-badge tier-2">Tier 2</span></td>
+                        <td><span class="rank-name">🗡️ Spearman</span></td>
+                        <td rowspan="3"><span class="rank-requirement">1,000 Gold</span></td>
+                        <td><span class="rank-requirement" style="color: #ff6b6b;">+5 Attack Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🛡️ Shield Bearer</span></td>
+                        <td><span class="rank-requirement" style="color: #4fc3f7;">+5 Defense Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🏹 Archer</span></td>
+                        <td><span class="rank-requirement" style="color: #81c784;">+2 Attack / +2 Defense</span></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><span class="tier-badge tier-3">Tier 3</span></td>
+                        <td><span class="rank-name">⚜️ Squire</span></td>
+                        <td rowspan="3"><span class="rank-requirement">3,000 Gold<br>+ 100 on 1 vocab test</span></td>
+                        <td><span class="rank-requirement" style="color: #ff6b6b;">+10 Attack Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🚩 Banner-man</span></td>
+                        <td><span class="rank-requirement" style="color: #4fc3f7;">+10 Defense Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🦅 Scout</span></td>
+                        <td><span class="rank-requirement" style="color: #81c784;">+5 Attack / +5 Defense</span></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><span class="tier-badge tier-4">Tier 4</span></td>
+                        <td><span class="rank-name">⚔️ Knight</span></td>
+                        <td rowspan="3"><span class="rank-requirement">5,000 Gold<br>+ 100 on 3 vocab tests<br>(in a row)</span></td>
+                        <td><span class="rank-requirement" style="color: #ff6b6b;">+20 Attack Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🏴 Banneret</span></td>
+                        <td><span class="rank-requirement" style="color: #4fc3f7;">+20 Defense Power</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-name">🐎 Cavalry</span></td>
+                        <td><span class="rank-requirement" style="color: #81c784;">+10 Attack / +10 Defense</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 style="text-align: center; color: #d4af37; margin: 20px 0 15px; font-size: 18px;">Choose Your Path</h3>
+            
+            <div class="rank-branches">
+                <div class="branch-card" style="border-color: #ff6b6b;">
+                    <h4 class="branch-title" style="color: #ff6b6b;">⚔️ Warrior Path</h4>
+                    <p class="branch-description" style="font-size: 11px;">
+                        Spearman → Squire → Knight<br>
+                        Masters of direct combat and honor
+                    </p>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 107, 107, 0.3);">
+                        <p style="color: #ff6b6b; font-size: 13px; font-weight: bold;">Attack Power Bonuses:</p>
+                        <p style="color: #ff9999; font-size: 11px;">Tier 2: +5 Attack</p>
+                        <p style="color: #ff9999; font-size: 11px;">Tier 3: +10 Attack</p>
+                        <p style="color: #ff9999; font-size: 11px;">Tier 4: +20 Attack</p>
+                    </div>
+                </div>
+                <div class="branch-card" style="border-color: #4fc3f7;">
+                    <h4 class="branch-title" style="color: #4fc3f7;">🛡️ Defender Path</h4>
+                    <p class="branch-description" style="font-size: 11px;">
+                        Shield Bearer → Banner-man → Banneret<br>
+                        Protectors and standard bearers
+                    </p>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(79, 195, 247, 0.3);">
+                        <p style="color: #4fc3f7; font-size: 13px; font-weight: bold;">Defense Power Bonuses:</p>
+                        <p style="color: #87ceeb; font-size: 11px;">Tier 2: +5 Defense</p>
+                        <p style="color: #87ceeb; font-size: 11px;">Tier 3: +10 Defense</p>
+                        <p style="color: #87ceeb; font-size: 11px;">Tier 4: +20 Defense</p>
+                    </div>
+                </div>
+                <div class="branch-card" style="border-color: #81c784;">
+                    <h4 class="branch-title" style="color: #81c784;">🏹 Ranger Path</h4>
+                    <p class="branch-description" style="font-size: 11px;">
+                        Archer → Scout → Cavalry<br>
+                        Masters of speed and precision
+                    </p>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(129, 199, 132, 0.3);">
+                        <p style="color: #81c784; font-size: 13px; font-weight: bold;">Balanced Bonuses:</p>
+                        <p style="color: #a8d5a8; font-size: 11px;">Tier 2: +2 Attack / +2 Defense</p>
+                        <p style="color: #a8d5a8; font-size: 11px;">Tier 3: +5 Attack / +5 Defense</p>
+                        <p style="color: #a8d5a8; font-size: 11px;">Tier 4: +10 Attack / +10 Defense</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="class-change-note">
+                <h4>⚠️ Class Change Requirement</h4>
+                <p style="font-size: 11px;">To change your combat path midway, you must achieve<br><strong>100% on ALL homework assignments for that day</strong></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+     <script>
+        // Team and Student Data
+        let teamData = {
+            'jiggleBoggle': {
+                name: 'Jiggle Boggle',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Gabin',
+                students: [
+                    { name: 'Gabin', points: 1085, rank: 'Peasant Soldier', classes: ['w1', 'th2'] },
+{ name: 'Jihoo', points: 880, rank: 'Peasant Soldier', classes: ['w2', 's2'] },
+{ name: 'Emma', points: 875, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Shawn', points: 385, rank: 'Peasant Soldier', classes: ['tu1'] },
+{ name: 'Dave', points: 1215, rank: 'Peasant Soldier', classes: ['m2'] },
+{ name: 'Ejoon', points: 115, rank: 'Peasant Soldier', classes: ['th2'] },
+{ name: 'Allen', points: 410, rank: 'Peasant Soldier', classes: ['tu2'] },
+{ name: 'Rina', points: 115, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Aiden P', points: 220, rank: 'Peasant Soldier', classes: [] }, // Not in any class
+{ name: 'Tommy', points: 170, rank: 'Peasant Soldier', classes: ['th2'] },
+{ name: 'Daniel P', points: 495, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Emily B', points: 110, rank: 'Peasant Soldier', classes: ['s2'] },
+{ name: 'Leo', points: 35, rank: 'Peasant Soldier', classes: [] }, // Not in any class
+{ name: 'Jacob', points: 250, rank: 'Peasant Soldier', classes: ['tu2'] },
+{ name: 'Donation', points: 300, rank: 'Treasury', classes: [] }
+                ]
+            },
+            'pinkie': {
+                name: 'Pinkie',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Lilly',
+                students: [
+                    { name: 'Lilly', points: 365, rank: 'Peasant Soldier', classes: ['s2', 'm1'] },
+{ name: 'Jayden', points: 630, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Warren', points: 830, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Kelly', points: 660, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Hyunny', points: 700, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Julie', points: 340, rank: 'Peasant Soldier', classes: ['tu2'] },
+{ name: 'Laura', points: 560, rank: 'Peasant Soldier', classes: ['m1', 'th2'] },
+{ name: 'Jiyoo', points: 330, rank: 'Peasant Soldier', classes: ['m1'] },
+{ name: 'Sunny', points: 210, rank: 'Peasant Soldier', classes: ['tu1'] },
+{ name: 'Xion', points: 375, rank: 'Peasant Soldier', classes: ['tu1'] },
+{ name: 'Chloe S', points: 305, rank: 'Peasant Soldier', classes: ['m1'] },
+{ name: 'June Y', points: 355, rank: 'Peasant Soldier', classes: ['th1'] },
+{ name: 'Andy', points: 115, rank: 'Peasant Soldier', classes: ['tu1'] },
+{ name: 'Jack', points: 45, rank: 'Peasant Soldier', classes: ['m2'] },
+{ name: 'Donation', points: 800, rank: 'Treasury', classes: [] }
+                ]
+            },
+            'handsomeJoon': {
+                name: 'Handsome Joon',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Joon',
+                students: [
+                    { name: 'Joon', points: 1545, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Angel', points: 1105, rank: 'Peasant Soldier', classes: ['s2'] },
+{ name: 'Lily K', points: 700, rank: 'Peasant Soldier', classes: ['w2', 's2'] },
+{ name: 'Junmin', points: 855, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Siyun', points: 1135, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Yoojun', points: 175, rank: 'Peasant Soldier', classes: ['tu1'] },
+{ name: 'Taeyoon', points: 235, rank: 'Peasant Soldier', classes: ['th2'] },
+{ name: 'Yena', points: 385, rank: 'Peasant Soldier', classes: ['th1'] },
+{ name: 'Ian', points: 205, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Kevin L', points: 365, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Chris DHK', points: 345, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Olivia', points: 110, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Cindy', points: 150, rank: 'Peasant Soldier', classes: ['m1'] },
+{ name: 'Donation', points: 1175, rank: 'Treasury', classes: [] }
+                ]
+            },
+            'bomi': {
+                name: 'Bomi',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Ellie N',
+                students: [
+                    { name: 'Ellie N', points: 1430, rank: 'Peasant Soldier', classes: ['m2', 's1'] },
+{ name: 'Azaline', points: 1175, rank: 'Peasant Soldier', classes: ['s2', 'm1'] },
+{ name: 'Roy SRK', points: 645, rank: 'Peasant Soldier', classes: ['s1', 'w1'] },
+{ name: 'Emily P', points: 990, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Eric', points: 630, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Seil', points: 405, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Isabella', points: 555, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Max', points: 335, rank: 'Peasant Soldier', classes: ['th1'] },
+{ name: 'Jenny', points: 205, rank: 'Peasant Soldier', classes: ['s2'] },
+{ name: 'Elon', points: 120, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Chelsea', points: 380, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Chloe P', points: 200, rank: 'Peasant Soldier', classes: ['s2', 'm1'] },
+{ name: 'Gio', points: 25, rank: 'Peasant Soldier', classes: ['m2'] },
+{ name: 'Aaron', points: 0, rank: 'Peasant Soldier', classes: ['m1'] },
+{ name: 'Donation', points: 920, rank: 'Treasury', classes: [] }
+                ]
+            },
+            'geniusIrene': {
+                name: 'Genius Irene',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Irene',
+                students: [
+                    { name: 'Irene', points: 855, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Bosco', points: 440, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Juha', points: 385, rank: 'Peasant Soldier', classes: ['tu1', 's2'] },
+{ name: 'Jaewon', points: 685, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Gabriel', points: 485, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Hajun', points: 225, rank: 'Peasant Soldier', classes: ['m1'] },
+{ name: 'Daniel S', points: 510, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Luna', points: 575, rank: 'Peasant Soldier', classes: [] }, // Not in any class
+{ name: 'Lucas', points: 605, rank: 'Peasant Soldier', classes: ['w2'] },
+{ name: 'Chan', points: 490, rank: 'Peasant Soldier', classes: ['w2', 's2'] },
+{ name: 'Jia', points: 275, rank: 'Peasant Soldier', classes: ['th1'] },
+{ name: 'Yuna', points: 35, rank: 'Peasant Soldier', classes: ['m2'] },
+{ name: 'Ellie P', points: 0, rank: 'Peasant Soldier', classes: ['s2'] },
+{ name: 'Stella', points: 20, rank: 'Peasant Soldier', classes: ['th2'] },
+{ name: 'Donation', points: 660, rank: 'Treasury', classes: [] }
+                ]
+            },
+            'prettyEggplant': {
+                name: 'Pretty Eggplant',
+                land: 5,
+                goldSpent: 0,
+                baron: 'Anna',
+                students: [
+                    { name: 'Anna', points: 810, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Doyoon', points: 965, rank: 'Peasant Soldier', classes: ['tu1', 'th1'] },
+{ name: 'Violet', points: 870, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'Roy JWK', points: 260, rank: 'Peasant Soldier', classes: ['tu2'] },
+{ name: 'Gavin', points: 190, rank: 'Peasant Soldier', classes: ['th1', 'tu2'] },
+{ name: 'Aiden L', points: 375, rank: 'Peasant Soldier', classes: ['s1'] }, // Should be renamed to just "Aiden" if this is the same as s1's Aiden
+{ name: 'Sophia', points: 360, rank: 'Peasant Soldier', classes: ['tu2', 'th2'] },
+{ name: 'June K', points: 715, rank: 'Peasant Soldier', classes: ['s1'] },
+{ name: 'Siwon', points: 230, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Chris JHK', points: 790, rank: 'Peasant Soldier', classes: ['m2'] },
+{ name: 'Trevor', points: 650, rank: 'Peasant Soldier', classes: [] }, // Not in any class
+{ name: 'Lily P', points: 725, rank: 'Peasant Soldier', classes: ['w1'] },
+{ name: 'Branden', points: 0, rank: 'Peasant Soldier', classes: ['s2'] },
+{ name: 'Jason', points: 0, rank: 'Peasant Soldier', classes: [] }, // Not in any class
+{ name: 'Donation', points: 525, rank: 'Treasury', classes: [] }
+                ]
+            }
+        };
+        
+        // Undo history
+        let undoHistory = [];
+        const MAX_UNDO_HISTORY = 10;
+        
+        // Save state for undo
+        function saveUndoState(action) {
+            undoHistory.push({
+                action: action,
+                data: JSON.parse(JSON.stringify(teamData)),
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last MAX_UNDO_HISTORY states
+            if (undoHistory.length > MAX_UNDO_HISTORY) {
+                undoHistory.shift();
+            }
+            
+            updateUndoButton();
+        }
+        
+        // Undo last action
+        function undoLastAction() {
+            if (undoHistory.length > 0) {
+                const lastState = undoHistory.pop();
+                teamData = JSON.parse(JSON.stringify(lastState.data));
+                updateDisplay();
+                saveData();
+                showToast(`Undone: ${lastState.action}`);
+                updateUndoButton();
+            }
+        }
+        
+        // Update undo button state
+        function updateUndoButton() {
+            const undoBtn = document.querySelector('.undo-btn');
+            if (undoBtn) {
+                undoBtn.disabled = undoHistory.length === 0;
+                if (undoHistory.length > 0) {
+                    const lastAction = undoHistory[undoHistory.length - 1].action;
+                    undoBtn.title = `Undo: ${lastAction}`;
+                } else {
+                    undoBtn.title = 'Nothing to undo';
+                }
+            }
+        }
+        
+        let currentTeamForStudent = null;
+        
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('conquestTeamData');
+            if (savedData) {
+                teamData = JSON.parse(savedData);
+            }
+            updateDisplay();
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+            
+            // Also save individual student data for compatibility with other pages
+            const studentList = [];
+            Object.values(teamData).forEach(team => {
+                team.students.forEach(student => {
+                    if (student.name !== 'Donation') {
+                        studentList.push({
+                            id: student.name.toLowerCase().replace(/\s+/g, '-'),
+                            name: student.name,
+                            points: student.points
+                        });
+                    }
+                });
+            });
+            
+            localStorage.setItem('studentList', JSON.stringify(studentList));
+            
+            // Update studentPoints for compatibility
+            const pointsObj = {};
+            studentList.forEach(student => {
+                pointsObj[student.id] = student.points;
+            });
+            localStorage.setItem('studentPoints', JSON.stringify(pointsObj));
+            
+            // Save in format compatible with treasury
+            localStorage.setItem('treasuryStudents', JSON.stringify(studentList.map(s => ({
+                name: s.name,
+                points: s.points
+            }))));
+            
+            // Save student names for streamlined version
+            const names = studentList.map(s => s.name);
+            localStorage.setItem("studentNames", JSON.stringify(names));
+            
+            showToast('Progress saved!');
+        }
+        
+        // Reset data
+        function resetData() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone!')) {
+                localStorage.removeItem('conquestTeamData');
+                localStorage.removeItem('studentList');
+                localStorage.removeItem('studentPoints');
+                localStorage.removeItem('treasuryStudents');
+                localStorage.removeItem('studentNames');
+                location.reload();
+            }
+        }
+        
+        // Calculate team total points
+        function calculateTeamTotal(students) {
+            return students.reduce((total, student) => total + student.points, 0);
+        }
+        
+        // Calculate team available gold (total points - gold spent)
+        function calculateTeamGold(team) {
+            const totalPoints = calculateTeamTotal(team.students);
+            const goldSpent = team.goldSpent || 0;
+            return totalPoints - goldSpent;
+        }
+        
+        // Update points (points NEVER change from spending)
+        function updatePoints(teamKey, studentIndex, amount) {
+            const newPoints = teamData[teamKey].students[studentIndex].points + amount;
+            if (newPoints >= 0) {
+                saveUndoState(`Changed ${teamData[teamKey].students[studentIndex].name}'s points by ${amount}`);
+                teamData[teamKey].students[studentIndex].points = newPoints;
+                updateDisplay();
+                saveData();
+            }
+        }
+        
+        // Update rank
+        window.updateRank = function(teamKey, studentIndex) {
+            const student = teamData[teamKey].students[studentIndex];
+            const currentRank = student.rank || 'Peasant Soldier';
+            
+            // Define rank progression
+            const ranks = [
+                { name: 'Baron', icon: '👑' },
+                { name: 'Human Shield', icon: '🥩' },
+                { name: 'Peasant Soldier', icon: '🌾' },
+                { name: 'Spearman', icon: '🗡️' },
+                { name: 'Shield Bearer', icon: '🛡️' },
+                { name: 'Archer', icon: '🏹' },
+                { name: 'Squire', icon: '⚜️' },
+                { name: 'Banner-man', icon: '🚩' },
+                { name: 'Scout', icon: '🦅' },
+                { name: 'Knight', icon: '⚔️' },
+                { name: 'Banneret', icon: '🏴' },
+                { name: 'Cavalry', icon: '🐎' }
+            ];
+            
+            // Find current rank index
+            let currentIndex = ranks.findIndex(r => r.name === currentRank);
+            if (currentIndex === -1) currentIndex = 2; // Default to Peasant Soldier
+            
+            // Cycle to next rank
+            const nextIndex = (currentIndex + 1) % ranks.length;
+            const newRank = ranks[nextIndex].name;
+            
+            saveUndoState(`Changed ${student.name}'s rank to ${newRank}`);
+            teamData[teamKey].students[studentIndex].rank = newRank;
+            
+            // If setting someone as Baron, update team baron
+            if (newRank === 'Baron') {
+                teamData[teamKey].baron = student.name;
+            }
+            
+            updateDisplay();
+            saveData();
+        }
+        
+        // Get rank icon
+        function getRankIcon(rank) {
+            const rankIcons = {
+                'Baron': '👑',
+                'Human Shield': '🥩',
+                'Peasant Soldier': '🌾',
+                'Spearman': '🗡️',
+                'Shield Bearer': '🛡️',
+                'Archer': '🏹',
+                'Squire': '⚜️',
+                'Banner-man': '🚩',
+                'Scout': '🦅',
+                'Knight': '⚔️',
+                'Banneret': '🏴',
+                'Cavalry': '🐎',
+                'Treasury': '💰'
+            };
+            return rankIcons[rank] || '🌾';
+        }
+        
+        // Count ranks in team
+        function countRanks(team) {
+            const rankCounts = {};
+            team.students.forEach(student => {
+                if (student.name !== 'Donation') {
+                    const rank = student.rank || 'Peasant Soldier';
+                    rankCounts[rank] = (rankCounts[rank] || 0) + 1;
+                }
+            });
+            return rankCounts;
+        }
+        
+        // Remove student
+        window.removeStudent = function(teamKey, studentIndex) {
+            const student = teamData[teamKey].students[studentIndex];
+            if (student.name !== 'Donation') {
+                if (confirm(`Remove ${student.name} from ${teamData[teamKey].name}? Their ${student.points} points will be added to the donation treasury.`)) {
+                    saveUndoState(`Removed ${student.name} (${student.points} points)`);
+                    
+                    // Add points to donation
+                    if (student.points > 0) {
+                        let donationIndex = teamData[teamKey].students.findIndex(s => s.name === 'Donation');
+                        if (donationIndex === -1) {
+                            teamData[teamKey].students.push({ name: 'Donation', points: 0, rank: 'Treasury' });
+                            donationIndex = teamData[teamKey].students.length - 1;
+                        }
+                        teamData[teamKey].students[donationIndex].points += student.points;
+                    }
+                    
+                    // Remove the student
+                    teamData[teamKey].students.splice(studentIndex, 1);
+                    
+                    updateDisplay();
+                    saveData();
+                    showToast(`${student.name} has been removed from ${teamData[teamKey].name}.`);
+                }
+            }
+        }
+        
+        // Update land count
+        function updateLand(teamKey, amount) {
+            const newLand = teamData[teamKey].land + amount;
+            if (newLand >= 0) {
+                saveUndoState(`Changed ${teamData[teamKey].name}'s land by ${amount}`);
+                teamData[teamKey].land = newLand;
+                updateDisplay();
+                saveData();
+            }
+        }
+        
+        // Shop purchase deduction (for merchant shop compatibility)
+        function deductTeamGold(teamKey, amount) {
+            if (teamData[teamKey]) {
+                const availableGold = calculateTeamGold(teamData[teamKey]);
+                
+                if (availableGold >= amount) {
+                    // Increase goldSpent
+                    teamData[teamKey].goldSpent = (teamData[teamKey].goldSpent || 0) + amount;
+                    saveData();
+                    updateDisplay();
+                    return true; // Purchase successful
+                }
+            }
+            return false; // Insufficient funds
+        }
+        
+        // Get team treasury balance (available gold)
+        function getTeamGold(teamKey) {
+            if (teamData[teamKey]) {
+                return calculateTeamGold(teamData[teamKey]);
+            }
+            return 0;
+        }
+        
+        // Make functions globally available for shop page
+        window.conquestShopAPI = {
+            deductTeamGold,
+            getTeamGold,
+            getTeamData: () => teamData
+        };
+        
+        // Show add student modal
+        window.showAddStudent = function(teamKey) {
+            currentTeamForStudent = teamKey;
+            document.getElementById('addStudentModal').style.display = 'flex';
+            document.getElementById('studentNameInput').value = '';
+            document.getElementById('studentPointsInput').value = '';
+            document.getElementById('studentNameInput').focus();
+        }
+        
+        // Confirm add student
+        window.confirmAddStudent = function() {
+            const name = document.getElementById('studentNameInput').value.trim();
+            const points = parseInt(document.getElementById('studentPointsInput').value) || 0;
+            
+            if (name && currentTeamForStudent) {
+                saveUndoState(`Added ${name} to ${teamData[currentTeamForStudent].name}`);
+                const rank = points < 500 ? 'Human Shield' : 'Peasant Soldier';
+                teamData[currentTeamForStudent].students.push({ name, points, rank });
+                updateDisplay();
+                saveData();
+                showToast(`${name} added to ${teamData[currentTeamForStudent].name}!`);
+            }
+            
+            closeModal();
+        }
+        
+        // Close modal
+        window.closeModal = function() {
+            document.getElementById('addStudentModal').style.display = 'none';
+            currentTeamForStudent = null;
+        }
+        
+        // Generate team cards
+        function generateTeamCards() {
+            const teamsGrid = document.getElementById('teamsGrid');
+            teamsGrid.innerHTML = '';
+            
+            // Calculate rankings
+            const rankings = Object.entries(teamData)
+                .map(([key, team]) => ({
+                    key,
+                    team,
+                    total: calculateTeamTotal(team.students)
+                }))
+                .sort((a, b) => b.total - a.total);
+            
+            rankings.forEach(({ key, team, total }, index) => {
+                const teamCard = document.createElement('div');
+                teamCard.className = `team-card team-${key}`;
+                
+                // Calculate students without donation
+                const realStudents = team.students.filter(s => s.name !== 'Donation');
+                const totalGold = calculateTeamGold(team);
+                const goldSpent = team.goldSpent || 0;
+                
+                teamCard.innerHTML = `
+                    <div class="team-header">
+                        <div class="team-name">${team.name}</div>
+                        <div class="team-rank">#${index + 1}</div>
+                    </div>
+                    
+                    <div class="team-stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Gold (Total/Available/Spent)</div>
+                            <div class="gold-stats">
+                                <div class="gold-stat-row">
+                                    <span style="color: #ffd700;">${total}</span>
+                                    <span style="color: #d4af37;">/</span>
+                                    <span style="color: #81c784;">${totalGold}</span>
+                                    <span style="color: #d4af37;">/</span>
+                                    <span style="color: #ff6b6b;">${goldSpent}</span>
+                                    <span class="coin-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Land & Ranks</div>
+                            <div class="rank-stats">
+                                <div class="rank-count">
+                                    <span>🏰 ${team.land || 0}</span>
+                                    <button class="land-btn" onclick="updateLand('${key}', -1)" style="width: 18px; height: 18px; font-size: 10px;">-</button>
+                                    <button class="land-btn" onclick="updateLand('${key}', 1)" style="width: 18px; height: 18px; font-size: 10px;">+</button>
+                                </div>
+                                ${Object.entries(countRanks(team)).slice(0, 3).map(([rank, count]) => 
+                                    `<div class="rank-count">${getRankIcon(rank)} ${count}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="students-section">
+                        <div class="students-header">
+                            <div class="students-title">Team Members (${realStudents.length})</div>
+                            <button class="add-student-btn" onclick="showAddStudent('${key}')">+ Add</button>
+                        </div>
+                        <div class="students-grid">
+                            ${team.students.map((student, idx) => {
+                                const studentRank = student.rank || 'Peasant Soldier';
+                                let itemClass = 'conquest-student-item';
+                                
+                                // Special styling for different ranks
+                                if (student.name === team.baron || studentRank === 'Baron') {
+                                    itemClass += ' baron-item';
+                                } else if (studentRank === 'Human Shield' || (student.points < 500 && studentRank !== 'Baron')) {
+                                    itemClass += ' human-shield-item';
+                                }
+                                
+                                if (student.name === 'Donation') {
+                                    return `
+                                        <div class="${itemClass}" style="grid-column: span 2;">
+                                            <div class="conquest-student-info">
+                                                <span class="rank-icon">${getRankIcon('Treasury')}</span>
+                                                <span class="student-name" style="font-weight: bold; color: #ffd700;">Team Treasury</span>
+                                            </div>
+                                            <div class="student-controls">
+                                                <span class="student-points">
+                                                    ${student.points}
+                                                    <span class="coin-icon" style="width: 12px; height: 12px; font-size: 8px;"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    `;
+                                } else {
+                                    return `
+                                        <div class="${itemClass}">
+                                            <div class="conquest-student-info">
+                                                <span class="student-rank rank-icon" onclick="updateRank('${key}', ${idx})" title="Click to change rank">
+                                                    ${getRankIcon(studentRank)}
+                                                </span>
+                                                <span class="student-name">${student.name}</span>
+                                            </div>
+                                            <div class="student-controls">
+                                                <span class="student-points">
+                                                    ${student.points}
+                                                    <span class="coin-icon" style="width: 12px; height: 12px; font-size: 8px;"></span>
+                                                </span>
+                                                <div class="points-controls">
+                                                    <button class="conquest-points-btn" onclick="updatePoints('${key}', ${idx}, -10)">-</button>
+                                                    <button class="conquest-points-btn" onclick="updatePoints('${key}', ${idx}, 10)">+</button>
+                                                    <button class="conquest-points-btn" style="background: rgba(139, 20, 20, 0.3); border-color: #8b4514; font-size: 10px;" onclick="removeStudent('${key}', ${idx})" title="Remove">×</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                teamsGrid.appendChild(teamCard);
+            });
+        }
+        
+        // Generate leaderboard
+        function generateLeaderboard() {
+            const leaderboard = document.getElementById('leaderboard');
+            leaderboard.innerHTML = '';
+            
+            const rankings = Object.entries(teamData)
+                .map(([key, team]) => ({
+                    name: team.name,
+                    total: calculateTeamTotal(team.students),
+                    availableGold: calculateTeamGold(team),
+                    goldSpent: team.goldSpent || 0,
+                    land: team.land || 0
+                }))
+                .sort((a, b) => b.total - a.total);
+            
+            rankings.forEach(({ name, total, availableGold, goldSpent, land }, index) => {
+                const item = document.createElement('div');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <div class="leaderboard-rank">#${index + 1}</div>
+                    <div class="leaderboard-team">${name} (🏰 ${land})</div>
+                    <div class="leaderboard-score">
+                        <span style="color: #ffd700;">${total}</span> / 
+                        <span style="color: #81c784;">${availableGold}</span> / 
+                        <span style="color: #ff6b6b;">${goldSpent}</span>
+                        <span class="coin-icon"></span>
+                    </div>
+                `;
+                leaderboard.appendChild(item);
+            });
+        }
+        
+        // Update display
+        function updateDisplay() {
+            generateTeamCards();
+            if (document.getElementById('stats').classList.contains('active')) {
+                generateLeaderboard();
+            }
+        }
+        
+        // Switch tabs
+        window.switchTab = function(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            
+            // Update content if switching to stats
+            if (tabName === 'stats') {
+                generateLeaderboard();
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Toggle sidebar
+        window.toggleLeftSidebar = function() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isExpanded = sidebar.classList.contains('expanded');
+            
+            if (isExpanded) {
+                sidebar.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.classList.add('expanded');
+                overlay.classList.add('active');
+            }
+        }
+        
+        window.closeSidebars = function() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Show rank info modal
+        window.showRankInfo = function() {
+            document.getElementById('rankInfoModal').style.display = 'flex';
+        }
+        
+        // Close rank info modal
+        window.closeRankInfo = function() {
+            document.getElementById('rankInfoModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('addStudentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        document.getElementById('rankInfoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRankInfo();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeRankInfo();
+                closeSidebars();
+            }
+        });
+        
+        // Handle Enter key in modal
+        document.getElementById('studentNameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('studentPointsInput').focus();
+            }
+        });
+        
+        document.getElementById('studentPointsInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmAddStudent();
+            }
+        });
+        
+        // Handle touch events for better tablet experience
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const leftSidebar = document.getElementById('leftSidebar');
+            
+            if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+                leftSidebar.classList.add('expanded');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateUndoButton();
+        });
+        
+        // Auto-save every 30 seconds
+        setInterval(saveData, 30000);
+    </script>
+</body>
+</html>

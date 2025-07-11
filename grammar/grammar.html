@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Decorative floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+            animation: float-up 15s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5);
+            }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(-250px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Sidebar Toggle Buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Overlay for mobile/tablet */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.4);
+            border-color: #f4e4bc;
+        }
+        
+        .sidebar-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            flex: 1;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        .points-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 1px solid #8b6914;
+            padding-bottom: 15px;
+        }
+        
+        /* Add Student Section */
+        .add-student-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .student-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+        
+        .student-select option {
+            background: #2a1810;
+            color: #f4e4bc;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 18px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-student-to-daily:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            margin: 0 70px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .grammar-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #b8860b;
+        }
+        
+        /* Volume Selection */
+        .volumes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .volume-card {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .volume-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .volume-card:hover::before {
+            opacity: 1;
+            top: -100%;
+            left: -100%;
+        }
+        
+        .volume-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+            border-color: #d4af37;
+        }
+        
+        .volume-number {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 72px;
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+        }
+        
+        .volume-title {
+            font-size: 32px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+        }
+        
+        .volume-description {
+            font-size: 18px;
+            color: #b8860b;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .lesson-count {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            border-radius: 30px;
+            padding: 10px 25px;
+            display: inline-block;
+            font-size: 16px;
+            color: #f4e4bc;
+        }
+        
+        /* Decorative elements */
+        .volume-ornament {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .volume-ornament-tl {
+            top: 10px;
+            left: 10px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1'/%3E%3C/svg%3E");
+        }
+        
+        .volume-ornament-br {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(180deg);
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1'/%3E%3C/svg%3E");
+        }
+        
+        /* Decorative separator */
+        .separator {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b6914, transparent);
+            margin: 40px auto;
+            position: relative;
+        }
+        
+        .separator::before {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #d4af37;
+            font-size: 20px;
+            background: #1a1a1a;
+            padding: 0 10px;
+        }
+        
+        /* Student Items */
+        .student-item {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .student-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid;
+        }
+        
+        .coin-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .coin-input {
+            width: 80px;
+            padding: 12px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .remove-student {
+            background: rgba(139, 20, 20, 0.3);
+            border: 2px solid #8b4514;
+            color: #ff6b6b;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            transition: all 0.3s ease;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .remove-student:hover {
+            background: rgba(200, 50, 50, 0.4);
+            box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+        }
+        
+        .sidebar-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            border: 2px solid #8b6914;
+            color: #1a0f0a;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 0 60px;
+                padding: 60px 10px 20px;
+            }
+            
+            .grammar-title {
+                font-size: 32px;
+            }
+            
+            .volumes-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .volume-card {
+                padding: 30px;
+            }
+            
+            .volume-number {
+                font-size: 48px;
+            }
+            
+            .volume-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s; color: #d4af37;">✦</div>
+    <div class="particle" style="left: 30%; animation-delay: 3s; color: #f4e4bc;">◆</div>
+    <div class="particle" style="left: 50%; animation-delay: 6s; color: #b8860b;">✧</div>
+    <div class="particle" style="left: 70%; animation-delay: 9s; color: #d4af37;">◇</div>
+    <div class="particle" style="left: 90%; animation-delay: 12s; color: #f4e4bc;">✦</div>
+    
+    <!-- Back Button -->
+    <a href="/index.html" class="back-button">
+        <span>←</span> Back to Library
+    </a>
+    
+    <!-- Sidebar Toggle Buttons -->
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
+    
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library Hall</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocabulary</a>
+            <a href="/grammar/grammar.html" class="nav-item active">Grammar</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/debate/debate.html" class="nav-item">Debate</a>
+            <a href="/essay/essay.html" class="nav-item">Essay</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <h2 class="points-title">Daily Treasury</h2>
+            
+            <!-- Add Student Section -->
+            <div class="add-student-section">
+                <select id="studentSelect" class="student-select">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Today's Class</button>
+            </div>
+            
+            <!-- Daily Students List -->
+            <div id="dailyStudentsList"></div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn save-btn" onclick="saveToConquest()">💾 Save to Conquest</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="grammar-title">Scroll of Grammatica</h1>
+        <p class="subtitle">Master the ancient laws of language construction</p>
+        
+        <div class="volumes-container">
+            <!-- Volume 1 -->
+            <a href="/grammar/vol1/grammar-vol1.html" class="volume-card">
+                <div class="volume-ornament volume-ornament-tl"></div>
+                <div class="volume-ornament volume-ornament-br"></div>
+                <div class="volume-number">I</div>
+                <h2 class="volume-title">Volume One</h2>
+                <p class="volume-description">
+                    Begin thy journey into the foundations of grammar.<br>
+                    Learn the essential building blocks of proper English.
+                </p>
+                <div class="lesson-count">12 Lessons</div>
+            </a>
+            
+            <!-- Volume 2 -->
+            <a href="/grammar/vol2/grammar-vol2.html" class="volume-card">
+                <div class="volume-ornament volume-ornament-tl"></div>
+                <div class="volume-ornament volume-ornament-br"></div>
+                <div class="volume-number">II</div>
+                <h2 class="volume-title">Volume Two</h2>
+                <p class="volume-description">
+                    Continue thy studies with advanced concepts.<br>
+                    Master complex structures and refined usage.
+                </p>
+                <div class="lesson-count">12 Lessons</div>
+            </a>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="font-size: 18px; color: #b8860b; font-style: italic;">
+                "Grammar is the logic of speech, even as logic is the grammar of reason."<br>
+                <span style="font-size: 16px;">- Richard C. Trench</span>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Daily treasury management
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+        let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+        
+        // Load all students from Conquest data
+        function loadAllStudentsFromConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (conquestData) {
+                const teamData = JSON.parse(conquestData);
+                const students = [];
+                
+                Object.entries(teamData).forEach(([teamKey, team]) => {
+                    team.students.forEach(student => {
+                        if (student.name !== 'Donation') {
+                            students.push({
+                                name: student.name,
+                                team: teamKey
+                            });
+                        }
+                    });
+                });
+                
+                return students.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            return [];
+        }
+        
+        // Team information for badges
+        const teamInfo = {
+            'jiggleBoggle': { name: 'Jiggle Boggle', color: '#81c784' },
+            'pinkie': { name: 'Pinkie', color: '#f06292' },
+            'handsomeJoon': { name: 'Handsome Joon', color: '#ff6b6b' },
+            'bomi': { name: 'Bomi', color: '#ffd54f' },
+            'geniusIrene': { name: 'Genius Irene', color: '#4fc3f7' },
+            'prettyEggplant': { name: 'Pretty Eggplant', color: '#ba68c8' }
+        };
+        
+        // Populate student dropdown
+        function populateStudentDropdown() {
+            const select = document.getElementById('studentSelect');
+            select.innerHTML = '<option value="">Select a scholar...</option>';
+            
+            const allStudents = loadAllStudentsFromConquest();
+            
+            allStudents.forEach(student => {
+                if (!dailyStudents.includes(student.name)) {
+                    const option = document.createElement('option');
+                    option.value = student.name;
+                    option.dataset.team = student.team;
+                    option.textContent = student.name;
+                    select.appendChild(option);
+                }
+            });
+        }
+        
+        // Add student to daily treasury
+        function addStudentToDaily() {
+            const select = document.getElementById('studentSelect');
+            const studentName = select.value;
+            
+            if (studentName && !dailyStudents.includes(studentName)) {
+                dailyStudents.push(studentName);
+                dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+                
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                renderDailyStudents();
+                populateStudentDropdown();
+                select.value = '';
+            }
+        }
+        
+        // Remove student from daily treasury
+        function removeStudentFromDaily(studentName) {
+            const index = dailyStudents.indexOf(studentName);
+            if (index > -1) {
+                dailyStudents.splice(index, 1);
+                delete dailyTreasury[studentName];
+                
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+                
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+        }
+        
+        // Get student's team
+        function getStudentTeam(studentName) {
+            const allStudents = loadAllStudentsFromConquest();
+            const student = allStudents.find(s => s.name === studentName);
+            return student ? student.team : null;
+        }
+        
+        // Render daily students
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            container.innerHTML = '';
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+                return;
+            }
+            
+            dailyStudents.forEach(studentName => {
+                const teamKey = getStudentTeam(studentName);
+                const team = teamInfo[teamKey];
+                
+                const item = document.createElement('div');
+                item.className = 'student-item';
+                
+                item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ''}
+                    </div>
+                    <div class="coin-display">
+                        <span class="coin-icon"></span>
+                        <input 
+                            type="number" 
+                            class="coin-input" 
+                            min="0" 
+                            step="10"
+                            value="${dailyTreasury[studentName] || 0}"
+                            onchange="updateDailyTreasury('${studentName}', this.value)"
+                            onclick="addPointsToStudent('${studentName}')"
+                        >
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Update daily treasury
+        function updateDailyTreasury(name, value) {
+            dailyTreasury[name] = parseInt(value) || 0;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+        }
+        
+        // Add 10 points when clicking on student
+        function addPointsToStudent(name) {
+            dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+            localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+            renderDailyStudents();
+            
+            // Visual feedback
+            const studentItems = document.querySelectorAll('.student-item');
+            studentItems.forEach(item => {
+                if (item.querySelector('.student-name').textContent === name) {
+                    item.style.animation = 'pulse 0.3s ease';
+                    setTimeout(() => {
+                        item.style.animation = '';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Save to Conquest
+        function saveToConquest() {
+            const conquestData = localStorage.getItem('conquestTeamData');
+            if (!conquestData) {
+                showToast('No Conquest data found!');
+                return;
+            }
+            
+            const teamData = JSON.parse(conquestData);
+            let totalPointsAdded = 0;
+            
+            Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+                if (dailyPoints > 0) {
+                    for (const [teamKey, team] of Object.entries(teamData)) {
+                        const studentIndex = team.students.findIndex(s => s.name === studentName);
+                        if (studentIndex !== -1) {
+                            teamData[teamKey].students[studentIndex].points += dailyPoints;
+                            totalPointsAdded += dailyPoints;
+                            break;
+                        }
+                    }
+                }
+            });
+            
+            localStorage.setItem('conquestTeamData', JSON.stringify(teamData));
+            
+            dailyStudents = [];
+            dailyTreasury = {};
+            localStorage.removeItem('dailyStudents');
+            localStorage.removeItem('dailyTreasury');
+            
+            renderDailyStudents();
+            populateStudentDropdown();
+            
+            showToast(`✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`);
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Sidebar Toggle Functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isExpanded = sidebar.classList.contains('expanded');
+            
+            if (isExpanded) {
+                sidebar.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                document.getElementById('rightSidebar').classList.remove('expanded');
+                sidebar.classList.add('expanded');
+                overlay.classList.add('active');
+            }
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isExpanded = sidebar.classList.contains('expanded');
+            
+            if (isExpanded) {
+                sidebar.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                document.getElementById('leftSidebar').classList.remove('expanded');
+                sidebar.classList.add('expanded');
+                overlay.classList.add('active');
+            }
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        // Close sidebars when clicking on a nav item
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', closeSidebars);
+        });
+        
+        // Handle touch events for better tablet experience
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const leftSidebar = document.getElementById('leftSidebar');
+            const rightSidebar = document.getElementById('rightSidebar');
+            
+            if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+                leftSidebar.classList.add('expanded');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+            
+            if (touchStartX - touchEndX > swipeThreshold && touchStartX > window.innerWidth - 50) {
+                rightSidebar.classList.add('expanded');
+                document.getElementById('sidebarOverlay').classList.add('active');
+            }
+        }
+        
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+            dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+            
+            populateStudentDropdown();
+            renderDailyStudents();
+        });
+    </script>
+</body>
+</html>

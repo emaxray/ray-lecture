@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>TED Level 3 Unit 5 Homework - The Library of Rayhaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <style>
+    /* ✅ Full Base + Component Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Cinzel', serif;
+      background: #1a1a1a;
+      color: #d4af37;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem;
+      background-image: radial-gradient(ellipse at top, #2a2a2a, transparent), radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-family: 'Uncial Antiqua', cursive;
+      color: #f4e4bc;
+      text-decoration: none;
+      background: #5a3825;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 2px solid #d4af37;
+    }
+    .main-content {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(0,0,0,0.6);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #d4af37aa;
+    }
+    .page-title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .unit-section {
+      margin-bottom: 3rem;
+    }
+    .unit-header {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #ffdd57;
+      border-bottom: 2px solid #ffdd57;
+      padding-bottom: 0.5rem;
+    }
+    .page-instruction {
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    .answer-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .answer-item {
+      padding: 0.3rem 0.6rem;
+      background: #3a2a1a;
+      border-radius: 6px;
+      border: 1px solid #d4af37;
+    }
+    .answer-highlight {
+      color: #ffdb58;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 17px;
+    }
+    .toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <a href="/ted/lv3/ted-lv3.html" class="back-button">Back</a>
+
+  <!-- Main Homework Content -->
+  <div class="main-content">
+    <h1 class="page-title">TED Level 3 Unit 5</h1>
+    <p class="subtitle">Homework Answer Key</p>
+    <div class="content-container">
+      <!-- Unit 5-E -->
+      <div class="unit-section">
+        <h2 class="unit-header">Unit 5-E</h2>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 93 Section C</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> policy</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> authorities</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> expectation</span>
+            <span class="answer-item"><span class="answer-highlight">4.</span> outsider</span>
+            <span class="answer-item"><span class="answer-highlight">5.</span> guidance</span>
+            <span class="answer-item"><span class="answer-highlight">6.</span> conservation</span>
+          </div>
+        </div>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 94 Section D</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> a</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> c</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> a</span>
+            <span class="answer-item"><span class="answer-highlight">4.</span> b</span>
+          </div>
+        </div>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 94 Section E</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> exclusive</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> internal</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> insider</span>
+            <span class="answer-item"><span class="answer-highlight">4.</span> independence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit 5-F Part 1 -->
+      <div class="unit-section">
+        <h2 class="unit-header">Unit 5-F (Part 1)</h2>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 96 Section C</div>
+          <div class="answer-list">
+            <span class="answer-item">blue whales</span>
+            <span class="answer-item">experts</span>
+            <span class="answer-item">guidance and help</span>
+            <span class="answer-item">took over</span>
+            <span class="answer-item">refused</span>
+            <span class="answer-item">worked and saved</span>
+            <span class="answer-item">parachute science</span>
+          </div>
+        </div>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 96 Section D</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> b, c</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> a, b</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> b, c</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit 5-F Part 2 -->
+      <div class="unit-section">
+        <h2 class="unit-header">Unit 5-F (Part 2)</h2>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 97 Section E</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> F ( ... These people make up a large part ... )</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> F ( ... I've got a massive following of marine enthusiasts who want to get involved ...)</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> T ( ... everybody tend to be more honest if they talk to people they trust)</span>
+            <span class="answer-item"><span class="answer-highlight">4.</span> F ( ... local team fast-tracking work to get the answers that could make a change ... )</span>
+            <span class="answer-item"><span class="answer-highlight">5.</span> T ( ... we managed to save 96 out of the 100 ... )</span>
+          </div>
+        </div>
+        <div class="answer-section">
+          <div class="page-instruction">Complete pg. 98 Section B</div>
+          <div class="answer-list">
+            <span class="answer-item"><span class="answer-highlight">1.</span> Most: RT, Least: HK</span>
+            <span class="answer-item"><span class="answer-highlight">2.</span> Most: DB, Least: HK</span>
+            <span class="answer-item"><span class="answer-highlight">3.</span> Most: HK, Least: DB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Message -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Full JavaScript Reinserted -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadConquestStudents();
+      renderDailyStudents();
+    });
+    let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents') || '[]');
+    let dailyTreasury = JSON.parse(localStorage.getItem('dailyTreasury') || '{}');
+    const teamColors = {
+      'prettyEggplant': '#ba68c8',
+      'jiggleBoggle': '#81c784',
+      'bomi': '#ffd54f',
+      'handsomeJoon': '#ff6b6b',
+      'pinkie': '#f06292',
+      'geniusIrene': '#4fc3f7'
+    };
+    function toggleLeftSidebar() {
+      document.getElementById('leftSidebar')?.classList.toggle('expanded');
+      document.getElementById('sidebarOverlay')?.classList.toggle('active');
+    }
+    function toggleRightSidebar() {
+      document.getElementById('rightSidebar')?.classList.toggle('expanded');
+      document.getElementById('sidebarOverlay')?.classList.toggle('active');
+    }
+    function closeSidebars() {
+      document.getElementById('leftSidebar')?.classList.remove('expanded');
+      document.getElementById('rightSidebar')?.classList.remove('expanded');
+      document.getElementById('sidebarOverlay')?.classList.remove('active');
+    }
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    function loadConquestStudents() {
+      const conquestData = localStorage.getItem('conquestTeamData');
+      if (!conquestData) return;
+      const teams = JSON.parse(conquestData);
+      const select = document.getElementById('studentSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">Select a scholar...</option>';
+      Object.entries(teams).forEach(([teamKey, team]) => {
+        team.students?.forEach(student => {
+          const option = document.createElement('option');
+          option.value = student.name;
+          option.textContent = `${student.name} (${team.name})`;
+          option.dataset.teamKey = teamKey;
+          select.appendChild(option);
+        });
+      });
+    }
+    function renderDailyStudents() {
+      const container = document.getElementById('dailyStudentsList');
+      if (!container) return;
+      if (dailyStudents.length === 0) {
+        container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet</div>';
+        return;
+      }
+      container.innerHTML = '';
+      dailyStudents.forEach(studentName => {
+        const conquestData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+        let team = null;
+        let teamKey = null;
+        for (const [key, t] of Object.entries(conquestData)) {
+          const student = t.students?.find(s => s.name === studentName);
+          if (student) {
+            team = t;
+            teamKey = key;
+            break;
+          }
+        }
+        const teamColor = teamColors[teamKey] || '#d4af37';
+        const item = document.createElement('div');
+        item.className = 'student-item';
+        item.innerHTML = `
+          <div class="student-info">
+            <span class="student-name">${studentName}</span>
+            ${team ? `<span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor}; background: ${teamColor}20;">${team.name}</span>` : ''}
+          </div>
+          <div class="coin-display">
+            <button class="points-btn" onclick="addPointsToStudent('${studentName}')">
+              <span class="points-value">${dailyTreasury[studentName] || 0}</span>
+              <span class="coin-icon"></span>
+            </button>
+            <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')">×</button>
+          </div>`;
+        container.appendChild(item);
+      });
+    }
+    function addPointsToStudent(name) {
+      dailyTreasury[name] = (dailyTreasury[name] || 0) + 10;
+      localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+      renderDailyStudents();
+    }
+    function removeStudentFromDaily(name) {
+      dailyStudents = dailyStudents.filter(n => n !== name);
+      delete dailyTreasury[name];
+      localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+      localStorage.setItem('dailyTreasury', JSON.stringify(dailyTreasury));
+      renderDailyStudents();
+    }
+    function saveToConquest() {
+      const conquestData = JSON.parse(localStorage.getItem('conquestTeamData') || '{}');
+      let totalPointsAdded = 0;
+      Object.entries(dailyTreasury).forEach(([studentName, points]) => {
+        for (const teamKey in conquestData) {
+          const team = conquestData[teamKey];
+          const student = team.students?.find(s => s.name === studentName);
+          if (student) {
+            student.points = (student.points || 0) + points;
+            totalPointsAdded += points;
+            break;
+          }
+        }
+      });
+      localStorage.setItem('conquestTeamData', JSON.stringify(conquestData));
+      dailyStudents = [];
+      dailyTreasury = {};
+      localStorage.removeItem('dailyStudents');
+      localStorage.removeItem('dailyTreasury');
+      renderDailyStudents();
+      showToast(`Treasury saved! ${totalPointsAdded} gold coins transferred to Conquest.`);
+    }
+  </script>
+</body>
+</html>
