@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<!--
+==============================================================================
+📚 DEBATE SECTION - STRUCTURED DEBATE PRACTICE
+==============================================================================
+
+This page provides tools for structured debate practice including:
+1. Formal debate formats
+2. Argument construction tools
+3. Timer for speaking periods
+4. Topic generation
+
+==============================================================================
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medieval Library - Debate</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cinzel", serif;
+        background: #1a1a1a;
+        color: #d4af37;
+        min-height: 100vh;
+        display: flex;
+        background-image: radial-gradient(ellipse at top, #2a2a2a, transparent),
+          radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+        overflow-x: hidden;
+        position: relative;
+        font-size: 12px;
+      }
+
+      /* Candlelight flickering effect */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            rgba(255, 147, 41, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 30%,
+            rgba(255, 183, 77, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 80%,
+            rgba(255, 140, 0, 0.12) 0%,
+            transparent 45%
+          );
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        animation: flicker 4s ease-in-out infinite;
+        z-index: 1;
+      }
+
+      @keyframes flicker {
+        0%, 100% { opacity: 0.8; }
+        25% { opacity: 0.9; }
+        50% { opacity: 0.75; }
+        75% { opacity: 0.85; }
+      }
+
+      /* Floating particles */
+      .particle {
+        position: fixed;
+        pointer-events: none;
+        opacity: 0;
+        animation: float-up 15s linear infinite;
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% { opacity: 0.6; }
+        90% { opacity: 0.6; }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) scale(1.5);
+        }
+      }
+
+      /* Corner ornaments */
+      .corner-ornament {
+        position: fixed;
+        width: 120px;
+        height: 120px;
+        opacity: 0.3;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+        background-size: contain;
+        z-index: 1;
+      }
+
+      .corner-top-left { top: 20px; left: 70px; }
+      .corner-top-right { top: 20px; right: 70px; transform: scaleX(-1); }
+      .corner-bottom-left { bottom: 20px; left: 70px; transform: scaleY(-1); }
+      .corner-bottom-right { bottom: 20px; right: 70px; transform: scale(-1, -1); }
+
+      /* Back Button */
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(212, 175, 55, 0.2);
+        border: 2px solid #8b6914;
+        color: #f4e4bc;
+        padding: 12px 24px;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-button:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0 70px;
+      }
+
+      .library-title {
+        font-family: "Cinzel", serif;
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+        position: relative;
+      }
+
+      .library-title::before,
+      .library-title::after {
+        content: "⚔️";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px;
+        color: #d4af37;
+        animation: sparkle 3s ease-in-out infinite;
+      }
+
+      .library-title::before { left: -60px; }
+      .library-title::after { right: -60px; animation-delay: 1.5s; }
+
+      @keyframes sparkle {
+        0%, 100% {
+          opacity: 0.3;
+          transform: translateY(-50%) scale(0.8) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-50%) scale(1.2) rotate(180deg);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        to {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(212, 175, 55, 0.8);
+        }
+      }
+
+      .subtitle {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 50px;
+        color: #b8860b;
+        position: relative;
+        padding: 0 80px;
+      }
+
+      .subtitle::before,
+      .subtitle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #b8860b, transparent);
+      }
+
+      .subtitle::before { left: 0; }
+      .subtitle::after { right: 0; }
+
+      /* ======================
+           🎯 DEBATE INTERFACE
+           ====================== */
+
+      .debate-container {
+        width: 100%;
+        max-width: 1200px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .debate-side {
+        background: linear-gradient(135deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 30px;
+        position: relative;
+      }
+
+      .side-pro {
+        border-color: #2e7d32;
+      }
+
+      .side-con {
+        border-color: #d32f2f;
+      }
+
+      .side-title {
+        font-family: "Cinzel", serif;
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #f4e4bc;
+        position: relative;
+        padding-bottom: 15px;
+      }
+
+      .side-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      }
+
+      .pro-title { color: #81c784; }
+      .con-title { color: #f48fb1; }
+
+      .arguments-list {
+        min-height: 200px;
+        margin-bottom: 20px;
+      }
+
+      .argument-item {
+        background: rgba(139, 105, 20, 0.2);
+        border: 1px solid #8b6914;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        color: #f4e4bc;
+        position: relative;
+      }
+
+      .argument-item::before {
+        content: "◆";
+        position: absolute;
+        left: -10px;
+        top: 15px;
+        color: #d4af37;
+        font-size: 18px;
+      }
+
+      .add-argument {
+        width: 100%;
+        min-height: 60px;
+        background: rgba(212, 175, 55, 0.2);
+        border: 2px dashed #8b6914;
+        border-radius: 8px;
+        color: #d4af37;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+      }
+
+      .add-argument:hover {
+        background: rgba(212, 175, 55, 0.3);
+        border-color: #d4af37;
+      }
+
+      .argument-input {
+        width: 100%;
+        min-height: 80px;
+        background: rgba(139, 105, 20, 0.3);
+        border: 2px solid #8b6914;
+        border-radius: 8px;
+        padding: 15px;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 14px;
+        resize: vertical;
+        margin-bottom: 10px;
+      }
+
+      .argument-input::placeholder {
+        color: #8b6914;
+      }
+
+      .argument-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: 2px solid #8b6914;
+        border-radius: 5px;
+        font-family: "Cinzel", serif;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-add {
+        background: rgba(46, 125, 50, 0.3);
+        color: #81c784;
+        border-color: #2e7d32;
+      }
+
+      .btn-add:hover {
+        background: rgba(46, 125, 50, 0.5);
+        box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+      }
+
+      .btn-cancel {
+        background: rgba(211, 47, 47, 0.3);
+        color: #f48fb1;
+        border-color: #d32f2f;
+      }
+
+      .btn-cancel:hover {
+        background: rgba(211, 47, 47, 0.5);
+        box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+      }
+
+      /* ======================
+           🕐 TIMER & CONTROLS
+           ====================== */
+
+      .debate-controls {
+        width: 100%;
+        max-width: 800px;
+        background: linear-gradient(135deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .topic-section {
+        margin-bottom: 30px;
+      }
+
+      .topic-display {
+        background: rgba(139, 105, 20, 0.2);
+        border: 2px solid #8b6914;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        font-size: 18px;
+        color: #f4e4bc;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .timer-display {
+        font-size: 48px;
+        color: #d4af37;
+        margin: 20px 0;
+        font-family: "Cinzel", serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      }
+
+      .timer-label {
+        font-size: 18px;
+        color: #b8860b;
+        margin-bottom: 10px;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .control-btn {
+        padding: 15px 25px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .control-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+      }
+
+      .control-btn:active {
+        transform: translateY(0);
+      }
+
+      /* ======================
+           📱 RESPONSIVE DESIGN
+           ====================== */
+
+      @media (max-width: 1024px) {
+        .debate-container {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .library-title {
+          font-size: 36px;
+        }
+
+        .subtitle {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          margin: 0 20px;
+          padding: 20px 10px;
+        }
+
+        .library-title {
+          font-size: 28px;
+        }
+
+        .timer-display {
+          font-size: 36px;
+        }
+
+        .controls-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Decorative Elements -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Title Section -->
+      <h1 class="library-title">Debate Arena</h1>
+      <p class="subtitle">Where ideas clash and eloquence reigns supreme</p>
+
+      <!-- Debate Topic & Timer Controls -->
+      <div class="debate-controls">
+        <div class="topic-section">
+          <h3 class="section-title">Debate Topic</h3>
+          <div class="topic-display" id="topicDisplay">
+            Click "Generate Topic" to start your debate
+          </div>
+        </div>
+
+        <div class="timer-section">
+          <div class="timer-label" id="timerLabel">Select a timer to begin</div>
+          <div class="timer-display" id="timerDisplay">0:00</div>
+        </div>
+
+        <div class="controls-grid">
+          <button class="control-btn" onclick="generateTopic()">Generate Topic</button>
+          <button class="control-btn" onclick="startTimer(180)">Opening (3 min)</button>
+          <button class="control-btn" onclick="startTimer(120)">Rebuttal (2 min)</button>
+          <button class="control-btn" onclick="startTimer(90)">Closing (1.5 min)</button>
+          <button class="control-btn" onclick="pauseTimer()">Pause</button>
+          <button class="control-btn" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Debate Sides -->
+      <div class="debate-container">
+        <!-- Pro Side -->
+        <div class="debate-side side-pro">
+          <h3 class="side-title pro-title">Pro Arguments</h3>
+          <div class="arguments-list" id="proArguments">
+            <!-- Arguments will be added here -->
+          </div>
+          <button class="add-argument" onclick="showArgumentInput('pro')">
+            + Add Pro Argument
+          </button>
+          <div class="argument-input-container" id="proInputContainer" style="display: none;">
+            <textarea 
+              class="argument-input" 
+              id="proArgumentInput" 
+              placeholder="Enter your pro argument here...">
+            </textarea>
+            <div class="argument-buttons">
+              <button class="btn btn-add" onclick="addArgument('pro')">Add</button>
+              <button class="btn btn-cancel" onclick="hideArgumentInput('pro')">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Con Side -->
+        <div class="debate-side side-con">
+          <h3 class="side-title con-title">Con Arguments</h3>
+          <div class="arguments-list" id="conArguments">
+            <!-- Arguments will be added here -->
+          </div>
+          <button class="add-argument" onclick="showArgumentInput('con')">
+            + Add Con Argument
+          </button>
+          <div class="argument-input-container" id="conInputContainer" style="display: none;">
+            <textarea 
+              class="argument-input" 
+              id="conArgumentInput" 
+              placeholder="Enter your con argument here...">
+            </textarea>
+            <div class="argument-buttons">
+              <button class="btn btn-add" onclick="addArgument('con')">Add</button>
+              <button class="btn btn-cancel" onclick="hideArgumentInput('con')">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Debate Topics
+      const debateTopics = [
+        "Social media does more harm than good to society",
+        "Homework should be banned in schools",
+        "Technology is making us less social",
+        "Fast food companies should be held responsible for obesity",
+        "Video games cause violent behavior",
+        "School uniforms should be mandatory",
+        "Animals should not be used for entertainment",
+        "The death penalty should be abolished",
+        "Online learning is better than traditional classroom learning",
+        "Artificial intelligence will replace human workers",
+        "Plastic bags should be completely banned",
+        "Teenagers should have the right to vote",
+        "Space exploration is a waste of money",
+        "Genetically modified foods are safe to eat",
+        "Privacy is more important than security"
+      ];
+
+      // Timer variables
+      let timerInterval;
+      let timeLeft = 0;
+      let isTimerRunning = false;
+
+      // Argument storage
+      let proArguments = [];
+      let conArguments = [];
+
+      // Generate random debate topic
+      function generateTopic() {
+        const randomTopic = debateTopics[Math.floor(Math.random() * debateTopics.length)];
+        document.getElementById('topicDisplay').textContent = randomTopic;
+      }
+
+      // Timer functions
+      function startTimer(seconds) {
+        if (isTimerRunning) {
+          clearInterval(timerInterval);
+        }
+        
+        timeLeft = seconds;
+        isTimerRunning = true;
+        
+        // Update label based on timer duration
+        const label = seconds === 180 ? "Opening Statement" : 
+                     seconds === 120 ? "Rebuttal" : 
+                     seconds === 90 ? "Closing Statement" : "Custom Timer";
+        document.getElementById('timerLabel').textContent = label;
+        
+        updateTimerDisplay();
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            alert("Time's up!");
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        if (isTimerRunning) {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+        }
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timeLeft = 0;
+        document.getElementById('timerLabel').textContent = "Select a timer to begin";
+        updateTimerDisplay();
+      }
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('timerDisplay').textContent = display;
+        
+        // Change color based on time remaining
+        const timerElement = document.getElementById('timerDisplay');
+        if (timeLeft <= 30) {
+          timerElement.style.color = '#f48fb1';
+        } else if (timeLeft <= 60) {
+          timerElement.style.color = '#ffb74d';
+        } else {
+          timerElement.style.color = '#d4af37';
+        }
+      }
+
+      // Argument management functions
+      function showArgumentInput(side) {
+        document.getElementById(`${side}InputContainer`).style.display = 'block';
+        document.getElementById(`${side}ArgumentInput`).focus();
+      }
+
+      function hideArgumentInput(side) {
+        document.getElementById(`${side}InputContainer`).style.display = 'none';
+        document.getElementById(`${side}ArgumentInput`).value = '';
+      }
+
+      function addArgument(side) {
+        const input = document.getElementById(`${side}ArgumentInput`);
+        const argumentText = input.value.trim();
+        
+        if (argumentText) {
+          if (side === 'pro') {
+            proArguments.push(argumentText);
+          } else {
+            conArguments.push(argumentText);
+          }
+          
+          renderArguments(side);
+          hideArgumentInput(side);
+        }
+      }
+
+      function removeArgument(side, index) {
+        if (side === 'pro') {
+          proArguments.splice(index, 1);
+        } else {
+          conArguments.splice(index, 1);
+        }
+        renderArguments(side);
+      }
+
+      function renderArguments(side) {
+        const container = document.getElementById(`${side}Arguments`);
+        const arguments = side === 'pro' ? proArguments : conArguments;
+        
+        container.innerHTML = '';
+        
+        arguments.forEach((argument, index) => {
+          const argumentDiv = document.createElement('div');
+          argumentDiv.className = 'argument-item';
+          argumentDiv.innerHTML = `
+            ${argument}
+            <button 
+              onclick="removeArgument('${side}', ${index})" 
+              style="position: absolute; top: 5px; right: 10px; background: none; border: none; color: #f48fb1; cursor: pointer; font-size: 18px;"
+              title="Remove argument">
+              ×
+            </button>
+          `;
+          container.appendChild(argumentDiv);
+        });
+      }
+
+      // Go back function
+      function goBack() {
+        window.history.back();
+      }
+
+      // Create floating particles
+      function createParticles() {
+        const particleCount = 15;
+        const particleSymbols = ["⚔️", "🛡️", "💬", "💭"];
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 10 + "s";
+          particle.innerHTML = particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          particle.style.color = "#d4af37";
+          particle.style.fontSize = Math.random() * 10 + 10 + "px";
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        createParticles();
+        renderArguments('pro');
+        renderArguments('con');
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<!--
+==============================================================================
+📚 TEACHBACK SECTION - PRESENTATION & TEACHING PRACTICE
+==============================================================================
+
+This page provides tools for teachback presentations including:
+1. Presentation structure templates
+2. Timer for different sections
+3. Note-taking areas
+4. Topic suggestions
+
+==============================================================================
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medieval Library - Teachback</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cinzel", serif;
+        background: #1a1a1a;
+        color: #d4af37;
+        min-height: 100vh;
+        display: flex;
+        background-image: radial-gradient(ellipse at top, #2a2a2a, transparent),
+          radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+        overflow-x: hidden;
+        position: relative;
+        font-size: 12px;
+      }
+
+      /* Candlelight flickering effect */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            rgba(255, 147, 41, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 30%,
+            rgba(255, 183, 77, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 80%,
+            rgba(255, 140, 0, 0.12) 0%,
+            transparent 45%
+          );
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        animation: flicker 4s ease-in-out infinite;
+        z-index: 1;
+      }
+
+      @keyframes flicker {
+        0%, 100% { opacity: 0.8; }
+        25% { opacity: 0.9; }
+        50% { opacity: 0.75; }
+        75% { opacity: 0.85; }
+      }
+
+      /* Floating particles */
+      .particle {
+        position: fixed;
+        pointer-events: none;
+        opacity: 0;
+        animation: float-up 15s linear infinite;
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
+        }
+        10% { opacity: 0.6; }
+        90% { opacity: 0.6; }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) scale(1.5);
+        }
+      }
+
+      /* Corner ornaments */
+      .corner-ornament {
+        position: fixed;
+        width: 120px;
+        height: 120px;
+        opacity: 0.3;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+        background-size: contain;
+        z-index: 1;
+      }
+
+      .corner-top-left { top: 20px; left: 70px; }
+      .corner-top-right { top: 20px; right: 70px; transform: scaleX(-1); }
+      .corner-bottom-left { bottom: 20px; left: 70px; transform: scaleY(-1); }
+      .corner-bottom-right { bottom: 20px; right: 70px; transform: scale(-1, -1); }
+
+      /* Back Button */
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(212, 175, 55, 0.2);
+        border: 2px solid #8b6914;
+        color: #f4e4bc;
+        padding: 12px 24px;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-button:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0 70px;
+      }
+
+      .library-title {
+        font-family: "Cinzel", serif;
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+        position: relative;
+      }
+
+      .library-title::before,
+      .library-title::after {
+        content: "👨‍🏫";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px;
+        color: #d4af37;
+        animation: sparkle 3s ease-in-out infinite;
+      }
+
+      .library-title::before { left: -60px; }
+      .library-title::after { right: -60px; animation-delay: 1.5s; }
+
+      @keyframes sparkle {
+        0%, 100% {
+          opacity: 0.3;
+          transform: translateY(-50%) scale(0.8) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-50%) scale(1.2) rotate(180deg);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        to {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(212, 175, 55, 0.8);
+        }
+      }
+
+      .subtitle {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 50px;
+        color: #b8860b;
+        position: relative;
+        padding: 0 80px;
+      }
+
+      .subtitle::before,
+      .subtitle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #b8860b, transparent);
+      }
+
+      .subtitle::before { left: 0; }
+      .subtitle::after { right: 0; }
+
+      /* ======================
+           🎯 TEACHBACK INTERFACE
+           ====================== */
+
+      .teachback-container {
+        width: 100%;
+        max-width: 1400px;
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .presentation-area {
+        background: linear-gradient(135deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 30px;
+      }
+
+      .section {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #8b6914;
+        padding-bottom: 20px;
+      }
+
+      .section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .section-title {
+        font-family: "Cinzel", serif;
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #f4e4bc;
+        position: relative;
+        padding-left: 20px;
+      }
+
+      .section-title::before {
+        content: "◆";
+        position: absolute;
+        left: 0;
+        color: #d4af37;
+      }
+
+      .note-area {
+        width: 100%;
+        min-height: 100px;
+        background: rgba(139, 105, 20, 0.2);
+        border: 2px solid #8b6914;
+        border-radius: 8px;
+        padding: 15px;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .note-area::placeholder {
+        color: #8b6914;
+      }
+
+      .timer-sidebar {
+        background: linear-gradient(135deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 25px;
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+
+      .timer-display {
+        font-size: 36px;
+        color: #d4af37;
+        text-align: center;
+        margin: 20px 0;
+        font-family: "Cinzel", serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      }
+
+      .timer-label {
+        font-size: 16px;
+        color: #b8860b;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .timer-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .timer-btn {
+        padding: 12px 20px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .timer-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+      }
+
+      .topic-generator {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #8b6914;
+      }
+
+      .topic-display {
+        background: rgba(139, 105, 20, 0.2);
+        border: 2px solid #8b6914;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 14px;
+        color: #f4e4bc;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .tips-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #8b6914;
+      }
+
+      .tip-item {
+        color: #8b6914;
+        font-size: 12px;
+        margin-bottom: 8px;
+        padding-left: 15px;
+        position: relative;
+      }
+
+      .tip-item::before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        font-size: 10px;
+      }
+
+      /* Progress indicator */
+      .progress-indicator {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .progress-step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(139, 105, 20, 0.3);
+        border: 2px solid #8b6914;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #8b6914;
+        transition: all 0.3s ease;
+      }
+
+      .progress-step.active {
+        background: rgba(212, 175, 55, 0.3);
+        border-color: #d4af37;
+        color: #f4e4bc;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      }
+
+      .progress-step.completed {
+        background: rgba(46, 125, 50, 0.3);
+        border-color: #2e7d32;
+        color: #81c784;
+      }
+
+      /* ======================
+           📱 RESPONSIVE DESIGN
+           ====================== */
+
+      @media (max-width: 1024px) {
+        .teachback-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .timer-sidebar {
+          position: static;
+          order: -1;
+        }
+
+        .library-title {
+          font-size: 36px;
+        }
+
+        .subtitle {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          margin: 0 20px;
+          padding: 20px 10px;
+        }
+
+        .library-title {
+          font-size: 28px;
+        }
+
+        .timer-display {
+          font-size: 28px;
+        }
+
+        .progress-indicator {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .progress-step {
+          width: 35px;
+          height: 35px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Decorative Elements -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Title Section -->
+      <h1 class="library-title">Teachback Studio</h1>
+      <p class="subtitle">Share knowledge, inspire understanding</p>
+
+      <!-- Progress Indicator -->
+      <div class="progress-indicator">
+        <div class="progress-step active" id="step1">1</div>
+        <div class="progress-step" id="step2">2</div>
+        <div class="progress-step" id="step3">3</div>
+        <div class="progress-step" id="step4">4</div>
+        <div class="progress-step" id="step5">5</div>
+      </div>
+
+      <!-- Main Teachback Interface -->
+      <div class="teachback-container">
+        <!-- Presentation Planning Area -->
+        <div class="presentation-area">
+          <!-- Introduction Section -->
+          <div class="section">
+            <h3 class="section-title">1. Introduction & Hook</h3>
+            <textarea 
+              class="note-area" 
+              placeholder="Plan your opening hook and introduction. How will you grab attention and introduce your topic?">
+            </textarea>
+          </div>
+
+          <!-- Main Content Section -->
+          <div class="section">
+            <h3 class="section-title">2. Main Content & Key Points</h3>
+            <textarea 
+              class="note-area" 
+              style="min-height: 150px;"
+              placeholder="Outline your main points. What are the 3-4 key concepts you want to teach?">
+            </textarea>
+          </div>
+
+          <!-- Examples & Activities Section -->
+          <div class="section">
+            <h3 class="section-title">3. Examples & Interactive Elements</h3>
+            <textarea 
+              class="note-area" 
+              placeholder="What examples, analogies, or activities will help your audience understand?">
+            </textarea>
+          </div>
+
+          <!-- Q&A Preparation -->
+          <div class="section">
+            <h3 class="section-title">4. Potential Questions & Answers</h3>
+            <textarea 
+              class="note-area" 
+              placeholder="What questions might your audience ask? Prepare your responses.">
+            </textarea>
+          </div>
+
+          <!-- Conclusion Section -->
+          <div class="section">
+            <h3 class="section-title">5. Summary & Call to Action</h3>
+            <textarea 
+              class="note-area" 
+              placeholder="How will you summarize and end your presentation? What do you want your audience to do next?">
+            </textarea>
+          </div>
+        </div>
+
+        <!-- Timer & Controls Sidebar -->
+        <div class="timer-sidebar">
+          <!-- Timer Display -->
+          <div class="timer-section">
+            <div class="timer-label" id="timerLabel">Ready to Present</div>
+            <div class="timer-display" id="timerDisplay">0:00</div>
+          </div>
+
+          <!-- Timer Controls -->
+          <div class="timer-buttons">
+            <button class="timer-btn" onclick="startTimer(300)">5 Min Practice</button>
+            <button class="timer-btn" onclick="startTimer(600)">10 Min Full</button>
+            <button class="timer-btn" onclick="startTimer(900)">15 Min Extended</button>
+            <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">Reset</button>
+          </div>
+
+          <!-- Topic Generator -->
+          <div class="topic-generator">
+            <h4 class="section-title">Topic Generator</h4>
+            <div class="topic-display" id="topicDisplay">
+              Click "Generate Topic" for inspiration
+            </div>
+            <button class="timer-btn" onclick="generateTopic()">Generate Topic</button>
+          </div>
+
+          <!-- Presentation Tips -->
+          <div class="tips-section">
+            <h4 class="section-title">Presentation Tips</h4>
+            <div class="tip-item">Make eye contact with your audience</div>
+            <div class="tip-item">Use clear, simple language</div>
+            <div class="tip-item">Include interactive elements</div>
+            <div class="tip-item">Provide concrete examples</div>
+            <div class="tip-item">Check for understanding</div>
+            <div class="tip-item">Practice smooth transitions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Teachback Topics
+      const teachbackTopics = [
+        "How to solve quadratic equations",
+        "The water cycle and its importance",
+        "Basic principles of photography",
+        "How to write a compelling essay",
+        "Understanding the periodic table",
+        "The history of the Internet",
+        "How photosynthesis works",
+        "Basic cooking techniques",
+        "Understanding climate change",
+        "The solar system explained",
+        "How to budget and save money",
+        "The human digestive system",
+        "Basic principles of democracy",
+        "How vaccines work",
+        "Understanding gravity and motion",
+        "The process of evolution",
+        "How to read body language",
+        "Basic first aid techniques",
+        "Understanding different cultures",
+        "How to grow plants successfully"
+      ];
+
+      // Timer variables
+      let timerInterval;
+      let timeLeft = 0;
+      let isTimerRunning = false;
+      let currentStep = 1;
+
+      // Generate random teachback topic
+      function generateTopic() {
+        const randomTopic = teachbackTopics[Math.floor(Math.random() * teachbackTopics.length)];
+        document.getElementById('topicDisplay').textContent = randomTopic;
+      }
+
+      // Timer functions
+      function startTimer(seconds) {
+        if (isTimerRunning) {
+          clearInterval(timerInterval);
+        }
+        
+        timeLeft = seconds;
+        isTimerRunning = true;
+        
+        // Update label based on timer duration
+        const label = seconds === 300 ? "5 Minute Practice" : 
+                     seconds === 600 ? "10 Minute Presentation" : 
+                     seconds === 900 ? "15 Minute Extended" : "Custom Timer";
+        document.getElementById('timerLabel').textContent = label;
+        
+        updateTimerDisplay();
+        updateProgressStep('active');
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          updateProgress();
+          
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            updateProgressStep('completed');
+            alert("Presentation time complete! Great job!");
+          }
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        if (isTimerRunning) {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          document.getElementById('timerLabel').textContent = "Paused";
+        }
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timeLeft = 0;
+        currentStep = 1;
+        document.getElementById('timerLabel').textContent = "Ready to Present";
+        updateTimerDisplay();
+        resetProgressSteps();
+      }
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('timerDisplay').textContent = display;
+        
+        // Change color based on time remaining
+        const timerElement = document.getElementById('timerDisplay');
+        if (timeLeft <= 60) {
+          timerElement.style.color = '#f48fb1';
+        } else if (timeLeft <= 180) {
+          timerElement.style.color = '#ffb74d';
+        } else {
+          timerElement.style.color = '#d4af37';
+        }
+      }
+
+      // Progress tracking functions
+      function updateProgress() {
+        // Calculate which step we should be in based on time elapsed
+        const totalTime = timeLeft + (Date.now() - startTime) / 1000;
+        const timePerStep = totalTime / 5;
+        const elapsed = (Date.now() - startTime) / 1000;
+        const newStep = Math.min(5, Math.floor(elapsed / timePerStep) + 1);
+        
+        if (newStep !== currentStep) {
+          // Mark previous step as completed
+          updateProgressStep('completed', currentStep);
+          currentStep = newStep;
+          updateProgressStep('active', currentStep);
+        }
+      }
+
+      function updateProgressStep(status, step = currentStep) {
+        const stepElement = document.getElementById(`step${step}`);
+        if (stepElement) {
+          stepElement.className = `progress-step ${status}`;
+        }
+      }
+
+      function resetProgressSteps() {
+        for (let i = 1; i <= 5; i++) {
+          const stepElement = document.getElementById(`step${i}`);
+          if (stepElement) {
+            stepElement.className = i === 1 ? 'progress-step active' : 'progress-step';
+          }
+        }
+      }
+
+      let startTime = 0;
+
+      // Override startTimer to track start time
+      const originalStartTimer = startTimer;
+      startTimer = function(seconds) {
+        startTime = Date.now();
+        originalStartTimer(seconds);
+      };
+
+      // Go back function
+      function goBack() {
+        window.history.back();
+      }
+
+      // Create floating particles
+      function createParticles() {
+        const particleCount = 15;
+        const particleSymbols = ["📚", "✏️", "💡", "🎯"];
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 10 + "s";
+          particle.innerHTML = particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          particle.style.color = "#d4af37";
+          particle.style.fontSize = Math.random() * 10 + 10 + "px";
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        createParticles();
+      });
+    </script>
+  </body>
+</html>
