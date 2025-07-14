@@ -1,13 +1,73 @@
 <!DOCTYPE html>
+<!--
+==============================================================================
+📚 MEDIEVAL LIBRARY TEMPLATE - USAGE GUIDE
+==============================================================================
+
+HOW TO CREATE A NEW LESSON FROM THIS TEMPLATE:
+
+1. COPY THIS FILE:
+   - Save as: your-lesson-name.html
+   - Place in appropriate subject folder (e.g., /vocab/weeks/2/)
+
+2. UPDATE METADATA:
+   - Change <title> tag (line ~47)
+   - Update main title in .library-title (line ~1474)
+   - Update subtitle in .subtitle (line ~1475)
+
+3. ADD YOUR LESSON CONTENT:
+   - Find the "LESSON CONTENT AREA" section (line ~1476)
+   - Replace placeholder content with your lesson material
+   - Use provided example layouts as guides
+
+4. CUSTOMIZE NAVIGATION:
+   - Update the active nav-item class in left sidebar
+   - Modify navigation links if needed
+
+5. OPTIONAL CUSTOMIZATIONS:
+   - Colors: Search for "CUSTOMIZE:" comments
+   - Teams: Update teamInfo object in JavaScript
+   - Points: Change pointsToAdd value (default: 10)
+
+CONTENT STRUCTURE EXAMPLES:
+- Word Analysis: See root.html for reference
+- Interactive Elements: Use .test-definition pattern
+- Grid Layouts: Use .books-container or custom grids
+
+KEY SECTIONS TO MODIFY:
+✓ Line ~47: Page title
+✓ Line ~1474-1476: Main title and subtitle  
+✓ Line ~1476+: Main lesson content
+✓ Line ~1383: Active navigation item
+
+NOTE: The sidebars, treasury system, and decorative elements
+work automatically - no changes needed unless customizing.
+==============================================================================
+-->
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar - The Library of Rayhaven</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lesson 5: Pronouns - Basic Homework - The Library of Rayhaven</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
-        
-  * {
+      /* ======================
+           📋 GLOBAL RESET & BASE STYLES
+           ====================== 
+           
+           PURPOSE: Sets up the foundation for the entire page
+           CUSTOMIZE: Change font families, base colors, background gradients
+           
+           Key Variables:
+           - Primary Gold: #d4af37
+           - Light Gold: #f4e4bc  
+           - Dark Gold: #b8860b
+           - Team Colors: Defined in JavaScript teamInfo object
+        */
+      * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -1058,133 +1118,267 @@
           box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
         }
       }
-        
-        /* Volume Selection */
-        .volumes-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .volume-card {
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
-            border: 3px solid #8b6914;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .volume-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
-            transform: rotate(45deg);
-            transition: all 0.6s ease;
-            opacity: 0;
-        }
-        
-        .volume-card:hover::before {
-            opacity: 1;
-            top: -100%;
-            left: -100%;
-        }
-        
-        .volume-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
-            border-color: #d4af37;
-        }
-        
-        .volume-number {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 72px;
-            color: #d4af37;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-        }
-        
-        .volume-title {
-            font-size: 32px;
-            color: #f4e4bc;
-            margin-bottom: 20px;
-        }
-        
-        .volume-description {
-            font-size: 18px;
-            color: #b8860b;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        
-        .lesson-count {
-            background: rgba(212, 175, 55, 0.2);
-            border: 2px solid #d4af37;
-            border-radius: 30px;
-            padding: 10px 25px;
-            display: inline-block;
-            font-size: 16px;
-            color: #f4e4bc;
-        }
-        
-        /* Decorative elements */
-        .volume-ornament {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-        
-        .volume-ornament-tl {
-            top: 10px;
-            left: 10px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1'/%3E%3C/svg%3E");
-        }
-        
-        .volume-ornament-br {
-            bottom: 10px;
-            right: 10px;
-            transform: rotate(180deg);
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1'/%3E%3C/svg%3E");
-        }
-        
-        /* Decorative separator */
-        .separator {
-            width: 200px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #8b6914, transparent);
-            margin: 40px auto;
-            position: relative;
-        }
-        
-        .separator::before {
-            content: '◆';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #d4af37;
-            font-size: 20px;
-            background: #1a1a1a;
-            padding: 0 10px;
-        }
-        
-       
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ========== LESSON-SPECIFIC STYLES ========== */
+      /* Homework-specific styles */
+      .homework-title {
+        font-family: 'Cinzel', serif;
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+      
+      /* Set Selection */
+      .set-selection {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+      
+      .set-btn {
+        background: rgba(139, 105, 20, 0.3);
+        border: 2px solid #8b6914;
+        color: #d4af37;
+        padding: 20px 40px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-family: 'Cinzel', serif;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .set-btn:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        transform: translateY(-2px);
+      }
+      
+      .set-btn.active {
+        background: rgba(212, 175, 55, 0.5);
+        border-color: #f4e4bc;
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+      }
+      
+      /* Instructions Box */
+      .instructions-box {
+        background: rgba(139, 105, 20, 0.2);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      
+      .instructions-title {
+        font-family: 'Cinzel', serif;
+        font-size: 24px;
+        color: #f4e4bc;
+        margin-bottom: 15px;
+      }
+      
+      .instructions-text {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #d4af37;
+      }
+      
+      /* Question Container */
+      .questions-container {
+        display: none;
+      }
+      
+      .questions-container.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+      
+      /* Question Card */
+      .question-card {
+        background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(26, 15, 10, 0.9) 100%);
+        border: 2px solid #8b6914;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .question-number {
+        background: rgba(212, 175, 55, 0.3);
+        border: 2px solid #d4af37;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #f4e4bc;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+      
+      .question-text {
+        font-size: 20px;
+        margin-left: 80px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #f4e4bc;
+      }
+      
+      /* Show Answer Button */
+      .show-answer-btn {
+        background: rgba(79, 195, 247, 0.3);
+        border: 2px solid #4fc3f7;
+        color: #87ceeb;
+        padding: 10px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-family: 'Cinzel', serif;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        margin-left: 80px;
+        margin-bottom: 20px;
+      }
+      
+      .show-answer-btn:hover {
+        background: rgba(79, 195, 247, 0.5);
+        box-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+        transform: translateY(-2px);
+      }
+      
+      /* Answer Box */
+      .answer-box {
+        background: rgba(129, 199, 132, 0.2);
+        border: 2px solid #81c784;
+        border-radius: 10px;
+        padding: 20px;
+        margin-left: 80px;
+        margin-bottom: 20px;
+        display: none;
+      }
+      
+      .answer-box.visible {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+      
+      .answer-text {
+        font-size: 22px;
+        color: #81c784;
+        font-weight: bold;
+        text-align: center;
+      }
+      
+      /* Reasoning Box */
+      .reasoning-box {
+        background: rgba(79, 195, 247, 0.1);
+        border: 2px solid #4fc3f7;
+        border-radius: 10px;
+        padding: 20px;
+        margin-left: 80px;
+        display: none;
+      }
+      
+      .reasoning-box.visible {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+      
+      .reasoning-title {
+        font-size: 18px;
+        color: #87ceeb;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      
+      .reasoning-text {
+        font-size: 16px;
+        color: #f4e4bc;
+        line-height: 1.6;
+      }
+      
+      /* Summary Section */
+      .summary-section {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 3px solid #8b6914;
+      }
+      
+      .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      }
+      
+      .summary-box {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(180, 140, 40, 0.3) 100%);
+        border: 3px solid #d4af37;
+        border-radius: 20px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .summary-requirements {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid #8b6914;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 25px;
+      }
+      
+      .requirement-item {
+        display: flex;
+        align-items: start;
+        gap: 15px;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+      
+      .requirement-number {
+        background: #d4af37;
+        color: #1a0f0a;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+      
+      .example-sentence {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid #8b6914;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+        font-style: italic;
+        color: #b8860b;
+      }
+      
+
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- 🎨 DECORATIVE ELEMENTS -->
     <div class="corner-ornament corner-top-left"></div>
     <div class="corner-ornament corner-top-right"></div>
@@ -1192,7 +1386,9 @@
     <div class="corner-ornament corner-bottom-right"></div>
 
     <!-- back button NAVIGATION -->
-  <button class="back-button" onclick="goBack()">Back</button> 
+  <a href="/grammar/vol1/grammar-vol1.html" class="back-button">
+    <span>←</span> Back to Grammar Vol 1
+  </a> 
 
     <!-- 📱 SIDEBAR SYSTEM -->
     <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
@@ -1217,9 +1413,9 @@
       </div>
       <div class="sidebar-content">
         <!-- 🔧 CUSTOMIZE: Add your navigation links here -->
-        <a href="/index.html" class="nav-item">Library</a>
+        <a href="/index.html" class="nav-item active">Library</a>
         <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
-        <a href="/grammar/grammar.html" class="nav-item active">Grammar</a>
+        <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
         <a href="/novel/novel.html" class="nav-item">Novel</a>
         <a href="/listening/listening.html" class="nav-item">Listening</a>
         <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
@@ -1308,52 +1504,371 @@
 
     <!-- 🏠 MAIN CONTENT -->
     <div class="main-content">
-        <h1 class="library-title">Scroll of Grammatica</h1>
-        <p class="subtitle">Master the ancient laws of language construction</p>
+      <!-- ========== CUSTOMIZE BELOW FOR YOUR LESSON ========== -->
+      
+      <!-- 📚 TITLE SECTION -->
+      <h1 class="homework-title">Lesson 5: Pronouns - Basic Homework</h1>
+      <p class="subtitle">Master the art of pronouns and their usage</p>
+      
+      <!-- ========== LESSON CONTENT AREA ========== -->
+      
+      <!-- Instructions Box -->
+      <div class="instructions-box">
+        <h2 class="instructions-title">📜 Instructions</h2>
+        <p class="instructions-text">
+          Complete the homework at home. Answers and reasoning are provided.<br>
+          Be ready to explain your answers verbally in class!<br>
+          Focus on understanding WHY each answer is correct.
+        </p>
+      </div>
+      
+      <!-- Set Selection -->
+      <div class="set-selection">
+        <button class="set-btn" id="oddSetBtn" onclick="showSet('odd')">
+          Odd Numbers<br>
+          <span style="font-size: 14px; color: #b8860b;">(1, 3, 5, 7, 9...)</span>
+        </button>
+        <button class="set-btn" id="evenSetBtn" onclick="showSet('even')">
+          Even Numbers<br>
+          <span style="font-size: 14px; color: #b8860b;">(2, 4, 6, 8, 10...)</span>
+        </button>
+      </div>
+      
+      <!-- Odd Questions Container -->
+      <div id="oddQuestions" class="questions-container">
+        <!-- Questions will be added here -->
+      </div>
+      
+      <!-- Even Questions Container -->
+      <div id="evenQuestions" class="questions-container">
+        <!-- Even Questions -->
         
-        <div class="volumes-container">
-            <!-- Volume 1 -->
-            <a href="/grammar/vol1/grammar-vol1.html" class="volume-card">
-                <div class="volume-ornament volume-ornament-tl"></div>
-                <div class="volume-ornament volume-ornament-br"></div>
-                <div class="volume-number">I</div>
-                <h2 class="volume-title">Volume One</h2>
-                <p class="volume-description">
-                    Begin thy journey into the foundations of grammar.<br>
-                    Learn the essential building blocks of proper English.
-                </p>
-                <div class="lesson-count">12 Lessons</div>
-            </a>
-            
-            <!-- Volume 2 -->
-            <a href="/grammar/vol2/grammar-vol2.html" class="volume-card">
-                <div class="volume-ornament volume-ornament-tl"></div>
-                <div class="volume-ornament volume-ornament-br"></div>
-                <div class="volume-number">II</div>
-                <h2 class="volume-title">Volume Two</h2>
-                <p class="volume-description">
-                    Continue thy studies with advanced concepts.<br>
-                    Master complex structures and refined usage.
-                </p>
-                <div class="lesson-count">12 Lessons</div>
-            </a>
-        </div>
-        
-        <div class="separator"></div>
-        
-        <div style="text-align: center; margin-top: 40px;">
-            <p style="font-size: 18px; color: #b8860b; font-style: italic;">
-                "Grammar is the logic of speech, even as logic is the grammar of reason."<br>
-                <span style="font-size: 16px;">- Richard C. Trench</span>
+        <!-- Question 2 -->
+        <div class="question-card">
+          <div class="question-number">2</div>
+          <p class="question-text">I don't like this case. Please show me _____.</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer2')">Show Answer</button>
+          <div class="answer-box" id="answer2">
+            <p class="answer-text">another</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Unknown total cases = indefinite<br>
+              ANOTHER = different one (unknown which one)
             </p>
+          </div>
         </div>
+        
+        <!-- Question 4 -->
+        <div class="question-card">
+          <div class="question-number">4</div>
+          <p class="question-text">We know _____ very well.</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer4')">Show Answer</button>
+          <div class="answer-box" id="answer4">
+            <p class="answer-text">each other</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Two people, reciprocal relationship<br>
+              EACH OTHER = between two people only
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 6 -->
+        <div class="question-card">
+          <div class="question-number">6</div>
+          <p class="question-text">Why are the green _____ cheaper?</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer6')">Show Answer</button>
+          <div class="answer-box" id="answer6">
+            <p class="answer-text">ones</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Plural pronoun replacing plural noun<br>
+              ONES = plural of 'one' (the green items)
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 8 -->
+        <div class="question-card">
+          <div class="question-number">8</div>
+          <p class="question-text">When people get in trouble, they should help _____.</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer8')">Show Answer</button>
+          <div class="answer-box" id="answer8">
+            <p class="answer-text">one another</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Multiple people helping reciprocally<br>
+              ONE ANOTHER = between three or more people
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 10 -->
+        <div class="question-card">
+          <div class="question-number">10</div>
+          <p class="question-text">I need the camera you have. Can you lend _____ to me?</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer10')">Show Answer</button>
+          <div class="answer-box" id="answer10">
+            <p class="answer-text">it</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Specific camera mentioned = use "it"<br>
+              IT = refers to the specific camera
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 12 -->
+        <div class="question-card">
+          <div class="question-number">12</div>
+          <p class="question-text">We won't go out. <strong>It</strong> is raining.</p>
+          <p class="question-text" style="margin-top: 10px; font-size: 18px;">Identify the usage of "it":</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer12')">Show Answer</button>
+          <div class="answer-box" id="answer12">
+            <p class="answer-text">비인칭 주어 (Impersonal Subject)</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Weather phenomenon<br>
+              IT = impersonal subject for weather/time/distance
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 14 -->
+        <div class="question-card">
+          <div class="question-number">14</div>
+          <p class="question-text">She likes it so don't lose <strong>it</strong>.</p>
+          <p class="question-text" style="margin-top: 10px; font-size: 18px;">Identify the usage of "it":</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer14')">Show Answer</button>
+          <div class="answer-box" id="answer14">
+            <p class="answer-text">대명사 (Pronoun)</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Refers to specific object<br>
+              IT = replacing a previously mentioned thing
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 16 -->
+        <div class="question-card">
+          <div class="question-number">16</div>
+          <p class="question-text"><strong>It</strong> is seven o'clock.</p>
+          <p class="question-text" style="margin-top: 10px; font-size: 18px;">Identify the usage of "it":</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer16')">Show Answer</button>
+          <div class="answer-box" id="answer16">
+            <p class="answer-text">비인칭 주어 (Impersonal Subject)</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Time expression<br>
+              IT = impersonal subject for time
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 18 -->
+        <div class="question-card">
+          <div class="question-number">18</div>
+          <p class="question-text">That toy looks fancy. <strong>It</strong> must be expensive.</p>
+          <p class="question-text" style="margin-top: 10px; font-size: 18px;">Identify the usage of "it":</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer18')">Show Answer</button>
+          <div class="answer-box" id="answer18">
+            <p class="answer-text">대명사 (Pronoun)</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Refers to "that toy"<br>
+              IT = replacing the mentioned toy
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 20 -->
+        <div class="question-card">
+          <div class="question-number">20</div>
+          <p class="question-text"><strong>It</strong> is getting dark.</p>
+          <p class="question-text" style="margin-top: 10px; font-size: 18px;">Identify the usage of "it":</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer20')">Show Answer</button>
+          <div class="answer-box" id="answer20">
+            <p class="answer-text">비인칭 주어 (Impersonal Subject)</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Natural phenomenon<br>
+              IT = impersonal subject for general conditions
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 22 -->
+        <div class="question-card">
+          <div class="question-number">22</div>
+          <p class="question-text">Some of the bread _____ rotten.</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer22')">Show Answer</button>
+          <div class="answer-box" id="answer22">
+            <p class="answer-text">is</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Bread = uncountable, singular verb<br>
+              SOME OF + uncountable noun = singular
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 24 -->
+        <div class="question-card">
+          <div class="question-number">24</div>
+          <p class="question-text">I don't have _____ books to read.</p>
+          <button class="show-answer-btn" onclick="showAnswer('answer24')">Show Answer</button>
+          <div class="answer-box" id="answer24">
+            <p class="answer-text">any</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Negative sentence = use "any"<br>
+              ANY = negative/interrogative context
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 26 -->
+        <div class="question-card">
+          <div class="question-number">26</div>
+          <p class="question-text">Thomas didn't like the singer, nor <u>do</u> Adam. <span style="color: #ff6b6b;">(Find the error)</span></p>
+          <button class="show-answer-btn" onclick="showAnswer('answer26')">Show Answer</button>
+          <div class="answer-box" id="answer26">
+            <p class="answer-text">do → does</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Adam = singular subject<br>
+              Should be "nor does Adam" (3rd person singular)
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 28 -->
+        <div class="question-card">
+          <div class="question-number">28</div>
+          <p class="question-text">I want to hear neither pop song <u>and</u> classical music. <span style="color: #ff6b6b;">(Find the error)</span></p>
+          <button class="show-answer-btn" onclick="showAnswer('answer28')">Show Answer</button>
+          <div class="answer-box" id="answer28">
+            <p class="answer-text">and → nor</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              neither...nor pattern<br>
+              NEITHER always pairs with NOR, not AND
+            </p>
+          </div>
+        </div>
+        
+        <!-- Question 30 -->
+        <div class="question-card">
+          <div class="question-number">30</div>
+          <p class="question-text">Your son is not a baby anymore, nor <u>do</u> your daughter. <span style="color: #ff6b6b;">(Find the error)</span></p>
+          <button class="show-answer-btn" onclick="showAnswer('answer30')">Show Answer</button>
+          <div class="answer-box" id="answer30">
+            <p class="answer-text">do → is</p>
+          </div>
+          <div class="reasoning-box">
+            <p class="reasoning-title">📚 Reasoning:</p>
+            <p class="reasoning-text">
+              Matching the main verb "is"<br>
+              Should be "nor is your daughter"
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Additional Homework Section -->
+      <div class="summary-section">
+        <h2 class="section-title">📚 Additional Homework</h2>
+        <div class="summary-box">
+          <h3 style="font-family: 'Cinzel', serif; font-size: 28px; color: #f4e4bc; margin-bottom: 25px; text-align: center;">
+            Complete These Tasks
+          </h3>
+          
+          <div class="summary-requirements">
+            <h4 style="color: #d4af37; margin-bottom: 20px;">Required Assignments:</h4>
+            
+            <div class="requirement-item">
+              <div class="requirement-number">1</div>
+              <div>
+                <strong style="font-size: 15px; color: #ffd700;">Research Assignment: "A number of" vs "The number of"</strong><br>
+                <span style="font-size: 30px;">Find the difference and explain which takes singular/plural verbs.<br>
+                Write a clear explanation with 2 example sentences for each.</span>
+              </div>
+            </div>
+            
+            <div class="requirement-item">
+              <div class="requirement-number">2</div>
+              <div>
+                <strong style="font-size: 15px; color: #ffd700;">Rewriting Practice</strong><br>
+                <span style="font-size: 30px;">Original: Thomas didn't like the singer, nor do Adam.<br>
+                • Correct the error<br>
+                • Rewrite this sentence in 3 different ways (maintaining the same meaning)</span>
+              </div>
+            </div>
+            
+            <div class="requirement-item">
+              <div class="requirement-number">3</div>
+              <div>
+                <strong style="font-size: 15px; color: #ffd700;">Compound Sentences (6 total)</strong><br>
+                <span style="font-size: 30px;">Write 2 sentences each using <strong>BOTH, EITHER, NEITHER</strong><br>
+                • Each sentence must be <strong>10+ words</strong><br>
+                • Use Week 1-2 vocabulary<br>
+                • Underline the pronoun in each sentence</span>
+
+              </div>
+            </div>
+          </div>
+          
+      
+          
+          <div style="margin-top: 30px; background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 15px; padding: 20px;">
+            <h4 style="color: #ffd700; text-align: center; margin-bottom: 15px;">💡 Study Tips</h4>
+            <p style="font-size: 18px; text-align: center; color: #f4e4bc;">
+              • Review all pronoun rules from class<br>
+              • Practice identifying "it" usage in your reading<br>
+              • Remember: each other (2) vs one another (3+)<br>
+              • Check subject-verb agreement with compound subjects
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ========== END OF LESSON CUSTOMIZATION ========== -->
     </div>
-    
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-    
+
+    <!-- 📢 NOTIFICATION SYSTEM -->
+    <div class="toast" id="toast"></div>
+
     <script>
-       /* ======================
+      /* ======================
            🎯 STUDENT MANAGEMENT SYSTEM
            ====================== 
            
@@ -1822,6 +2337,46 @@
         }
       }
 
+      // Show/hide answer functionality
+      function showAnswer(answerId) {
+        const answerBox = document.getElementById(answerId);
+        answerBox.classList.add('visible');
+        
+        // Also show the reasoning box (next sibling)
+        const reasoningBox = answerBox.nextElementSibling;
+        if (reasoningBox && reasoningBox.classList.contains('reasoning-box')) {
+          reasoningBox.classList.add('visible');
+        }
+        
+        // Hide the show answer button
+        const button = answerBox.previousElementSibling;
+        if (button && button.classList.contains('show-answer-btn')) {
+          button.style.display = 'none';
+        }
+      }
+      
+      // Show different question sets
+      function showSet(setType) {
+        // Hide all question containers
+        document.querySelectorAll('.questions-container').forEach(container => {
+          container.classList.remove('active');
+        });
+        
+        // Remove active from all buttons
+        document.querySelectorAll('.set-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Show selected set
+        if (setType === 'odd') {
+          document.getElementById('oddQuestions').classList.add('active');
+          document.getElementById('oddSetBtn').classList.add('active');
+        } else {
+          document.getElementById('evenQuestions').classList.add('active');
+          document.getElementById('evenSetBtn').classList.add('active');
+        }
+      }
+
       // Initialize on load
       document.addEventListener("DOMContentLoaded", () => {
         // Re-initialize from localStorage to ensure sync
@@ -1835,8 +2390,48 @@
         populateStudentDropdown();
         renderDailyStudents();
         createParticles();
+        
+        // Show even questions by default
+        showSet('even');
       });
 
+      /* ======================
+           🔧 CUSTOMIZATION QUICK REFERENCE
+           ====================== 
+           
+           🎨 VISUAL CUSTOMIZATION:
+           - Colors: Search for color codes like #d4af37, #f4e4bc, #b8860b
+           - Fonts: Change 'Cinzel' and 'Uncial Antiqua' to your preferred fonts
+           - Animations: Adjust timing in @keyframes sections
+           - Spacing: Modify padding, margin, and gap values
+           
+           📱 LAYOUT CUSTOMIZATION:
+           - Sidebar widths: Change .left-sidebar and .right-sidebar width values
+           - Content grid: Modify grid-template-columns in .books-container and .sections-container
+           - Responsive breakpoints: Adjust @media query pixel values
+           
+           🎯 FUNCTIONALITY CUSTOMIZATION:
+           - Points per click: Change pointsToAdd in addPointsToStudent()
+           - Toast duration: Modify setTimeout in showToast()
+           - Team info: Update teamInfo object with your teams
+           - Swipe sensitivity: Adjust swipeThreshold in handleSwipe()
+           
+           📊 DATA INTEGRATION:
+           - Student data: Stored in localStorage 'conquestTeamData'
+           - Daily tracking: Uses 'dailyStudents' and 'dailyTreasury' keys
+           - Team structure: Expects teams with students arrays
+           
+           🔗 NAVIGATION CUSTOMIZATION:
+           - Add menu items: Insert <a class="nav-item" href="...">Item</a> in left sidebar
+           - Add books: Insert <a class="book" href="..."><div class="book-spine">Title</div></a>
+           - Add sections: Insert <a class="section-card" href="...">Card content</a>
+           
+           💡 QUICK TIPS:
+           - Use "CUSTOMIZE:" comments to find key customization points
+           - Test responsive design on different screen sizes
+           - Backup localStorage data before making changes
+           - Use browser dev tools to test color and spacing changes
+        */
     </script>
-</body>
+  </body>
 </html>

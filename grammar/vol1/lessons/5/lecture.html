@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Vol.1 Lesson 5: Pronouns - Cornell Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cinzel', serif;
+      background: #1a1a1a;
+      color: #d4af37;
+      min-height: 100vh;
+      background-image: radial-gradient(ellipse at top, #2a2a2a, transparent), radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Decorative corner ornaments */
+    .corner-ornament {
+      position: fixed;
+      width: 120px;
+      height: 120px;
+      opacity: 0.3;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+      background-size: contain;
+      z-index: 1;
+    }
+
+    .corner-top-left {
+      top: 20px;
+      left: 70px;
+    }
+
+    .corner-top-right {
+      top: 20px;
+      right: 70px;
+      transform: scaleX(-1);
+    }
+
+    .corner-bottom-left {
+      bottom: 20px;
+      left: 70px;
+      transform: scaleY(-1);
+    }
+
+    .corner-bottom-right {
+      bottom: 20px;
+      right: 70px;
+      transform: scale(-1, -1);
+    }
+    
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Uncial Antiqua', cursive;
+      color: #f4e4bc;
+      text-decoration: none;
+      background: #5a3825;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 2px solid #d4af37;
+      z-index: 100;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .back-button:hover {
+      background: #7a4a35;
+      box-shadow: 0 0 10px #d4af37;
+    }
+    
+    /* Cornell Notes Layout */
+    .cornell-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 80px auto 20px;
+      padding: 0 20px;
+      min-height: calc(100vh - 100px);
+    }
+    
+    /* Main Note Area */
+    .note-area {
+      background: rgba(0,0,0,0.8);
+      border: 2px solid #d4af37;
+      border-radius: 15px;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .slide {
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .slide.active {
+      display: flex;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 1rem;
+    }
+    
+    .slide-title {
+      font-size: 2rem;
+      color: #ffdd57;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .slide-subtitle {
+      font-size: 1.1rem;
+      color: #f4e4bc;
+      font-style: italic;
+    }
+    
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      gap: 20px;
+    }
+    
+    /* Key Points Card */
+    .key-points-card {
+      background: rgba(90, 56, 37, 0.3);
+      border: 2px solid #d4af37;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    
+    .card-title {
+      color: #ffdd57;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 600;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .key-points-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .key-points-list li {
+      color: #f4e4bc;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 8px 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .key-points-list li:before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: #d4af37;
+    }
+    
+    .textbook-image {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      object-fit: contain;
+      max-height: calc(100vh - 400px);
+    }
+    
+    .image-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    /* Navigation - 20% smaller */
+    .navigation {
+      position: fixed;
+      bottom: 20px;
+      left: 90%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      background: rgba(0,0,0,0.9);
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      border: 2px solid #d4af37;
+      z-index: 100;
+    }
+    
+    .nav-btn {
+      background: #5a3825;
+      color: #f4e4bc;
+      border: 2px solid #d4af37;
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Cinzel', serif;
+    }
+    
+    .nav-btn:hover:not(:disabled) {
+      background: #7a4a35;
+      box-shadow: 0 0 12px #d4af37;
+      transform: translateY(-2px);
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .slide-indicator {
+      color: #f4e4bc;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    
+    /* Sidebar styles */
+    .left-sidebar {
+      width: 300px;
+      background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+      border-right: 2px solid #8b6914;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      transform: translateX(-300px);
+    }
+    
+    .left-sidebar.expanded {
+      transform: translateX(0);
+    }
+    
+    .right-sidebar {
+      width: 350px;
+      background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+      border-left: 2px solid #8b6914;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      transform: translateX(350px);
+    }
+    
+    .right-sidebar.expanded {
+      transform: translateX(0);
+    }
+    
+    .sidebar-toggle {
+      position: fixed;
+      width: 50px;
+      height: 120px;
+      background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+      border: 2px solid #8b6914;
+      color: #d4af37;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-family: 'Uncial Antiqua', cursive;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      z-index: 99;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    
+    .left-toggle {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 0 10px 10px 0;
+      border-left: none;
+    }
+    
+    .right-toggle {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 10px 0 0 10px;
+      border-right: none;
+    }
+    
+    .sidebar-toggle:hover {
+      background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+      width: 60px;
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      z-index: 98;
+    }
+    
+    .sidebar-overlay.active {
+      display: block;
+    }
+    
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 1px solid #8b6914;
+    }
+    
+    .sidebar-title {
+      font-family: 'Uncial Antiqua', cursive;
+      font-size: 20px;
+      color: #f4e4bc;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      flex: 1;
+    }
+    
+    .close-btn {
+      width: 30px;
+      height: 30px;
+      background: transparent;
+      border: 1px solid #d4af37;
+      color: #d4af37;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 24px;
+    }
+    
+    .close-btn:hover {
+      background: rgba(212, 175, 55, 0.4);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+    
+    .sidebar-content {
+      padding: 20px;
+    }
+    
+    .nav-item {
+      display: block;
+      padding: 12px 15px;
+      margin: 8px 0;
+      background: rgba(139, 105, 20, 0.2);
+      border: 1px solid #8b6914;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #d4af37;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .nav-item:hover {
+      background: rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      transform: translateX(5px);
+    }
+    
+    .nav-item.active {
+      background: rgba(212, 175, 55, 0.4);
+      border-color: #f4e4bc;
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 1024px) {
+      .cornell-container {
+        grid-template-columns: 200px 1fr;
+        gap: 15px;
+      }
+      
+      .slide-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .cornell-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 150px;
+      }
+      
+      .navigation {
+        gap: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+      
+      .nav-btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🎨 DECORATIVE ELEMENTS -->
+  <div class="corner-ornament corner-top-left"></div>
+  <div class="corner-ornament corner-top-right"></div>
+  <div class="corner-ornament corner-bottom-left"></div>
+  <div class="corner-ornament corner-bottom-right"></div>
+
+  <!-- back button NAVIGATION -->
+  <button class="back-button" onclick="goBack()">Back</button> 
+
+  <!-- 📱 SIDEBAR SYSTEM -->
+  <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
+    MENU
+  </div>
+  <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">
+    Treasury
+  </div>
+
+  <!-- Mobile overlay -->
+  <div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    onclick="closeSidebars()"
+  ></div>
+
+  <!-- 📋 LEFT SIDEBAR (NAVIGATION) -->
+  <div class="left-sidebar" id="leftSidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Navigation</h2>
+      <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+    </div>
+    <div class="sidebar-content">
+      <a href="/index.html" class="nav-item">Library</a>
+      <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+      <a href="/grammar/grammar.html" class="nav-item active">Grammar</a>
+      <a href="/novel/novel.html" class="nav-item">Novel</a>
+      <a href="/listening/listening.html" class="nav-item">Listening</a>
+      <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
+      <a href="/reading/reading.html" class="nav-item">Reading</a>
+      <a href="/essay/essay.html" class="nav-item">Essay</a>
+      <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+      <a href="/science/science.html" class="nav-item">Science</a>
+      <a href="/review/review.html" class="nav-item">Review</a>
+      <a href="/timer/timer.html" class="nav-item">Timer</a>
+      <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+    </div>
+  </div>
+
+  <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
+  <div class="right-sidebar" id="rightSidebar">
+    <div class="sidebar-header">
+      <h2 class="points-title">Daily Treasury</h2>
+      <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+    </div>
+    <div class="sidebar-content">
+      <!-- Treasury content here -->
+    </div>
+  </div>
+  
+  <!-- Cornell Notes Layout -->
+  <div class="cornell-container">
+    <!-- Main Note Area -->
+    <div class="note-area">
+      <!-- Slide 1: Personal Pronouns -->
+      <div class="slide slide1 active">
+        <div class="slide-header">
+          <h1 class="slide-title">Personal Pronouns (인칭대명사)</h1>
+          <p class="slide-subtitle">Master the Complete Pronoun System</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="pronoun-table.png" alt="Personal Pronoun Table" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>📊 5-Column System:</strong> 주격-목적격-소유격-소유대명사-재귀대명사</li>
+              <li><strong>⚠️ its vs it's:</strong> its = 소유격 (그것의) / it's = it is (축약형)</li>
+              <li><strong>🔄 Reflexive Rules:</strong> 주어 = 목적어일 때 -self/-selves, by oneself = 혼자서</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 2: Special Uses of It -->
+      <div class="slide slide2">
+        <div class="slide-header">
+          <h1 class="slide-title">Special Uses of "It" (It의 특별한 사용)</h1>
+          <p class="slide-subtitle">Three Types You Must Know</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="it-usage.png" alt="It Usage Examples" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>🌦️ 비인칭 It:</strong> 날씨/시간/거리 (It's raining, It's 3 PM)</li>
+              <li><strong>↩️ 가주어 It:</strong> 진주어를 뒤로 보냄 (It is important to study)</li>
+              <li><strong>🎯 대명사 It:</strong> 앞에 나온 특정 명사 지칭</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 3: One, other & another -->
+      <div class="slide slide3">
+        <div class="slide-header">
+          <h1 class="slide-title">부정대명사(1): One, other & another</h1>
+          <p class="slide-subtitle">The Circle Rule</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="one-other-another.png" alt="One Other Another Examples" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>🔵 THE = 전체를 알 때:</strong> 2개→one + the other / 3개+→one + the others</li>
+              <li><strong>🔄 Without THE:</strong> 전체 모를 때→one + another + others</li>
+              <li><strong>📏 Circle Rule:</strong> 전체를 아는 원 안에서는 반드시 THE 사용</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 4: Another Usage -->
+      <div class="slide slide4">
+        <div class="slide-header">
+          <h1 class="slide-title">Another 제대로 사용하기</h1>
+          <p class="slide-subtitle">Two Meanings to Remember</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="another-usage.png" alt="Another Usage Examples" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>➕ another = an + other:</strong> 단수 명사와만 사용 (another book)</li>
+              <li><strong>🔄 Two Meanings:</strong> 추가 (한잔 더) vs 다른 것 (다른 거로)</li>
+              <li><strong>💡 Special:</strong> another + 숫자 + 복수 = "더" (another 3 hours)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 5: Some & Any -->
+      <div class="slide slide5">
+        <div class="slide-header">
+          <h1 class="slide-title">부정대명사(2): Some, Any</h1>
+          <p class="slide-subtitle">The Feeling Rule</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="some-any.png" alt="Some Any Usage" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>😊 SOME:</strong> 긍정적 느낌 - "있을 것 같아" (권유/제안)</li>
+              <li><strong>😟 ANY:</strong> 부정적 느낌 - "없을 것 같아" (의문/부정)</li>
+              <li><strong>💬 Would you like:</strong> some coffee? (권유) vs any coffee? (확인)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Slide 6: Both, Either, Neither -->
+      <div class="slide slide6">
+        <div class="slide-header">
+          <h1 class="slide-title">부정대명사(3): Both, Either, Neither</h1>
+          <p class="slide-subtitle">The 2/2, 1/2, 0/2 Formula</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="both-either-neither.png" alt="Both Either Neither Examples" class="textbook-image">
+          </div>
+          
+          <!-- Key Points Card -->
+          <div class="key-points-card">
+            <h3 class="card-title">Key Points</h3>
+            <ul class="key-points-list">
+              <li><strong>✅ Both A and B:</strong> 둘 다 (2/2) - 복수 동사 사용</li>
+              <li><strong>🤔 Either A or B:</strong> 둘 중 하나 (1/2) - B에 동사 일치</li>
+              <li><strong>❌ Neither A nor B:</strong> 둘 다 아님 (0/2) - B에 동사 일치</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Navigation -->
+  <div class="navigation">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀</button>
+    <span class="slide-indicator">
+      <span id="currentSlide">1</span> - <span id="totalSlides">6</span>
+    </span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">▶</button>
+  </div>
+  
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+    
+    function showSlide(n) {
+      const slides = document.getElementsByClassName('slide');
+      
+      if (n > totalSlides) currentSlide = 1;
+      if (n < 1) currentSlide = totalSlides;
+      
+      // Hide all slides
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove('active');
+      }
+      
+      // Show current slide
+      slides[currentSlide - 1].classList.add('active');
+      
+      document.getElementById('currentSlide').textContent = currentSlide;
+      
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+    
+    function changeSlide(n) {
+      currentSlide += n;
+      showSlide(currentSlide);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+      if (e.key === 'ArrowRight') changeSlide(1);
+    });
+    
+    // Initialize
+    showSlide(currentSlide);
+    
+    // Go back function
+    function goBack() {
+      window.history.back();
+    }
+    
+    // Sidebar functions
+    function toggleLeftSidebar() {
+      const sidebar = document.getElementById('leftSidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const isExpanded = sidebar.classList.contains('expanded');
+      
+      if (isExpanded) {
+        sidebar.classList.remove('expanded');
+        overlay.classList.remove('active');
+      } else {
+        document.getElementById('rightSidebar').classList.remove('expanded');
+        sidebar.classList.add('expanded');
+        overlay.classList.add('active');
+      }
+    }
+    
+    function toggleRightSidebar() {
+      const sidebar = document.getElementById('rightSidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const isExpanded = sidebar.classList.contains('expanded');
+      
+      if (isExpanded) {
+        sidebar.classList.remove('expanded');
+        overlay.classList.remove('active');
+      } else {
+        document.getElementById('leftSidebar').classList.remove('expanded');
+        sidebar.classList.add('expanded');
+        overlay.classList.add('active');
+      }
+    }
+    
+    function closeSidebars() {
+      document.getElementById('leftSidebar').classList.remove('expanded');
+      document.getElementById('rightSidebar').classList.remove('expanded');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    }
+  </script>
+</body>
+</html>

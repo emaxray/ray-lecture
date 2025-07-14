@@ -1017,26 +1017,34 @@
     </style>
 </head>
 <body>
-    <!-- Back Button -->
-    <a href="/vocab/vocab.html" class="back-button">Back</a>
-    
-    <!-- Decorative corner ornaments -->
+    <!-- 🎨 DECORATIVE ELEMENTS -->
     <div class="corner-ornament corner-top-left"></div>
     <div class="corner-ornament corner-top-right"></div>
     <div class="corner-ornament corner-bottom-left"></div>
     <div class="corner-ornament corner-bottom-right"></div>
-    
-    <!-- Sidebar Toggle Buttons -->
-    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
-    <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
-    
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
-    
-    <!-- Left Sidebar -->
+
+    <!-- back button NAVIGATION -->
+    <button class="back-button" onclick="goBack()">Back</button> 
+
+    <!-- 📱 SIDEBAR SYSTEM -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
+      MENU
+    </div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">
+      Treasury
+    </div>
+
+    <!-- Mobile overlay -->
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="closeSidebars()"
+    ></div>
+
+    <!-- 📋 LEFT SIDEBAR (NAVIGATION) -->
     <div class="left-sidebar" id="leftSidebar">
         <div class="sidebar-header">
-            <h2 class="sidebar-title">Ancient Subjects</h2>
+            <h2 class="sidebar-title">Navigation</h2>
             <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
         </div>
         <div class="sidebar-content">
@@ -1054,11 +1062,11 @@
             <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
         </div>
     </div>
-    
-    <!-- Right Sidebar -->
+
+    <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
     <div class="right-sidebar" id="rightSidebar">
         <div class="sidebar-header">
-            <h2 class="sidebar-title">Scholar's Treasury</h2>
+            <h2 class="points-title">Daily Treasury</h2>
             <button class="close-btn" onclick="toggleRightSidebar()">×</button>
         </div>
         <div class="sidebar-content">
@@ -1114,16 +1122,16 @@
                 <div class="vocab-word">demanding</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> easy
+                        <span class="choice-number">①</span> disagree
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> simple
+                        <span class="choice-number">②</span> remember
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> pleasant
+                        <span class="choice-number">③</span> swagger
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> relaxed
+                        <span class="choice-number">④</span> increase
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">⑤</span> difficult
@@ -1136,16 +1144,16 @@
                 <div class="vocab-word">denounce</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> praise
+                        <span class="choice-number">①</span> hide
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> support
+                        <span class="choice-number">②</span> radiance
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> encourage
+                        <span class="choice-number">③</span> continue
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> ignore
+                        <span class="choice-number">④</span> eternal
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">⑤</span> criticize
@@ -1158,19 +1166,19 @@
                 <div class="vocab-word">deception</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> truth
+                        <span class="choice-number">①</span> support
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> honesty
+                        <span class="choice-number">②</span> veil
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> clarity
+                        <span class="choice-number">③</span> whole
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">④</span> fraud
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> sincerity
+                        <span class="choice-number">⑤</span> constant
                     </div>
                 </div>
             </div>
@@ -1180,19 +1188,19 @@
                 <div class="vocab-word">critic</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> fan
+                        <span class="choice-number">①</span> buttress
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">②</span> judge
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> supporter
+                        <span class="choice-number">③</span> limit
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> believer
+                        <span class="choice-number">④</span> shipment
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> follower
+                        <span class="choice-number">⑤</span> continue
                     </div>
                 </div>
             </div>
@@ -1202,19 +1210,19 @@
                 <div class="vocab-word">conclusive</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> uncertain
+                        <span class="choice-number">①</span> difficult
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> vague
+                        <span class="choice-number">②</span> equal
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">③</span> definite
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> unclear
+                        <span class="choice-number">④</span> skill
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> doubtful
+                        <span class="choice-number">⑤</span> destroy
                     </div>
                 </div>
             </div>
@@ -1230,13 +1238,13 @@
                         <span class="choice-number">②</span> darkness
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> dimness
+                        <span class="choice-number">③</span> faith
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> shadow
+                        <span class="choice-number">④</span> debate
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> gloom
+                        <span class="choice-number">⑤</span> danger
                     </div>
                 </div>
             </div>
@@ -1246,19 +1254,19 @@
                 <div class="vocab-word">decrease</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> increase
+                        <span class="choice-number">①</span> crucial
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> grow
+                        <span class="choice-number">②</span> inch
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> expand
+                        <span class="choice-number">③</span> reviewer
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">④</span> diminish
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> enlarge
+                        <span class="choice-number">⑤</span> blemish
                     </div>
                 </div>
             </div>
@@ -1268,19 +1276,19 @@
                 <div class="vocab-word">crawl</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> run
+                        <span class="choice-number">①</span> merge
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">②</span> creep
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> sprint
+                        <span class="choice-number">③</span> condition
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> leap
+                        <span class="choice-number">④</span> element
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> jump
+                        <span class="choice-number">⑤</span> agree
                     </div>
                 </div>
             </div>
@@ -1290,19 +1298,19 @@
                 <div class="vocab-word">defect</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> perfection
+                        <span class="choice-number">①</span> knowable
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">②</span> flaw
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> strength
+                        <span class="choice-number">③</span> intentional
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> benefit
+                        <span class="choice-number">④</span> bond
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> advantage
+                        <span class="choice-number">⑤</span> reflect
                     </div>
                 </div>
             </div>
@@ -1315,16 +1323,16 @@
                         <span class="choice-number">①</span> build
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> create
+                        <span class="choice-number">②</span> improve
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">③</span> wreck
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> repair
+                        <span class="choice-number">④</span> situation
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> construct
+                        <span class="choice-number">⑤</span> involve
                     </div>
                 </div>
             </div>
@@ -1379,19 +1387,19 @@
                 <div class="vocab-word">inhale</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> breathe out
+                        <span class="choice-number">①</span> to exercise
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> hold breath
+                        <span class="choice-number">②</span> breathe out
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">③</span> breathe in
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> stop breathing
+                        <span class="choice-number">④</span> to hail
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> exhale
+                        <span class="choice-number">⑤</span> look in
                     </div>
                 </div>
             </div>
@@ -1401,19 +1409,19 @@
                 <div class="vocab-word">inhabit</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> leave
+                        <span class="choice-number">①</span> animal's home
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> abandon
+                        <span class="choice-number">②</span> bring in
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">③</span> live in
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> visit briefly
+                        <span class="choice-number">④</span> to have habits
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> destroy
+                        <span class="choice-number">⑤</span> put in
                     </div>
                 </div>
             </div>
@@ -1423,19 +1431,19 @@
                 <div class="vocab-word">ingest</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> to reject food
+                        <span class="choice-number">①</span> to order food
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">②</span> to consume food
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> to prepare food
+                        <span class="choice-number">③</span> to smell food
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> to cook food
+                        <span class="choice-number">④</span> to gesture towards food
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> to throw away
+                        <span class="choice-number">⑤</span> to stare in
                     </div>
                 </div>
             </div>
@@ -1445,19 +1453,19 @@
                 <div class="vocab-word">impulse</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> plan
+                        <span class="choice-number">①</span> heartbeat
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> thought
+                        <span class="choice-number">②</span> satisfy
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> delay
+                        <span class="choice-number">③</span> calm
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">④</span> urge
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">⑤</span> caution
+                        <span class="choice-number">⑤</span> to drive a car
                     </div>
                 </div>
             </div>
@@ -1467,16 +1475,16 @@
                 <div class="vocab-word">invoke</div>
                 <div class="choices-grid">
                     <div class="choice incorrect">
-                        <span class="choice-number">①</span> to reject
+                        <span class="choice-number">①</span> to shout outside
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">②</span> to ignore
+                        <span class="choice-number">②</span> to accept as member
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">③</span> to dismiss
+                        <span class="choice-number">③</span> to call a friend
                     </div>
                     <div class="choice incorrect">
-                        <span class="choice-number">④</span> to forget
+                        <span class="choice-number">④</span> to write a letter
                     </div>
                     <div class="choice correct">
                         <span class="choice-number">⑤</span> to appeal
@@ -1574,6 +1582,11 @@ function safeInit(fn) {
 // ===== Event Binding =====
 function bindUIActions() {
     // Event listeners removed - using inline onclick handlers
+}
+
+// ===== Navigation Logic =====
+function goBack() {
+    window.location.href = '/vocab/vocab.html';
 }
 
 // ===== Sidebar Logic =====

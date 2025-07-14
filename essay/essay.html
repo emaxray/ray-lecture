@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essay Writing - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-size: 16px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .library-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 56px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .library-subtitle {
+            font-size: 24px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Essay Types Container */
+        .essay-types-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        /* Essay Type Card */
+        .essay-card {
+            background: rgba(42, 30, 20, 0.9);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .essay-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .essay-card:hover::before {
+            left: 100%;
+        }
+        
+        .essay-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+        }
+        
+        .essay-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .essay-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 32px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+        }
+        
+        .essay-description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+        
+        .essay-features {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .essay-features li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #b8860b;
+        }
+        
+        .essay-features li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+        
+        .essay-level {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid #d4af37;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-top: 15px;
+            color: #f4e4bc;
+        }
+        
+        /* Decorative Elements */
+        .decorative-border {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #8b6914, transparent);
+            margin: 40px auto;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: rgba(139, 105, 20, 0.2);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 60px 0 40px;
+            text-align: center;
+        }
+        
+        .info-box h3 {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 28px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+        }
+        
+        .info-box p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d4af37;
+        }
+        
+        /* Sidebar toggle buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            z-index: 99;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Mobile overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            transition: transform 0.3s ease;
+            z-index: 200;
+            transform: translateX(-250px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Sidebar header */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .sidebar-title {
+            font-family: "Uncial Antiqua", cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .points-title {
+            font-family: "Uncial Antiqua", cursive;
+            font-size: 20px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Close button */
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        /* Navigation items */
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        /* Section styling for right sidebar */
+        .section-subtitle {
+            font-family: "Uncial Antiqua", cursive;
+            font-size: 16px;
+            color: #d4af37;
+            text-align: center;
+            margin: 20px 0 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Dropdown select */
+        .dropdown-select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(42, 30, 20, 0.9);
+            border: 2px solid #8b6914;
+            border-radius: 8px;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-select:hover,
+        .dropdown-select:focus {
+            background: rgba(139, 105, 20, 0.4);
+            outline: none;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Add section */
+        .add-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 105, 20, 0.3);
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        .sidebar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Action button */
+        .action-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .action-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, rgba(139, 32, 32, 0.6) 0%, rgba(212, 175, 55, 0.4) 100%);
+            border-color: #d4af37;
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 32, 32, 0.8) 0%, rgba(212, 175, 55, 0.6) 100%);
+            box-shadow: 0 0 20px rgba(139, 32, 32, 0.6);
+        }
+        
+        /* Student item styles */
+        .student-item {
+            background: rgba(42, 30, 20, 0.5);
+            border: 1px solid #8b6914;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .student-item:hover {
+            background: rgba(139, 105, 20, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .student-name {
+            font-size: 14px;
+            color: #f4e4bc;
+            font-weight: 600;
+        }
+        
+        .student-points {
+            font-size: 12px;
+            color: #b8860b;
+        }
+        
+        .student-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .point-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .point-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .remove-btn {
+            background: rgba(139, 32, 32, 0.3);
+            border: 1px solid #8b3232;
+            color: #ff6b6b;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .remove-btn:hover {
+            background: rgba(139, 32, 32, 0.5);
+            box-shadow: 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .library-title {
+                font-size: 42px;
+            }
+            
+            .library-subtitle {
+                font-size: 20px;
+            }
+            
+            .essay-types-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .essay-card {
+                padding: 30px;
+            }
+            
+            .essay-title {
+                font-size: 28px;
+            }
+            
+            .essay-description {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+    
+    <!-- Sidebar toggle buttons -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">MENU</div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</div>
+    
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/essay/essay.html" class="nav-item active">Essay</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/review/review.html" class="nav-item">Review</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="points-title">Daily Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Class Selection Section -->
+            <h3 class="section-subtitle">Quick Add by Class</h3>
+            <div class="add-section add-class-section">
+                <select class="dropdown-select class-select" id="classSelect">
+                    <option value="">Select a class...</option>
+                    <option value="3A">3A</option>
+                    <option value="3B">3B</option>
+                    <option value="3C">3C</option>
+                    <option value="3D">3D</option>
+                    <option value="4A">4A</option>
+                    <option value="4B">4B</option>
+                    <option value="4C">4C</option>
+                    <option value="4D">4D</option>
+                    <option value="5A">5A</option>
+                    <option value="5B">5B</option>
+                    <option value="5C">5C</option>
+                    <option value="5D">5D</option>
+                </select>
+            </div>
+            
+            <!-- Individual Student Section -->
+            <h3 class="section-subtitle">Add Individual Scholar</h3>
+            <div class="add-section add-student-section">
+                <select class="dropdown-select student-select" id="studentSelect">
+                    <option value="">Select a student...</option>
+                </select>
+            </div>
+            
+            <!-- Daily Students List -->
+            <h3 class="section-subtitle">Today's Scholars</h3>
+            <div id="dailyStudentsList">
+                <div class="empty-state">No scholars in today's class yet.<br>Add students from the options above.</div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn" onclick="resetDailyTreasury()">Reset All Points</button>
+                <button class="action-btn save-btn" onclick="saveToConquest()">Save to Conquest</button>
+                <button class="action-btn">Export Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="library-title">The Essay Writing Chamber</h1>
+            <p class="library-subtitle">Master the Ancient Art of Written Expression</p>
+        </div>
+        
+        <div class="decorative-border"></div>
+        
+        <!-- Essay Types Container -->
+        <div class="essay-types-container">
+            <!-- Compare and Contrast Essay -->
+            <a href="/essay/compare-contrast/compare-contrast.html" class="essay-card">
+                <span class="essay-icon">⚖️</span>
+                <h2 class="essay-title">Compare & Contrast</h2>
+                <p class="essay-description">
+                    Examine similarities and differences between subjects with analytical precision
+                </p>
+                <ul class="essay-features">
+                    <li>Structured comparison techniques</li>
+                    <li>Signal words and transitions</li>
+                    <li>Point-by-point vs block method</li>
+                    <li>Critical analysis skills</li>
+                </ul>
+                <span class="essay-level">Intermediate - Advanced</span>
+            </a>
+            
+            <!-- Persuasive Essay -->
+            <a href="/essay/persuasive/persuasive.html" class="essay-card">
+                <span class="essay-icon">🎯</span>
+                <h2 class="essay-title">Persuasive Essay</h2>
+                <p class="essay-description">
+                    Craft compelling arguments to convince and influence your readers
+                </p>
+                <ul class="essay-features">
+                    <li>Argumentation strategies</li>
+                    <li>Evidence and support</li>
+                    <li>Counterargument techniques</li>
+                    <li>Rhetorical devices</li>
+                </ul>
+                <span class="essay-level">Intermediate - Advanced</span>
+            </a>
+            
+            <!-- Descriptive Essay -->
+            <a href="/essay/descriptive/descriptive.html" class="essay-card">
+                <span class="essay-icon">🎨</span>
+                <h2 class="essay-title">Descriptive Essay</h2>
+                <p class="essay-description">
+                    Paint vivid pictures with words using sensory details and imagery
+                </p>
+                <ul class="essay-features">
+                    <li>Sensory language techniques</li>
+                    <li>Vivid imagery creation</li>
+                    <li>Figurative language</li>
+                    <li>Emotional engagement</li>
+                </ul>
+                <span class="essay-level">Beginner - Intermediate</span>
+            </a>
+        </div>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <h3>Welcome to the Essay Writing Chamber</h3>
+            <p>
+                Within these ancient walls, you'll discover the timeless techniques of written expression. 
+                Each essay type offers unique challenges and rewards, guiding you through the art of 
+                organizing thoughts, presenting arguments, and painting with words. Choose your path 
+                and begin your journey to mastery.
+            </p>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Data Storage
+        let allStudents = [];
+        let dailyStudents = [];
+        let conquestData = JSON.parse(localStorage.getItem('conquestData')) || {};
+        
+        // Initialize students data
+        function initializeStudents() {
+            const classes = ['3A', '3B', '3C', '3D', '4A', '4B', '4C', '4D', '5A', '5B', '5C', '5D'];
+            const studentsPerClass = 15;
+            
+            allStudents = [];
+            classes.forEach(className => {
+                for (let i = 1; i <= studentsPerClass; i++) {
+                    allStudents.push({
+                        id: `${className}-${i}`,
+                        name: `${className} Student ${i}`,
+                        class: className,
+                        dailyPoints: 0
+                    });
+                }
+            });
+        }
+        
+        // Load daily students from localStorage
+        function loadDailyStudents() {
+            const saved = localStorage.getItem('dailyStudents');
+            if (saved) {
+                dailyStudents = JSON.parse(saved);
+            }
+        }
+        
+        // Save daily students to localStorage
+        function saveDailyStudents() {
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+        }
+        
+        // SIDEBAR FUNCTIONS
+        // =====================
+        
+        // Toggle functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                overlay.classList.add('active');
+                populateStudentDropdown();
+                renderDailyStudents();
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Populate student dropdown
+        function populateStudentDropdown() {
+            const dropdown = document.getElementById('studentSelect');
+            dropdown.innerHTML = '<option value="">Select a student...</option>';
+            
+            allStudents.forEach(student => {
+                if (!dailyStudents.find(s => s.id === student.id)) {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = student.name;
+                    dropdown.appendChild(option);
+                }
+            });
+        }
+        
+        // Render daily students list
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the options above.</div>';
+                return;
+            }
+            
+            container.innerHTML = dailyStudents.map(student => `
+                <div class="student-item" data-student-id="${student.id}">
+                    <div class="student-info">
+                        <span class="student-name">${student.name}</span>
+                        <span class="student-points">${student.dailyPoints} points</span>
+                    </div>
+                    <div class="student-actions">
+                        <button class="point-btn" onclick="adjustPoints('${student.id}', 1)">+1</button>
+                        <button class="point-btn" onclick="adjustPoints('${student.id}', -1)">-1</button>
+                        <button class="remove-btn" onclick="removeStudent('${student.id}')">×</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Add students from class dropdown
+        document.getElementById('classSelect')?.addEventListener('change', function(e) {
+            const selectedClass = e.target.value;
+            if (!selectedClass) return;
+            
+            const classStudents = allStudents.filter(s => s.class === selectedClass);
+            classStudents.forEach(student => {
+                if (!dailyStudents.find(s => s.id === student.id)) {
+                    dailyStudents.push({...student});
+                }
+            });
+            
+            saveDailyStudents();
+            renderDailyStudents();
+            populateStudentDropdown();
+            e.target.value = '';
+        });
+        
+        // Add individual student
+        document.getElementById('studentSelect')?.addEventListener('change', function(e) {
+            const studentId = e.target.value;
+            if (!studentId) return;
+            
+            const student = allStudents.find(s => s.id === studentId);
+            if (student && !dailyStudents.find(s => s.id === studentId)) {
+                dailyStudents.push({...student});
+                saveDailyStudents();
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+            
+            e.target.value = '';
+        });
+        
+        // Adjust points
+        function adjustPoints(studentId, points) {
+            const student = dailyStudents.find(s => s.id === studentId);
+            if (student) {
+                student.dailyPoints = Math.max(0, student.dailyPoints + points);
+                saveDailyStudents();
+                renderDailyStudents();
+            }
+        }
+        
+        // Remove student from daily list
+        function removeStudent(studentId) {
+            dailyStudents = dailyStudents.filter(s => s.id !== studentId);
+            saveDailyStudents();
+            renderDailyStudents();
+            populateStudentDropdown();
+        }
+        
+        // Reset daily treasury
+        function resetDailyTreasury() {
+            if (confirm('Are you sure you want to reset all daily points? This action cannot be undone.')) {
+                dailyStudents = [];
+                saveDailyStudents();
+                renderDailyStudents();
+                populateStudentDropdown();
+            }
+        }
+        
+        // Save to conquest
+        function saveToConquest() {
+            if (dailyStudents.length === 0) {
+                alert('No students to save!');
+                return;
+            }
+            
+            // Update conquest data
+            dailyStudents.forEach(student => {
+                if (!conquestData[student.id]) {
+                    conquestData[student.id] = {
+                        name: student.name,
+                        class: student.class,
+                        totalPoints: 0,
+                        weeklyPoints: 0,
+                        achievements: []
+                    };
+                }
+                conquestData[student.id].totalPoints += student.dailyPoints;
+                conquestData[student.id].weeklyPoints += student.dailyPoints;
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('conquestData', JSON.stringify(conquestData));
+            
+            // Show success message
+            alert(`Successfully saved ${dailyStudents.length} students' points to Conquest!`);
+            
+            // Reset daily treasury
+            resetDailyTreasury();
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStudents();
+            loadDailyStudents();
+        });
+    </script>
+</body>
+</html>

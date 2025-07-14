@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>TED Level 3 Unit 6 Homework - The Library of Rayhaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <style>
+    /* ✅ Full Base + Component Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Cinzel', serif;
+      background: #1a1a1a;
+      color: #d4af37;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem;
+      background-image: radial-gradient(ellipse at top, #2a2a2a, transparent), radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-family: 'Uncial Antiqua', cursive;
+      color: #f4e4bc;
+      text-decoration: none;
+      background: #5a3825;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 2px solid #d4af37;
+    }
+    .main-content {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(0,0,0,0.6);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #d4af37aa;
+    }
+    .page-title {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .unit-section {
+      margin-bottom: 3rem;
+    }
+    .unit-header {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: #ffdd57;
+      border-bottom: 2px solid #ffdd57;
+      padding-bottom: 0.5rem;
+    }
+    .exercise-section {
+      margin-bottom: 2rem;
+    }
+    .exercise-title {
+      font-size: 1.3rem;
+      color: #f4e4bc;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+    .vocab-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 1rem;
+    }
+    .vocab-item {
+      margin-bottom: 0.5rem;
+      padding: 0.3rem 0;
+    }
+    .vocab-word {
+      color: #ffdb58;
+      font-weight: bold;
+    }
+    .answer-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .answer-item {
+      padding: 0.3rem 0.6rem;
+      background: #3a2a1a;
+      border-radius: 6px;
+      border: 1px solid #d4af37;
+    }
+    .answer-highlight {
+      color: #ffdb58;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    .note {
+      background: #2a1f15;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid #d4af37;
+      margin: 1rem 0;
+      font-style: italic;
+    }
+    .alternative {
+      color: #9acd32;
+      font-style: normal;
+    }
+    .rule-section {
+      background: #1a1510;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+      border: 1px solid #d4af37;
+    }
+    .rule-title {
+      font-size: 1.2rem;
+      color: #ffdd57;
+      margin-bottom: 0.5rem;
+    }
+    .rule-item {
+      margin-bottom: 0.3rem;
+    }
+    .chart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .chart-table th,
+    .chart-table td {
+      border: 1px solid #d4af37;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    .chart-table th {
+      background: #3a2a1a;
+      color: #ffdd57;
+    }
+    .chart-table td {
+      background: #2a1f15;
+    }
+    .section-header {
+      font-size: 1.1rem;
+      color: #f4e4bc;
+      margin: 1.5rem 0 0.5rem 0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <a href="/ted/lv3/ted-lv3.html" class="back-button">Back</a>
+
+  <!-- Main Homework Content -->
+  <div class="main-content">
+    <h1 class="page-title">TED Level 3 Unit 6</h1>
+    <p class="subtitle">Entrepreneurship Listening Exercises - Answer Key</p>
+    
+    <div class="content-container">
+      <!-- Exercise B - Vocabulary Matching -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise B - Vocabulary Matching</h3>
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="answer-highlight">1.</span> <span class="vocab-word">constantly</span> - all the time, continuously</li>
+          <li class="vocab-item"><span class="answer-highlight">2.</span> <span class="vocab-word">settle</span> - to accept less than what you really want because it's easier</li>
+          <li class="vocab-item"><span class="answer-highlight">3.</span> <span class="vocab-word">overnight</span> - in a single day, or over a very short period</li>
+          <li class="vocab-item"><span class="answer-highlight">4.</span> <span class="vocab-word">striking</span> - immediately noticeable, usually in a positive or good sense</li>
+          <li class="vocab-item"><span class="answer-highlight">5.</span> <span class="vocab-word">deadline</span> - a time by which something must be done</li>
+          <li class="vocab-item"><span class="answer-highlight">6.</span> <span class="vocab-word">wealth</span> - a lot of money or things of great value</li>
+          <li class="vocab-item"><span class="answer-highlight">7.</span> <span class="vocab-word">dedicated</span> - very committed to doing or achieving something</li>
+          <li class="vocab-item"><span class="answer-highlight">8.</span> <span class="vocab-word">crucial</span> - very important</li>
+          <li class="vocab-item"><span class="answer-highlight">9.</span> <span class="vocab-word">bet</span> - a choice to risk something in the hope of winning something better</li>
+          <li class="vocab-item"><span class="answer-highlight">10.</span> <span class="vocab-word">pursue</span> - to try to obtain or achieve something, to chase something</li>
+        </ul>
+        <div class="note">⚠️ VOCABULARY = EXACT WORDS ONLY</div>
+      </div>
+
+      <!-- Exercise C - Prefix "over-" Sentences -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise C - Prefix "over-" Sentences</h3>
+        <div class="answer-list">
+          <span class="answer-item"><span class="answer-highlight">1.</span> overlook</span>
+          <span class="answer-item"><span class="answer-highlight">2.</span> overall</span>
+          <span class="answer-item"><span class="answer-highlight">3.</span> overtime</span>
+          <span class="answer-item"><span class="answer-highlight">4.</span> overview</span>
+          <span class="answer-item"><span class="answer-highlight">5.</span> overseas</span>
+        </div>
+        <div class="note">⚠️ VOCABULARY = EXACT WORDS ONLY</div>
+      </div>
+
+      <!-- While Viewing -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">WHILE VIEWING - Listen for Main Ideas (Segment 1)</h3>
+        <p><strong>Answer: a</strong></p>
+      </div>
+
+      <!-- Exercise D - Listen for Details (Segment 2) -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise D - Listen for Details (Segment 2)</h3>
+        
+        <div class="section-header">Attitude and personality:</div>
+        <ul class="vocab-list">
+          <li class="vocab-item">• have a <span class="vocab-word">can-do</span> attitude<br>
+            <span class="alternative">✓ Also OK: positive attitude, good attitude, "can do" (no hyphen)</span></li>
+          <li class="vocab-item">• learn from <span class="vocab-word">mistakes/problems</span><br>
+            <span class="alternative">✓ Also OK: mistakes, problems, failures, errors, your mistakes, every mistake</span></li>
+        </ul>
+
+        <div class="section-header">Guiding principles:</div>
+        <ol class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">Focus on target audience</span>: Keep customers <span class="vocab-word">loyal</span>, and attract new ones.<br>
+            <span class="alternative">✓ Also OK: Focus on your target audience, Focus on customers, Put yourself in customer's shoes<br>
+            ✓ Also OK for "loyal": happy, satisfied, loyal and happy</span></li>
+          
+          <li class="vocab-item"><span class="vocab-word">Take care of your team</span>: Hire <span class="vocab-word">talented</span> and diverse people you enjoy working with.<br>
+            <span class="alternative">✓ Also OK: Take care of team, Look after your team<br>
+            ✓ Also OK for "talented": good, skilled, smart, capable, qualified</span></li>
+          
+          <li class="vocab-item"><span class="vocab-word">Take care of yourself</span>: Eat well, <span class="vocab-word">exercise</span> regularly, and get enough <span class="vocab-word">sleep</span>.<br>
+            <span class="alternative">✓ Also OK: Take care of yourself, Look after yourself, Self-care<br>
+            ✓ Also OK for "exercise": work out, stay active, stay fit<br>
+            ✓ Also OK for "sleep": rest</span></li>
+          
+          <li class="vocab-item"><span class="vocab-word">Have fun!</span>: Enjoy the process of building and running your company.<br>
+            <span class="alternative">✓ Also OK: Have fun, Don't forget to have fun, Enjoy yourself, Enjoy the journey</span></li>
+        </ol>
+      </div>
+
+      <!-- Exercise E - Listen for Figurative Language -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise E - Listen for Figurative Language</h3>
+        <div class="answer-list">
+          <span class="answer-item">1. throw in the towel → <span class="answer-highlight">c</span></span>
+          <span class="answer-item">2. the journey won't be smooth → <span class="answer-highlight">d</span></span>
+          <span class="answer-item">3. reach greater heights → <span class="answer-highlight">a</span></span>
+          <span class="answer-item">4. put yourself in someone's shoes → <span class="answer-highlight">b</span></span>
+        </div>
+      </div>
+
+      <!-- Exercise B (Later section) -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise B - Words from Exercise A</h3>
+        <div class="answer-list">
+          <span class="answer-item"><span class="answer-highlight">1.</span> upsides</span>
+          <span class="answer-item"><span class="answer-highlight">2.</span> benefit</span>
+          <span class="answer-item"><span class="answer-highlight">3.</span> downsides</span>
+          <span class="answer-item"><span class="answer-highlight">4.</span> disadvantage</span>
+        </div>
+        <div class="note">⚠️ VOCABULARY = EXACT WORDS ONLY</div>
+      </div>
+
+      <!-- Exercise B - Business Ideas Chart -->
+      <div class="exercise-section">
+        <h3 class="exercise-title">Exercise B - Listen for Details (Business Ideas Chart)</h3>
+        
+        <table class="chart-table">
+          <thead>
+            <tr>
+              <th>Business Idea</th>
+              <th>Pros</th>
+              <th>Cons</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>do web design</strong></td>
+              <td>
+                • Has the right <span class="vocab-word">skills</span> and experience.<br>
+                <span class="alternative">✓ Also OK: skills and experience, experience and skills</span><br><br>
+                • Has <span class="vocab-word">business</span> (biz) contacts and regular <span class="vocab-word">clients</span>.<br>
+                <span class="alternative">✓ Also OK: business contacts, biz contacts, lots of contacts</span>
+              </td>
+              <td>
+                • Wants to do something <span class="vocab-word">different</span> (diff).<br>
+                <span class="alternative">✓ Also OK: new, else, different now</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>teach web design</strong></td>
+              <td>
+                • Would work directly with <span class="vocab-word">people</span> (ppl) or <span class="vocab-word">students</span>.<br>
+                <span class="alternative">✓ Also OK: students, people, students/people, learners</span>
+              </td>
+              <td>
+                • Might not guarantee a <span class="vocab-word">stable</span> (stbl) <span class="vocab-word">income</span>.<br>
+                <span class="alternative">✓ Also OK: stable income, steady income, regular income</span><br><br>
+                • Might not be able to cover her <span class="vocab-word">costs</span>.<br>
+                <span class="alternative">✓ Also OK: expenses, bills</span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>run a coffee shop</strong></td>
+              <td>
+                • No <span class="vocab-word">competition</span> (competn) here.<br>
+                <span class="alternative">✓ Also OK: competitors, other coffee shops</span>
+              </td>
+              <td>
+                • No café or <span class="vocab-word">management</span> (mngmt) experience.<br>
+                <span class="alternative">✓ Also OK: managing experience, management skills</span><br><br>
+                • Seems like a big and <span class="vocab-word">expensive</span> (exp) risk.<br>
+                <span class="alternative">✓ Also OK: costly, expensive and risky</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+     /* ======================
+           🎯 STUDENT MANAGEMENT SYSTEM
+           ====================== 
+           
+           PURPOSE: Manages daily student points and integrates with conquest system
+           
+           🔧 CUSTOMIZATION GUIDE:
+           
+           1. TEAM SETUP:
+           - Modify teamInfo object to match your team names and colors
+           - Teams are automatically loaded from localStorage 'conquestTeamData'
+           
+           2. POINT SYSTEM:
+           - Default: 10 points per click (change in addPointsToStudent function)
+           - Modify point increments in addPointsToStudent()
+           
+           3. STORAGE:
+           - Uses localStorage for persistence
+           - 'conquestTeamData' = main student/team data
+           - 'dailyStudents' = today's active students
+           - 'dailyTreasury' = today's point tracking
+           
+           4. INTEGRATION:
+           - Works with existing conquest system
+           - saveToConquest() transfers daily points to main system
+           - Automatically syncs with team data
+        */
+
+      // Daily treasury object to track today's students
+      let dailyStudents = JSON.parse(
+        localStorage.getItem("dailyStudents") || "[]"
+      );
+      let dailyTreasury = JSON.parse(
+        localStorage.getItem("dailyTreasury") || "{}"
+      );
+
+      // Load all students from Conquest data
+      function loadAllStudentsFromConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (conquestData) {
+          const teamData = JSON.parse(conquestData);
+          const students = [];
+
+          // Extract all students from teams
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            team.students.forEach((student) => {
+              if (student.name !== "Donation") {
+                students.push({
+                  name: student.name,
+                  team: teamKey,
+                  classes: student.classes || [], // Include classes data
+                });
+              }
+            });
+          });
+
+          // Sort alphabetically
+          return students.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        return [];
+      }
+
+      // 🔧 CUSTOMIZE: Team information for badges
+      const teamInfo = {
+        jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+        pinkie: { name: "Pinkie", color: "#f06292" },
+        handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+        bomi: { name: "Bomi", color: "#ffd54f" },
+        geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+        prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" },
+      };
+
+      // Function to toggle left sidebar
+      function toggleLeftSidebar() {
+        const sidebar = document.getElementById("leftSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const isExpanded = sidebar.classList.contains("expanded");
+
+        if (isExpanded) {
+          sidebar.classList.remove("expanded");
+          overlay.classList.remove("active");
+        } else {
+          document.getElementById("rightSidebar").classList.remove("expanded");
+          sidebar.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      }
+
+      // Function to toggle right sidebar
+      function toggleRightSidebar() {
+        const sidebar = document.getElementById("rightSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const isExpanded = sidebar.classList.contains("expanded");
+
+        if (isExpanded) {
+          sidebar.classList.remove("expanded");
+          overlay.classList.remove("active");
+        } else {
+          document.getElementById("leftSidebar").classList.remove("expanded");
+          sidebar.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      }
+
+      // Function to close all sidebars
+      function closeSidebars() {
+        document.getElementById("leftSidebar").classList.remove("expanded");
+        document.getElementById("rightSidebar").classList.remove("expanded");
+        document.getElementById("sidebarOverlay").classList.remove("active");
+      }
+
+      // Populate student dropdown
+      function populateStudentDropdown() {
+        const select = document.getElementById("studentSelect");
+        select.innerHTML = '<option value="">Select a scholar...</option>';
+
+        const allStudents = loadAllStudentsFromConquest();
+
+        allStudents.forEach((student) => {
+          // Only show students not already in daily list
+          if (!dailyStudents.includes(student.name)) {
+            const option = document.createElement("option");
+            option.value = student.name;
+            option.dataset.team = student.team;
+            option.textContent = student.name;
+            select.appendChild(option);
+          }
+        });
+      }
+
+      // Add student to daily treasury
+      function addStudentToDaily() {
+        const select = document.getElementById("studentSelect");
+        const studentName = select.value;
+
+        if (studentName && !dailyStudents.includes(studentName)) {
+          dailyStudents.push(studentName);
+          dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+
+          // Save to localStorage
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          // Refresh display
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          // Reset dropdown
+          select.value = "";
+        }
+      }
+
+      // Function to add entire class to daily list
+      function addClassToDaily() {
+        const select = document.getElementById("classSelect");
+        const className = select.value;
+
+        if (!className) {
+          showToast("Please select a class first!");
+          return;
+        }
+
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No student data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let addedCount = 0;
+        let skippedCount = 0;
+        let totalStudentsChecked = 0;
+
+        // Loop through all teams and students
+        Object.entries(teamData).forEach(([teamKey, team]) => {
+          if (!team.students) {
+            return;
+          }
+
+          team.students.forEach((student) => {
+            totalStudentsChecked++;
+
+            // Skip if no classes array
+            if (!student.classes) {
+              return;
+            }
+
+            // Check if student is in the selected class
+            const isInClass = student.classes.some((c) => {
+              return c.toLowerCase() === className.toLowerCase();
+            });
+
+            if (isInClass && student.name !== "Donation") {
+              if (!dailyStudents.includes(student.name)) {
+                dailyStudents.push(student.name);
+                dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                addedCount++;
+              } else {
+                skippedCount++;
+              }
+            }
+          });
+        });
+
+        // Save and update display
+        if (addedCount > 0) {
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+
+        // Reset dropdown
+        select.value = "";
+
+        // Show result message
+        if (addedCount > 0 && skippedCount > 0) {
+          showToast(
+            `✨ Added ${addedCount} students! (${skippedCount} already in class)`
+          );
+        } else if (addedCount > 0) {
+          showToast(`✨ Added ${addedCount} students to today's class!`);
+        } else if (skippedCount > 0) {
+          showToast("All students from this class are already added!");
+        } else {
+          showToast(`No students found for ${className.toUpperCase()}`);
+        }
+      }
+
+      // Remove student from daily treasury
+      function removeStudentFromDaily(studentName) {
+        const index = dailyStudents.indexOf(studentName);
+        if (index > -1) {
+          dailyStudents.splice(index, 1);
+          delete dailyTreasury[studentName];
+
+          // Save to localStorage
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          // Refresh display
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+      }
+
+      // Get student's team
+      function getStudentTeam(studentName) {
+        const allStudents = loadAllStudentsFromConquest();
+        const student = allStudents.find((s) => s.name === studentName);
+        return student ? student.team : null;
+      }
+
+      // Render daily students
+      function renderDailyStudents() {
+        const container = document.getElementById("dailyStudentsList");
+        container.innerHTML = "";
+
+        if (dailyStudents.length === 0) {
+          container.innerHTML =
+            '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+          return;
+        }
+
+        dailyStudents.forEach((studentName) => {
+          const teamKey = getStudentTeam(studentName);
+          const team = teamInfo[teamKey];
+
+          const item = document.createElement("div");
+          item.className = "student-item";
+
+          item.innerHTML = `
+                    <div class="student-info">
+                        <span class="student-name">${studentName}</span>
+                        ${
+                          team
+                            ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>`
+                            : ""
+                        }
+                    </div>
+                    <div class="coin-display">
+                        <button class="points-btn" onclick="addPointsToStudent('${studentName}')" title="Add 10 points">
+                            <span class="points-value">${
+                              dailyTreasury[studentName] || 0
+                            }</span>
+                            <span class="coin-icon"></span>
+                        </button>
+                        <button class="remove-student" onclick="removeStudentFromDaily('${studentName}')" title="Remove from today's class">×</button>
+                    </div>
+                `;
+
+          container.appendChild(item);
+        });
+      }
+
+      // Update daily treasury
+      function updateDailyTreasury(name, value) {
+        dailyTreasury[name] = parseInt(value) || 0;
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+      }
+
+      // 🔧 CUSTOMIZE: Add points when clicking on student (default: 10 points)
+      function addPointsToStudent(name) {
+        const pointsToAdd = 10; // CUSTOMIZE: Change points per click
+        dailyTreasury[name] = (dailyTreasury[name] || 0) + pointsToAdd;
+        localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+        renderDailyStudents();
+
+        // Visual feedback
+        const studentItems = document.querySelectorAll(".student-item");
+        studentItems.forEach((item) => {
+          if (item.querySelector(".student-name").textContent === name) {
+            item.style.animation = "pulse 0.3s ease";
+            const btn = item.querySelector(".points-btn");
+            if (btn) {
+              btn.style.animation = "goldenGlow 0.3s ease";
+            }
+            setTimeout(() => {
+              item.style.animation = "";
+              if (btn) btn.style.animation = "";
+            }, 300);
+          }
+        });
+      }
+
+      // Save to Conquest
+      function saveToConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No Conquest data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let totalPointsAdded = 0;
+
+        // Update each student's points in their team
+        Object.entries(dailyTreasury).forEach(([studentName, dailyPoints]) => {
+          if (dailyPoints > 0) {
+            // Find which team the student belongs to
+            for (const [teamKey, team] of Object.entries(teamData)) {
+              const studentIndex = team.students.findIndex(
+                (s) => s.name === studentName
+              );
+              if (studentIndex !== -1) {
+                // Add daily points to existing points
+                teamData[teamKey].students[studentIndex].points += dailyPoints;
+                totalPointsAdded += dailyPoints;
+                break;
+              }
+            }
+          }
+        });
+
+        // Save updated conquest data
+        localStorage.setItem("conquestTeamData", JSON.stringify(teamData));
+
+        // Reset daily data
+        dailyStudents = [];
+        dailyTreasury = {};
+        localStorage.removeItem("dailyStudents");
+        localStorage.removeItem("dailyTreasury");
+
+        // Refresh display
+        renderDailyStudents();
+        populateStudentDropdown();
+
+        showToast(
+          `✨ ${totalPointsAdded} points saved to Conquest! Daily treasury cleared.`
+        );
+      }
+
+      // Reset daily treasury
+      function resetDailyTreasury() {
+        if (
+          confirm(
+            "Are you sure you want to clear today's class? This will remove all students and their daily points!"
+          )
+        ) {
+          // Clear the data
+          dailyStudents = [];
+          dailyTreasury = {};
+
+          // Clear from localStorage
+          localStorage.removeItem("dailyStudents");
+          localStorage.removeItem("dailyTreasury");
+
+          // Force a refresh of the display
+          renderDailyStudents();
+          populateStudentDropdown();
+
+          showToast("Daily treasury cleared!");
+        }
+      }
+
+      // Show toast notification
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000); // CUSTOMIZE: Toast display duration
+      }
+
+      // Go back function
+      function goBack() {
+        window.history.back();
+      }
+
+      // Close sidebars when clicking on a nav item
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", closeSidebars);
+      });
+
+      // Handle touch events for better tablet experience
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        const swipeThreshold = 50; // CUSTOMIZE: Swipe sensitivity
+        const leftSidebar = document.getElementById("leftSidebar");
+        const rightSidebar = document.getElementById("rightSidebar");
+
+        // Swipe right to open left sidebar
+        if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+          leftSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+
+        // Swipe left to open right sidebar
+        if (
+          touchStartX - touchEndX > swipeThreshold &&
+          touchStartX > window.innerWidth - 50
+        ) {
+          rightSidebar.classList.add("expanded");
+          document.getElementById("sidebarOverlay").classList.add("active");
+        }
+      }
+
+      // 🔧 CUSTOMIZE: Add floating particles (decorative effect)
+      function createParticles() {
+        const particleCount = 20; // CUSTOMIZE: Number of particles
+        const particleSymbols = ["✦", "◆", "❋", "✧"]; // CUSTOMIZE: Particle symbols
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 15 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 10 + "s";
+          particle.innerHTML =
+            particleSymbols[Math.floor(Math.random() * particleSymbols.length)];
+          particle.style.color = "#d4af37";
+          particle.style.fontSize = Math.random() * 10 + 10 + "px";
+          document.body.appendChild(particle);
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", () => {
+        // Re-initialize from localStorage to ensure sync
+        dailyStudents = JSON.parse(
+          localStorage.getItem("dailyStudents") || "[]"
+        );
+        dailyTreasury = JSON.parse(
+          localStorage.getItem("dailyTreasury") || "{}"
+        );
+
+        populateStudentDropdown();
+        renderDailyStudents();
+        createParticles();
+      });
+
+    </script>
+
+</body>
+</html>

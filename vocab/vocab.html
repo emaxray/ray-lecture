@@ -7,487 +7,605 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+         * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Change main font */
+        background: #1a1a1a; /* CUSTOMIZE: Base background color */
+        color: #d4af37; /* CUSTOMIZE: Default text color */
+        min-height: 100vh;
+        display: flex;
+        background-image: radial-gradient(ellipse at top, #2a2a2a, transparent),
+          radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+        overflow-x: hidden;
+        position: relative;
+        font-size: 12px;
+      }
+
+      /* ======================
+           ✨ SPECIAL EFFECTS & ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Creates the medieval atmosphere with candlelight and particles
+           CUSTOMIZE: Adjust animation speeds, particle counts, flicker intensity
+           
+           Components:
+           - Candlelight overlay (::before pseudo-element)
+           - Floating particles (.particle class)
+           - Corner ornaments (decorative SVG elements)
+        */
+
+      /* Candlelight flickering effect - creates warm atmospheric lighting */
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            rgba(255, 147, 41, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 30%,
+            rgba(255, 183, 77, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 80%,
+            rgba(255, 140, 0, 0.12) 0%,
+            transparent 45%
+          );
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        animation: flicker 4s ease-in-out infinite; /* CUSTOMIZE: Change flicker speed */
+        z-index: 1;
+      }
+
+      /* CUSTOMIZE: Adjust flicker intensity and timing */
+      @keyframes flicker {
+        0%,
+        100% {
+          opacity: 0.8;
+        } /* Base opacity */
+        25% {
+          opacity: 0.9;
+        } /* Bright moment */
+        50% {
+          opacity: 0.75;
+        } /* Dim moment */
+        75% {
+          opacity: 0.85;
+        } /* Medium bright */
+      }
+
+      /* Floating particles - decorative elements that float upward */
+      .particle {
+        position: fixed;
+        pointer-events: none;
+        opacity: 0;
+        animation: float-up 15s linear infinite; /* CUSTOMIZE: Change float speed */
+      }
+
+      @keyframes float-up {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) scale(0);
         }
-        
-        body {
-            font-family: 'Cinzel', serif;
-            background: #1a1a1a;
-            color: #d4af37;
-            min-height: 100vh;
-            display: flex;
-            background-image: 
-                radial-gradient(ellipse at top, #2a2a2a, transparent),
-                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
-            overflow-x: hidden;
-            position: relative;
+        10% {
+          opacity: 0.6; /* CUSTOMIZE: Particle visibility */
         }
-        
-        /* Candlelight effect overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
-            pointer-events: none;
-            mix-blend-mode: overlay;
-            animation: flicker 4s ease-in-out infinite;
-            z-index: 1;
+        90% {
+          opacity: 0.6;
         }
-        
-        @keyframes flicker {
-            0%, 100% { opacity: 0.8; }
-            25% { opacity: 0.9; }
-            50% { opacity: 0.75; }
-            75% { opacity: 0.85; }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) scale(1.5);
         }
-        
-        /* Decorative floating particles */
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0;
-            animation: float-up 15s linear infinite;
+      }
+
+      /* Decorative corner ornaments - SVG-based decorative elements */
+      .corner-ornament {
+        position: fixed;
+        width: 120px; /* CUSTOMIZE: Ornament size */
+        height: 120px;
+        opacity: 0.3; /* CUSTOMIZE: Ornament visibility */
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='m10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.5'/%3E%3Cpath d='m20,20 Q50,25 80,20 Q75,50 80,80 Q50,75 20,80 Q25,50 20,20' fill='none' stroke='%23d4af37' stroke-width='0.5'/%3E%3C/svg%3E");
+        background-size: contain;
+        z-index: 1;
+      }
+
+      /* CUSTOMIZE: Adjust corner ornament positions */
+      .corner-top-left {
+        top: 20px;
+        left: 70px;
+      }
+
+      .corner-top-right {
+        top: 20px;
+        right: 70px;
+        transform: scaleX(-1);
+      }
+
+      .corner-bottom-left {
+        bottom: 20px;
+        left: 70px;
+        transform: scaleY(-1);
+      }
+
+      .corner-bottom-right {
+        bottom: 20px;
+        right: 70px;
+        transform: scale(-1, -1);
+      }
+
+      /* ======================
+           🔙 NAVIGATION & BACK BUTTON
+           ====================== */
+
+      /* Back Button
+           PURPOSE: Provides navigation controls
+           CUSTOMIZE: Position, styling, hover effects
+           
+           Usage: Add onclick="goBack()" to any back button
+        */
+      .back-button {
+        position: fixed;
+        top: 20px; /* CUSTOMIZE: Vertical position */
+        left: 20px; /* CUSTOMIZE: Horizontal position */
+        background: rgba(212, 175, 55, 0.2); /* CUSTOMIZE: Background color */
+        border: 2px solid #8b6914; /* CUSTOMIZE: Border color */
+        color: #f4e4bc; /* CUSTOMIZE: Text color */
+        padding: 12px 24px; /* CUSTOMIZE: Button size */
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Font */
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-button:hover {
+        background: rgba(212, 175, 55, 0.4); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+      }
+
+      /* ======================
+           📱 SIDEBAR SYSTEM
+           ====================== 
+           
+           PURPOSE: Collapsible navigation and student management panels
+           CUSTOMIZE: Widths, colors, animations, content
+           
+           Components:
+           - Toggle buttons (left/right sides)
+           - Overlay for mobile
+           - Left sidebar (navigation)
+           - Right sidebar (student management)
+           
+           JavaScript Functions:
+           - toggleLeftSidebar()
+           - toggleRightSidebar()
+           - closeSidebars()
+        */
+
+      /* Sidebar toggle buttons - visible buttons to open/close sidebars */
+      .sidebar-toggle {
+        position: fixed;
+        width: 50px; /* CUSTOMIZE: Button width */
+        height: 120px; /* CUSTOMIZE: Button height */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        color: #d4af37;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        writing-mode: vertical-rl; /* Makes text vertical */
+        text-orientation: mixed;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        transition: all 0.3s ease;
+        z-index: 99;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .left-toggle {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+      }
+
+      .right-toggle {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 10px 0 0 10px;
+        border-right: none;
+      }
+
+      .sidebar-toggle:hover {
+        background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        width: 60px; /* CUSTOMIZE: Hover width expansion */
+      }
+
+      .sidebar-toggle:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      /* Mobile overlay - darkens background when sidebar is open */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* CUSTOMIZE: Overlay opacity */
+        display: none;
+        z-index: 98;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      /* ======================
+           📋 LEFT SIDEBAR (NAVIGATION)
+           ====================== 
+           
+           PURPOSE: Main navigation menu
+           CUSTOMIZE: Width, menu items, styling
+           
+           Structure:
+           - Header with title and close button
+           - Navigation items (.nav-item)
+           - Decorative background pattern
+           
+           To Add Menu Items:
+           <a href="your-link.html" class="nav-item">Menu Item Name</a>
+        */
+
+      .left-sidebar {
+        width: 250px; /* CUSTOMIZE: Sidebar width */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border-right: 2px solid #8b6914;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transition: transform 0.3s ease;
+        z-index: 200;
+        transform: translateX(-250px); /* Hidden by default */
+      }
+
+      /* Decorative background pattern for left sidebar */
+      .left-sidebar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .left-sidebar.expanded {
+        transform: translateX(0); /* Visible when expanded */
+      }
+
+      /* Sidebar header - contains title and close button */
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px; /* CUSTOMIZE: Header padding */
+        border-bottom: 1px solid #8b6914;
+        position: relative;
+      }
+
+      /* Animated underline effect for header */
+      .sidebar-header::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%,
+        100% {
+          transform: translateX(-100%);
         }
-        
-        @keyframes float-up {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) scale(0);
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100vh) scale(1.5);
-            }
+        50% {
+          transform: translateX(100%);
         }
-        
-        /* Decorative corner ornaments */
-        .corner-ornament {
-            position: fixed;
-            width: 120px;
-            height: 120px;
-            opacity: 0.3;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 90,10 Q80,50 90,90 Q50,80 10,90 Q20,50 10,10' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
-            z-index: 1;
-        }
-        
-        .corner-top-left { top: 0; left: 0; }
-        .corner-top-right { top: 0; right: 0; transform: rotate(90deg); }
-        .corner-bottom-left { bottom: 0; left: 0; transform: rotate(-90deg); }
-        .corner-bottom-right { bottom: 0; right: 0; transform: rotate(180deg); }
-        
-        /* Back Button */
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(212, 175, 55, 0.2);
-            border: 2px solid #8b6914;
-            color: #f4e4bc;
-            padding: 12px 24px;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-        
-        .back-button::before {
-            content: '←';
-            font-size: 20px;
-        }
-        
-        .back-button:hover {
-            background: rgba(212, 175, 55, 0.4);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-        }
-        
-        /* Sidebar Toggle Buttons */
-        .sidebar-toggle {
-            position: fixed;
-            width: 50px;
-            height: 120px;
-            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
-            border: 2px solid #8b6914;
-            color: #d4af37;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            z-index: 99;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        
-        .left-toggle {
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            border-radius: 0 10px 10px 0;
-            border-left: none;
-        }
-        
-        .right-toggle {
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            border-radius: 10px 0 0 10px;
-            border-right: none;
-        }
-        
-        .sidebar-toggle:hover {
-            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            width: 60px;
-        }
-        
-        .sidebar-toggle:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-        
-        /* Sidebar Overlay */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 90;
-        }
-        
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* Left Sidebar */
-        .left-sidebar {
-            width: 300px;
-            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
-            border-right: 2px solid #8b6914;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 100;
-            transform: translateX(-300px);
-        }
-        
-        .left-sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,5 L60,25 L80,25 L65,40 L70,60 L50,45 L30,60 L35,40 L20,25 L40,25 Z' fill='none' stroke='%23d4af37' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
-            opacity: 0.3;
-            pointer-events: none;
-        }
-        
-        .left-sidebar.expanded {
-            transform: translateX(0);
-        }
-        
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #8b6914;
-            position: relative;
-        }
-        
-        .sidebar-header::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: #f4e4bc;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            color: #d4af37;
-            transform: scale(1.1);
-        }
-        
-        .sidebar-content {
-            padding: 20px;
-        }
-        
-        .nav-item {
-            display: block;
-            padding: 15px 20px;
-            margin: 5px 0;
-            background: rgba(139, 105, 20, 0.2);
-            border: 1px solid #8b6914;
-            color: #f4e4bc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 14px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-item::before {
-            content: '◆';
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: all 0.3s ease;
-            color: #8b2020;
-        }
-        
-        .nav-item:hover::before {
-            opacity: 1;
-        }
-        
-        .nav-item:hover {
-            background: rgba(212, 175, 55, 0.3);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            transform: translateX(5px);
-            border-color: #d4af37;
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
-            border-color: #f4e4bc;
-            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
-        }
-        
-        .sidebar-title {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 20px;
-            color: #f4e4bc;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            flex: 1;
-        }
-        
-        /* Right Sidebar */
-        .right-sidebar {
-            width: 350px;
-            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
-            border-left: 2px solid #8b6914;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
-            position: fixed;
-            right: 0;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 100;
-            transform: translateX(350px);
-        }
-        
-        .right-sidebar.expanded {
-            transform: translateX(0);
-        }
-        
-        .points-title {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #f4e4bc;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            border-bottom: 1px solid #8b6914;
-            padding-bottom: 15px;
-        }
-        
-        /* Section subtitles for better organization */
-        .section-subtitle {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 16px;
-            color: #d4af37;
-            text-align: center;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            position: relative;
-            padding: 0 20px;
-        }
-        
-        .section-subtitle::before,
-        .section-subtitle::after {
-            content: "◆";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            color: #8b6914;
-        }
-        
-        .section-subtitle::before {
-            left: 0;
-        }
-        
-        .section-subtitle::after {
-            right: 0;
-        }
-        
-        /* Decorative divider between sections */
-        .divider-ornament {
-            width: 100%;
-            height: 30px;
-            margin: 20px 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.5;
-        }
-        
-        /* Shared section styling */
-        .add-section {
-            background: rgba(139, 105, 20, 0.2);
-            border: 1px solid #8b6914;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 0;
-        }
-        
-        /* Shared dropdown styling */
-        .dropdown-select {
-            width: 100%;
-            padding: 15px;
-            background: rgba(139, 105, 20, 0.3);
-            border: 2px solid #8b6914;
-            color: #f4e4bc;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            min-height: 50px;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
-            padding-right: 45px;
-        }
-        
-        .dropdown-select option {
-            background: #2a1810;
-            color: #f4e4bc;
-            padding: 10px;
-            font-size: 16px;
-        }
-        
-        /* Add Student Section */
-        .add-student-section {
-            background: rgba(139, 105, 20, 0.2);
-            border: 1px solid #8b6914;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .student-select {
-            width: 100%;
-            padding: 15px;
-            background: rgba(139, 105, 20, 0.3);
-            border: 2px solid #8b6914;
-            color: #f4e4bc;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            min-height: 50px;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
-            padding-right: 45px;
-        }
-        
-        .student-select option {
-            background: #2a1810;
-            color: #f4e4bc;
-            padding: 10px;
-            font-size: 16px;
-        }
-        
-        .add-student-to-daily {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #d4af37;
-            color: #f4e4bc;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 55px;
-        }
-        
-        .add-student-to-daily:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-        
-        /* Daily Students List */
-        #dailyStudentsList {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .student-item {
+      }
+
+      /* Close button styling */
+      .close-btn {
+        background: rgba(139, 105, 20, 0.3);
+        border: 1px solid #8b6914;
+        color: #d4af37;
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 24px;
+      }
+
+      .close-btn:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .sidebar-content {
+        padding: 20px; /* CUSTOMIZE: Content padding */
+      }
+
+      /* Navigation items - individual menu links */
+      .nav-item {
+        display: block;
+        padding: 12px 15px; /* CUSTOMIZE: Item padding */
+        margin: 8px 0; /* CUSTOMIZE: Item spacing */
+        background: rgba(139, 105, 20, 0.2); /* CUSTOMIZE: Item background */
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #d4af37; /* CUSTOMIZE: Text color */
+        transition: all 0.3s ease;
+        text-align: center;
+        font-size: 14px; /* CUSTOMIZE: Font size */
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Decorative diamond icon that appears on hover */
+      .nav-item::before {
+        content: "◆"; /* CUSTOMIZE: Icon character */
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        color: #f4e4bc;
+      }
+
+      .nav-item:hover::before {
+        opacity: 1;
+      }
+
+      .nav-item:hover {
+        background: rgba(212, 175, 55, 0.3); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        transform: translateX(5px); /* Slides right on hover */
+      }
+
+      .nav-item.active {
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.4) 0%,
+          rgba(139, 32, 32, 0.3) 100%
+        );
+        border-color: #f4e4bc;
+        box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+      }
+
+      .sidebar-title {
+        font-family: "Uncial Antiqua", cursive; /* CUSTOMIZE: Title font */
+        font-size: 20px; /* CUSTOMIZE: Title size */
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        flex: 1;
+      }
+
+      /* ======================
+           👥 RIGHT SIDEBAR (STUDENT MANAGEMENT)
+           ====================== 
+           
+           PURPOSE: Daily student points tracking and management
+           CUSTOMIZE: Width, colors, button styles
+           
+           Components:
+           - Student dropdown selector
+           - Daily student list
+           - Action buttons (save, reset, export)
+           
+           JavaScript Integration:
+           - Connects to localStorage 'conquestTeamData'
+           - Manages 'dailyStudents' and 'dailyTreasury'
+           - Functions: addStudentToDaily(), removeStudentFromDaily(), etc.
+        */
+
+      .right-sidebar {
+        width: 350px; /* CUSTOMIZE: Sidebar width */
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border-left: 2px solid #8b6914;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        z-index: 100;
+        transform: translateX(350px); /* Hidden by default */
+      }
+
+      .right-sidebar.expanded {
+        transform: translateX(0); /* Visible when expanded */
+      }
+
+      .points-title {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Title font */
+        font-size: 24px; /* CUSTOMIZE: Title size */
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #8b6914;
+        padding-bottom: 15px;
+      }
+
+      /* Section subtitles for better organization */
+      .section-subtitle {
+        font-family: "Uncial Antiqua", cursive;
+        font-size: 16px;
+        color: #d4af37;
+        text-align: center;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        position: relative;
+        padding: 0 20px;
+      }
+
+      /* Decorative elements for section titles */
+      .section-subtitle::before,
+      .section-subtitle::after {
+        content: "◆";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: #8b6914;
+      }
+
+      .section-subtitle::before {
+        left: 0;
+      }
+
+      .section-subtitle::after {
+        right: 0;
+      }
+
+      /* Decorative divider between sections */
+      .divider-ornament {
+        width: 100%;
+        height: 30px;
+        margin: 20px 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 0.5;
+      }
+
+      /* Shared section styling for add-class-section and add-student-section */
+      .add-section {
+        background: rgba(139, 105, 20, 0.2); /* CUSTOMIZE: Section background */
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        padding: 20px; /* CUSTOMIZE: Section padding */
+        margin-bottom: 0;
+      }
+
+      /* Shared dropdown styling for class-select and student-select */
+      .dropdown-select {
+        width: 100%;
+        padding: 15px; /* CUSTOMIZE: Dropdown padding */
+        background: rgba(
+          139,
+          105,
+          20,
+          0.3
+        ); /* CUSTOMIZE: Dropdown background */
+        border: 2px solid #8b6914;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        border-radius: 5px;
+        margin-bottom: 15px;
+        min-height: 50px;
+        -webkit-appearance: none;
+        appearance: none;
+        /* Custom dropdown arrow */
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+        padding-right: 45px;
+      }
+
+      .dropdown-select option {
+        background: #2a1810; /* CUSTOMIZE: Option background */
+        color: #f4e4bc;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      /* Add button (used for both class and student) */
+      .add-student-to-daily {
+        width: 100%;
+        padding: 18px; /* CUSTOMIZE: Button padding */
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        ); /* CUSTOMIZE: Button background */
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 55px;
+      }
+
+      .add-student-to-daily:hover {
+        background: rgba(212, 175, 55, 0.5); /* CUSTOMIZE: Hover background */
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      /* ======================
+           👤 STUDENT DISPLAY SYSTEM
+           ====================== 
+           
+           PURPOSE: Shows daily students with points and controls
+           CUSTOMIZE: Layout, colors, team badge styling
+           
+           Structure:
+           - Student info (name, team badge)
+           - Points button (shows current points, adds 10 on click)
+           - Remove button (removes from daily list)
+           
+           JavaScript Functions:
+           - renderDailyStudents() - creates the student list
+           - addPointsToStudent() - adds points and visual feedback
+           - removeStudentFromDaily() - removes student from list
+        */
+
+      .student-item {
             background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
             border: 2px solid #8b6914;
             border-radius: 5px;
@@ -600,172 +718,347 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
-        .remove-student {
-            background: rgba(139, 0, 0, 0.4);
-            border: 1px solid #8b0000;
-            color: #ff6b6b;
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+      /* Remove student button */
+      .remove-student {
+        background: rgba(139, 20, 20, 0.3); /* CUSTOMIZE: Remove button color */
+        border: 2px solid #8b4514;
+        color: #ff6b6b;
+        width: 45px; /* CUSTOMIZE: Button size */
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 15px;
+        transition: all 0.3s ease;
+        font-size: 24px; /* CUSTOMIZE: X size */
+        font-weight: bold;
+      }
+
+      .remove-student:hover {
+        background: rgba(200, 50, 50, 0.4);
+        box-shadow: 0 0 10px rgba(200, 50, 50, 0.5);
+      }
+
+      /* Action buttons container */
+      .sidebar-buttons {
+        display: flex;
+        gap: 10px; /* CUSTOMIZE: Button spacing */
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* General action button styling */
+      .action-btn {
+        width: 100%;
+        padding: 15px; /* CUSTOMIZE: Button padding */
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        );
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px; /* CUSTOMIZE: Font size */
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        min-height: 55px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px); /* Lifts on hover */
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+      }
+
+      /* Save button - special green styling */
+      .save-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(46, 125, 50, 0.3) 0%,
+          rgba(139, 32, 32, 0.2) 100%
+        );
+        border-color: #2e7d32;
+      }
+
+      .save-btn:hover {
+        box-shadow: 0 6px 20px rgba(46, 125, 50, 0.5);
+      }
+
+      /* Empty state message */
+
+      /* Daily students list container */
+      #dailyStudentsList {
+        min-height: 200px;
+        margin-bottom: 20px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #b8860b;
+        font-style: italic;
+        background: rgba(139, 105, 20, 0.1);
+        border-radius: 5px;
+        border: 1px dashed #8b6914;
+      }
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+        color: #1a0f0a;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1001;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      /* ======================
+           🏠 MAIN CONTENT AREA
+           ====================== 
+           
+           PURPOSE: Primary content display area
+           CUSTOMIZE: Layout, spacing, title styling
+           
+           Structure:
+           - Title and subtitle
+           - Content containers (books, sections, etc.)
+           - Responsive margins for sidebars
+        */
+
+      .main-content {
+        flex: 1;
+        padding: 40px 20px; /* CUSTOMIZE: Content padding */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0 70px; /* CUSTOMIZE: Sidebar margins */
+      }
+
+      .library-title {
+        font-family: "Cinzel", serif; /* CUSTOMIZE: Title font */
+        font-size: 48px; /* CUSTOMIZE: Title size */
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        animation: glow 2s ease-in-out infinite alternate;
+        position: relative;
+      }
+
+      /* Decorative stars around title */
+      .library-title::before,
+      .library-title::after {
+        content: "✦"; /* CUSTOMIZE: Star character */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 30px; /* CUSTOMIZE: Star size */
+        color: #d4af37;
+        animation: sparkle 3s ease-in-out infinite;
+      }
+
+      .library-title::before {
+        left: -50px; /* CUSTOMIZE: Left star position */
+      }
+
+      .library-title::after {
+        right: -50px; /* CUSTOMIZE: Right star position */
+        animation-delay: 1.5s;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0.3;
+          transform: translateY(-50%) scale(0.8) rotate(0deg);
         }
-        
-        .remove-student:hover {
-            background: rgba(139, 0, 0, 0.6);
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        50% {
+          opacity: 1;
+          transform: translateY(-50%) scale(1.2) rotate(180deg);
         }
-        
-        /* Sidebar Buttons */
-        .sidebar-buttons {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(212, 175, 55, 0.5);
         }
-        
-        .action-btn {
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border: 2px solid #d4af37;
-            color: #f4e4bc;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+        to {
+          text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(212, 175, 55, 0.8);
         }
-        
-        .action-btn:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .subtitle {
+        font-size: 20px; /* CUSTOMIZE: Subtitle size */
+        text-align: center;
+        margin-bottom: 50px;
+        color: #b8860b;
+        position: relative;
+        padding: 0 80px;
+      }
+
+      /* Decorative lines beside subtitle */
+      .subtitle::before,
+      .subtitle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 60px; /* CUSTOMIZE: Line length */
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #b8860b, transparent);
+      }
+
+      .subtitle::before {
+        left: 0;
+      }
+
+      .subtitle::after {
+        right: 0;
+      }
+
+    
+      /* ======================
+           📱 RESPONSIVE DESIGN
+           ====================== 
+           
+           PURPOSE: Adapt layout for different screen sizes
+           CUSTOMIZE: Breakpoints, mobile-specific styling
+           
+           Breakpoints:
+           - 1024px: Tablet landscape
+           - 768px: Tablet portrait and mobile
+        */
+
+      /* Tablet styles */
+      @media (max-width: 1024px) {
+        .books-container {
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: 20px;
         }
-        
-        .save-btn {
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
-            border-color: #2e7d32;
+
+        .book {
+          width: 150px;
+          height: 220px;
         }
-        
-        .save-btn:hover {
-            background: linear-gradient(135deg, rgba(46, 125, 50, 0.5) 0%, rgba(139, 32, 32, 0.4) 100%);
-            box-shadow: 0 0 10px rgba(46, 125, 50, 0.5);
+
+        .book-spine {
+          font-size: 16px;
         }
-        
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, rgba(42, 30, 20, 0.95) 0%, rgba(139, 32, 32, 0.95) 100%);
-            border: 2px solid #d4af37;
-            color: #f4e4bc;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-family: 'Cinzel', serif;
-            font-size: 16px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+
+        .library-title {
+          font-size: 36px;
         }
-        
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #b8860b;
-            font-style: italic;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0 70px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .page-title {
-            font-family: 'Uncial Antiqua', cursive;
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 15px;
-            color: #f4e4bc;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
-            animation: glow 2s ease-in-out infinite alternate;
-            position: relative;
-        }
-        
-        .page-title::before,
-        .page-title::after {
-            content: "✦";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 30px;
-            color: #d4af37;
-            animation: sparkle 3s ease-in-out infinite;
-        }
-        
-        .page-title::before {
-            left: -50px;
-        }
-        
-        .page-title::after {
-            right: -50px;
-            animation-delay: 1.5s;
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
-            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
-        }
-        
+
         .subtitle {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #b8860b;
-            position: relative;
-            padding: 0 80px;
+          font-size: 18px;
         }
-        
-        .subtitle::before,
-        .subtitle::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #b8860b, transparent);
+
+        .right-sidebar {
+          width: 100%;
+          max-width: 500px;
         }
-        
-        .subtitle::before {
-            left: 0;
+
+        .right-sidebar.expanded {
+          transform: translateX(0);
+          right: 0;
+          left: auto;
         }
-        
-        .subtitle::after {
-            right: 0;
+
+        .sidebar-toggle {
+          width: 60px;
+          height: 140px;
+          font-size: 18px;
         }
-        
+
+        .student-item {
+          margin: 20px 0;
+        }
+
+        .sidebar-buttons {
+          gap: 15px;
+        }
+      }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        .main-content {
+          margin: 0 60px;
+          padding: 20px 10px;
+        }
+
+        .library-title {
+          font-size: 28px;
+        }
+
+        .books-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .sections-container {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+
+        .section-card {
+          min-height: 200px;
+          padding: 30px;
+        }
+      }
+
+      /* ======================
+           🎬 UTILITY ANIMATIONS
+           ====================== 
+           
+           PURPOSE: Reusable animation effects
+           CUSTOMIZE: Timing, intensity, easing
+           
+           Available Animations:
+           - pulse: Gentle scaling effect
+           - goldenGlow: Golden lighting effect
+        */
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        } /* CUSTOMIZE: Pulse intensity */
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes goldenGlow {
+        0% {
+          box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        } /* CUSTOMIZE: Glow intensity */
+        100% {
+          box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+      }
+
         /* Week Grid - Optimized for iPad Mini */
         .weeks-grid {
             display: grid;
@@ -953,16 +1246,7 @@
         
         /* iPad Mini Specific Optimizations */
         @media (max-width: 834px) and (min-width: 768px) {
-            .page-title {
-                font-size: 36px;
-                margin-bottom: 10px;
-            }
-            
-            .subtitle {
-                font-size: 16px;
-                margin-bottom: 20px;
-            }
-            
+           
             .weeks-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 15px;
@@ -988,47 +1272,8 @@
             }
         }
         
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .weeks-grid {
-                gap: 20px;
-            }
-            
-            .right-sidebar {
-                width: 100%;
-                max-width: 500px;
-            }
-            
-            .right-sidebar.expanded {
-                transform: translateX(0);
-                right: 0;
-                left: auto;
-            }
-            
-            .sidebar-toggle {
-                width: 60px;
-                height: 140px;
-                font-size: 18px;
-            }
-            
-            .student-item {
-                margin: 20px 0;
-            }
-            
-            .sidebar-buttons {
-                gap: 15px;
-            }
-        }
-        
+       
         @media (max-width: 768px) {
-            .main-content {
-                margin: 0 60px;
-                padding: 20px 10px;
-            }
-            
-            .page-title {
-                font-size: 32px;
-            }
             
             .weeks-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1052,28 +1297,6 @@
             }
         }
         
-        /* Animation Keyframes */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes goldenGlow {
-            0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
-            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(139, 32, 32, 0.4); }
-            100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; transform: translateY(-50%) scale(0.8) rotate(0deg); }
-            50% { opacity: 1; transform: translateY(-50%) scale(1.2) rotate(180deg); }
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
     </style>
 </head>
 <body>
@@ -1088,7 +1311,7 @@
     
     
     <!-- Sidebar Toggle Buttons -->
-    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">Subjects</button>
+    <button class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">MENU</button>
     <button class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</button>
     
     <!-- Sidebar Overlay -->
@@ -1181,7 +1404,7 @@
     
     <!-- Main Content -->
     <div class="main-content">
-        <h1 class="page-title">Ancient Vocabulary Archives</h1>
+        <h1 class="library-title">Ancient Vocabulary Archives</h1>
         <p class="subtitle">Master the roots of language through the ages</p>
         
         <div class="weeks-grid" id="weeksGrid"></div>

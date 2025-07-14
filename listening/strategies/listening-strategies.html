@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening Strategies - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-size: 16px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Title */
+        .page-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 56px;
+            text-align: center;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 50px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        /* Strategy Container */
+        .strategy-container {
+            background: rgba(42, 30, 20, 0.9);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* Strategy Header */
+        .strategy-header {
+            background: rgba(26, 15, 10, 0.8);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .strategy-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 40px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+        }
+        
+        .strategy-subtitle {
+            font-size: 24px;
+            color: #d4af37;
+            font-weight: 600;
+        }
+        
+        /* Strategy Overview */
+        .strategy-overview {
+            background: rgba(139, 105, 20, 0.2);
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .overview-title {
+            font-size: 28px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .overview-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #d4af37;
+        }
+        
+        .elimination-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .elimination-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(26, 15, 10, 0.5);
+            border-radius: 8px;
+            border: 1px solid #8b6914;
+            transition: all 0.3s ease;
+        }
+        
+        .elimination-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .elimination-icon {
+            font-size: 28px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .elimination-text {
+            flex: 1;
+        }
+        
+        .elimination-title {
+            font-weight: 600;
+            color: #f4e4bc;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .elimination-desc {
+            color: #b8860b;
+            font-size: 16px;
+        }
+        
+        .remember-box {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #f4e4bc;
+        }
+        
+        /* Practice Examples */
+        .practice-section {
+            margin-top: 50px;
+        }
+        
+        .section-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #8b6914, transparent);
+            margin: 40px 0;
+        }
+        
+        .practice-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 32px;
+            color: #f4e4bc;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .example-box {
+            background: rgba(26, 15, 10, 0.6);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .example-header {
+            font-size: 24px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+        
+        .dialogue-section {
+            background: rgba(42, 30, 20, 0.6);
+            border-left: 4px solid #d4af37;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .dialogue-line {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #f4e4bc;
+            margin: 10px 0;
+        }
+        
+        .speaker {
+            font-weight: 600;
+            color: #d4af37;
+        }
+        
+        .keyword {
+            background: rgba(212, 175, 55, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .analysis-section {
+            margin-top: 25px;
+        }
+        
+        .analysis-title {
+            font-size: 20px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .wrong-answer {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .wrong-answer-header {
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 5px;
+        }
+        
+        .wrong-answer-reason {
+            color: #f4e4bc;
+            font-size: 16px;
+        }
+        
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .correct-answer-header {
+            font-weight: 600;
+            color: #4caf50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .correct-answer-reasons {
+            list-style: none;
+            color: #f4e4bc;
+        }
+        
+        .correct-answer-reasons li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .correct-answer-reasons li:before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Quick Tips */
+        .tips-section {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .tips-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 28px;
+            color: #f4e4bc;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .tips-list {
+            list-style: none;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin: 15px 0;
+            color: #d4af37;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        .tip-number {
+            background: #d4af37;
+            color: #1a0f0a;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        /* Extra Practice */
+        .practice-game {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .game-title {
+            font-size: 24px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+        }
+        
+        .game-steps {
+            list-style: none;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .game-steps li {
+            margin: 10px 0;
+            color: #d4af37;
+            font-size: 18px;
+        }
+        
+        .final-reminder {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(180, 140, 40, 0.2));
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin: 40px 0;
+            font-size: 20px;
+            color: #f4e4bc;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="/listening/listening.html" class="back-button">
+        <span>←</span> Back to Listening Hub
+    </a>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="page-title">Listening Strategies</h1>
+        
+        <!-- Strategy Container -->
+        <div class="strategy-container">
+            <!-- Strategy Header -->
+            <div class="strategy-header">
+                <h2 class="strategy-title">The "Wrong Answer Hunt" Strategy</h2>
+                <p class="strategy-subtitle">TEPS LISTENING STRATEGY LESSON</p>
+            </div>
+            
+            <!-- Strategy Overview -->
+            <div class="strategy-overview">
+                <h3 class="overview-title">
+                    <span>🎯</span> Strategy Overview
+                </h3>
+                <div class="overview-content">
+                    <p>When choosing the correct response in TEPS listening conversations, eliminate answers that:</p>
+                    
+                    <ul class="elimination-list">
+                        <li class="elimination-item">
+                            <span class="elimination-icon">🔁</span>
+                            <div class="elimination-text">
+                                <div class="elimination-title">Repeat</div>
+                                <div class="elimination-desc">information already established</div>
+                            </div>
+                        </li>
+                        <li class="elimination-item">
+                            <span class="elimination-icon">🚗</span>
+                            <div class="elimination-text">
+                                <div class="elimination-title">Change subject</div>
+                                <div class="elimination-desc">abruptly</div>
+                            </div>
+                        </li>
+                        <li class="elimination-item">
+                            <span class="elimination-icon">⚡</span>
+                            <div class="elimination-text">
+                                <div class="elimination-title">Contradict</div>
+                                <div class="elimination-desc">the tone or direction</div>
+                            </div>
+                        </li>
+                        <li class="elimination-item">
+                            <span class="elimination-icon">⏪</span>
+                            <div class="elimination-text">
+                                <div class="elimination-title">Go backwards</div>
+                                <div class="elimination-desc">in the conversation timeline</div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="remember-box">
+                        Remember: Choose the answer that naturally continues the conversation!
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="section-divider">
+            
+            <!-- Practice Examples -->
+            <div class="practice-section">
+                <h3 class="practice-title">📝 Practice Examples</h3>
+                
+                <!-- Example 1 -->
+                <div class="example-box">
+                    <h4 class="example-header">Question 14 - Correct Answer: (a)</h4>
+                    
+                    <div class="dialogue-section">
+                        <div class="dialogue-line">
+                            <span class="speaker">W:</span> I tried calling you this morning, but you didn't pick up the phone.
+                        </div>
+                        <div class="dialogue-line">
+                            <span class="speaker">M:</span> I was out of the office meeting a client until lunch.
+                        </div>
+                        <div class="dialogue-line">
+                            <span class="speaker">W:</span> Oh, I wasn't aware of that. Anyway, at least you're back now.
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <p class="analysis-title">Analysis:</p>
+                        <p style="color: #d4af37; margin-bottom: 15px;">
+                            <strong>Last line:</strong> "Anyway, at least you're back now" → Shows W is ready to discuss something
+                        </p>
+                        
+                        <p style="color: #f4e4bc; font-weight: 600; margin-bottom: 10px;">Wrong answers eliminated:</p>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(b) "Yeah, we had lunch at a really fancy place"</div>
+                            <div class="wrong-answer-reason">🚗 <strong>Changes subject</strong> - suddenly talks about lunch details</div>
+                        </div>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(c) "That's what I wanted to discuss with you"</div>
+                            <div class="wrong-answer-reason">⚡ <strong>Contradicts</strong> - M wasn't the one who called</div>
+                        </div>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(d) "When are you planning on calling me back?"</div>
+                            <div class="wrong-answer-reason">⏪ <strong>Goes backwards</strong> - they're already talking now!</div>
+                        </div>
+                        
+                        <div class="correct-answer">
+                            <div class="correct-answer-header">✅ Why (a) is correct:</div>
+                            <ul class="correct-answer-reasons">
+                                <li>Naturally continues from "you're back now" → "let's talk"</li>
+                                <li>Acknowledges W called for a reason</li>
+                                <li>Moves the conversation forward</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Example 2 -->
+                <div class="example-box">
+                    <h4 class="example-header">Question 15 - Correct Answer: (a)</h4>
+                    
+                    <div class="dialogue-section">
+                        <div class="dialogue-line">
+                            <span class="speaker">M:</span> How do you get most of your news these days? From the paper?
+                        </div>
+                        <div class="dialogue-line">
+                            <span class="speaker">W:</span> To be honest, I prefer reading news reports online. They're always more up-to-date.
+                        </div>
+                        <div class="dialogue-line">
+                            <span class="speaker">M:</span> Not me. I still like sitting down with a newspaper or watching the news on TV.
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <p class="analysis-title">Analysis:</p>
+                        <p style="color: #d4af37; margin-bottom: 15px;">
+                            <strong>Last line:</strong> "I still like sitting down with a newspaper or watching the news on TV" → M prefers traditional media
+                        </p>
+                        
+                        <p style="color: #f4e4bc; font-weight: 600; margin-bottom: 10px;">Wrong answers eliminated:</p>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(b) "I'm renewing my subscription to the local newspaper"</div>
+                            <div class="wrong-answer-reason">⚡ <strong>Contradicts</strong> - W just said she prefers online news!</div>
+                        </div>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(c) "Television news is definitely going to be big in the future"</div>
+                            <div class="wrong-answer-reason">🚗 <strong>Changes subject</strong> - talking about future, not preferences<br>
+                            ⚡ <strong>Contradicts</strong> - ignores that TV news already exists</div>
+                        </div>
+                        
+                        <div class="wrong-answer">
+                            <div class="wrong-answer-header">(d) "Anyway, I don't usually pay much attention to the news"</div>
+                            <div class="wrong-answer-reason">⚡ <strong>Contradicts</strong> - W just explained how she gets news</div>
+                        </div>
+                        
+                        <div class="correct-answer">
+                            <div class="correct-answer-header">✅ Why (a) is correct:</div>
+                            <ul class="correct-answer-reasons">
+                                <li>Directly responds to M's preference for traditional media</li>
+                                <li>Points out a disadvantage (old news)</li>
+                                <li>Continues the comparison between online vs. traditional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="section-divider">
+            
+            <!-- Quick Review Tips -->
+            <div class="tips-section">
+                <h3 class="tips-title">📌 Quick Review Tips</h3>
+                <ul class="tips-list">
+                    <li class="tip-item">
+                        <span class="tip-number">1</span>
+                        <span><strong>Read the last line carefully</strong> - it sets up what should come next</span>
+                    </li>
+                    <li class="tip-item">
+                        <span class="tip-number">2</span>
+                        <span><strong>Think "What would I say next?"</strong> in a real conversation</span>
+                    </li>
+                    <li class="tip-item">
+                        <span class="tip-number">3</span>
+                        <span><strong>Look for wrong answer patterns:</strong><br>
+                        🔁 = Already said that!<br>
+                        🚗 = Random topic!<br>
+                        ⚡ = That doesn't match!<br>
+                        ⏪ = Old news!</span>
+                    </li>
+                    <li class="tip-item">
+                        <span class="tip-number">4</span>
+                        <span><strong>The correct answer</strong> always:<br>
+                        • Responds to the last speaker<br>
+                        • Moves the conversation forward<br>
+                        • Makes logical sense</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Extra Practice Game -->
+            <div class="practice-game">
+                <h3 class="game-title">🎮 Extra Practice</h3>
+                <p style="color: #d4af37; margin-bottom: 20px;">Try this with your friends:</p>
+                <ol class="game-steps">
+                    <li>1. One person reads the conversation</li>
+                    <li>2. Others hold up fingers (1-4) for which wrong answer type they found</li>
+                    <li>3. Discuss why the correct answer works best</li>
+                </ol>
+            </div>
+            
+            <div class="final-reminder">
+                Remember: Good conversations flow naturally - just like talking with friends!
+            </div>
+        </div>
+    </div>
+</body>
+</html>

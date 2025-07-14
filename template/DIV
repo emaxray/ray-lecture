@@ -1,0 +1,123 @@
+  <!-- 🎨 DECORATIVE ELEMENTS -->
+    <div class="corner-ornament corner-top-left"></div>
+    <div class="corner-ornament corner-top-right"></div>
+    <div class="corner-ornament corner-bottom-left"></div>
+    <div class="corner-ornament corner-bottom-right"></div>
+
+    <!-- back button NAVIGATION -->
+  <button class="back-button" onclick="goBack()">Back</button> 
+
+    <!-- 📱 SIDEBAR SYSTEM -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">
+      MENU
+    </div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">
+      Treasury
+    </div>
+
+    <!-- Mobile overlay -->
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="closeSidebars()"
+    ></div>
+
+    <!-- 📋 LEFT SIDEBAR (NAVIGATION) -->
+    <div class="left-sidebar" id="leftSidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Navigation</h2>
+        <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- 🔧 CUSTOMIZE: Add your navigation links here -->
+        <a href="/index.html" class="nav-item active">Library</a>
+        <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+        <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+        <a href="/novel/novel.html" class="nav-item">Novel</a>
+        <a href="/listening/listening.html" class="nav-item">Listening</a>
+        <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
+        <a href="/reading/reading.html" class="nav-item">Reading</a>
+        <a href="/essay/essay.html" class="nav-item">Essay</a>
+        <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+        <a href="/science/science.html" class="nav-item">Science</a>
+        <a href="/review/review.html" class="nav-item">Review</a>
+        <a href="/timer/timer.html" class="nav-item">Timer</a>
+        <a href="/conquest/conquest-of-rayhaven.html" class="nav-item"
+          >Conquest</a
+        >
+      </div>
+    </div>
+
+    <!-- 👥 RIGHT SIDEBAR (STUDENT MANAGEMENT) -->
+    <div class="right-sidebar" id="rightSidebar">
+      <div class="sidebar-header">
+        <h2 class="points-title">Daily Treasury</h2>
+        <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- Section Title for Class Selection -->
+        <h3 class="section-subtitle">Quick Add by Class</h3>
+
+        <!-- Class Selection Section -->
+        <div class="add-section add-class-section">
+          <select class="dropdown-select class-select" id="classSelect">
+            <option value="">Select a class...</option>
+            <option value="m1">Monday 1 (m1)</option>
+            <option value="m2">Monday 2 (m2)</option>
+            <option value="tu1">Tuesday 1 (tu1)</option>
+            <option value="tu2">Tuesday 2 (tu2)</option>
+            <option value="w1">Wednesday 1 (w1)</option>
+            <option value="w2">Wednesday 2 (w2)</option>
+            <option value="th1">Thursday 1 (th1)</option>
+            <option value="th2">Thursday 2 (th2)</option>
+            <option value="s1">Saturday 1 (s1)</option>
+            <option value="s2">Saturday 2 (s2)</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addClassToDaily()">
+            Add Entire Class
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Individual Students -->
+        <h3 class="section-subtitle">Add Individual Student</h3>
+
+        <!-- Individual Student Selection -->
+        <div class="add-section add-student-section">
+          <select class="dropdown-select student-select" id="studentSelect">
+            <option value="">Select a scholar...</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addStudentToDaily()">
+            Add to Daily Points
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Active Students -->
+        <h3 class="section-subtitle">Today's Scholars</h3>
+
+        <!-- Daily Students List -->
+        <div id="dailyStudentsList">
+          <div class="empty-state">
+            No scholars in today's class yet.<br />Add students from the options
+            above.
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="sidebar-buttons">
+          <button class="action-btn" onclick="resetDailyTreasury()">
+            Reset All Points
+          </button>
+          <button class="action-btn save-btn" onclick="saveToConquest()">
+            Save to Conquest
+          </button>
+          <button class="action-btn">Export Data</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🏠 MAIN CONTENT -->
+    <div class="main-content">

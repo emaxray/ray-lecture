@@ -666,142 +666,118 @@ work automatically - no changes needed unless customizing.
         */
 
       .student-item {
-        background: rgba(
-          139,
-          105,
-          20,
-          0.2
-        ); /* CUSTOMIZE: Student item background */
-        border: 1px solid #8b6914;
-        border-radius: 5px;
-        padding: 20px; /* CUSTOMIZE: Item padding */
-        margin: 15px 0; /* CUSTOMIZE: Item spacing */
-        transition: all 0.3s ease;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 80px; /* CUSTOMIZE: Minimum height */
-        position: relative;
-      }
-
-      .student-item:hover {
-        background: rgba(212, 175, 55, 0.3); /* CUSTOMIZE: Hover background */
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-      }
-
-      .student-info {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        flex: 1;
-      }
-
-      .student-name {
-        font-size: 16px; /* CUSTOMIZE: Name font size */
-        color: #f4e4bc;
-      }
-
-      /* Team badges - color-coded team identification */
-      .team-badge {
-        font-size: 12px; /* CUSTOMIZE: Badge font size */
-        padding: 2px 6px; /* CUSTOMIZE: Badge padding */
-        border-radius: 7px;
-        display: inline-block;
-        background: rgba(0, 0, 0, 0.3); /* CUSTOMIZE: Badge background */
-        border: 1px solid;
-        width: 80px;
-        /* Colors set dynamically by JavaScript based on team */
-      }
-
-      .coin-display {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* CUSTOMIZE: Spacing between elements */
-      }
-
-      /* Points button - shows current points and adds more when clicked */
-      /*         .points-btn {
+            background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+            border: 2px solid #8b6914;
+            border-radius: 5px;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .student-item:hover {
+            background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            border-color: #d4af37;
+            transform: translateX(-2px);
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .student-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f4e4bc;
+        }
+        
+        .team-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border: 1px solid;
+            border-radius: 3px;
+            font-weight: normal;
+            animation: subtleGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 0 3px currentColor); 
+            }
+            50% { 
+                filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+            }
+        }
+        
+        .coin-display {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 12px;                        / CUSTOMIZE: Button padding /
+            justify-content: space-between;
+        }
+        
+        .points-btn {
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(180, 140, 40, 0.4) 100%);
-            border: 1px solid #d4af37;
-            border-radius: 30px;                       / CUSTOMIZE: Button roundness /
+            border: 2px solid #8b6914;
+            color: #ffd700;
+            padding: 8px 16px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
-            min-height: 50px;
-            min-width: 70px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
             font-family: 'Cinzel', serif;
-            font-size: 18px;                           / CUSTOMIZE: Font size /
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-btn:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.5) 0%, rgba(180, 140, 40, 0.6) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .points-value {
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .coin-icon {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(255, 215, 0, 0.4);
+            position: relative;
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
             font-weight: bold;
-            color: #f4e4bc;
-        } */
-
-      .points-btn {
-        display: flex;
-        align-items: center;
-        gap: 20px; /* Reduced from 10px */
-        padding: 6px 10px; /* Reduced from 12px 12px */
-        background: linear-gradient(
-          135deg,
-          rgba(212, 175, 55, 0.3) 0%,
-          rgba(180, 140, 40, 0.4) 100%
-        );
-        border: 1px solid #d4af37;
-        border-radius: 20px; /* Reduced from 30px */
-        cursor: pointer;
-        transition: all 0.3s ease;
-        min-height: 36px; /* Reduced from 50px */
-        min-width: 60px; /* Reduced from 70px */
-        font-family: "Cinzel", serif;
-        font-size: 14px; /* Reduced from 18px */
-        font-weight: bold;
-        color: #f4e4bc;
-      }
-
-      .points-btn:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(212, 175, 55, 0.5) 0%,
-          rgba(180, 140, 40, 0.6) 100%
-        );
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-        transform: scale(1.05); /* Slight growth on hover */
-      }
-
-      .points-btn:active {
-        transform: scale(0.95); /* Slight shrink when clicked */
-      }
-
-      .points-value {
-        font-size: 16px; /* CUSTOMIZE: Points number size */
-        min-width: 40px;
-        text-align: center;
-      }
-
-      /* Coin icon - decorative gold coin */
-      .coin-icon {
-        width: 12px; /* CUSTOMIZE: Coin size */
-        height: 12px;
-        background: radial-gradient(circle, #ffd700, #b8860b);
-        border-radius: 50%;
-        display: inline-block;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        position: relative;
-      }
-
-      .coin-icon::after {
-        content: "₹"; /* CUSTOMIZE: Coin symbol */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #8b4513;
-        font-weight: bold;
-        font-size: 7px;
-      }
-
+            color: #8b4513;
+        }
+        
+        .coin-icon::after {
+            content: '₹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
       /* Remove student button */
       .remove-student {
         background: rgba(139, 20, 20, 0.3); /* CUSTOMIZE: Remove button color */

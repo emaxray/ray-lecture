@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare & Contrast Essay - The Library of Rayhaven</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Uncial+Antiqua&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(ellipse at top, #2a2a2a, transparent),
+                radial-gradient(ellipse at bottom, #1a0f0a, transparent);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Candlelight effect overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 147, 41, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255, 183, 77, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12) 0%, transparent 45%);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: flicker 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            25% { opacity: 0.9; }
+            50% { opacity: 0.75; }
+            75% { opacity: 0.85; }
+        }
+        
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-size: 16px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(-5px);
+        }
+        
+        /* Timer Display */
+        .timer-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(42, 30, 20, 0.95);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            padding: 20px;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .timer-container.active {
+            display: block;
+        }
+        
+        .timer-display {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 36px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .timer-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            color: #f4e4bc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .timer-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 80px 20px 40px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .page-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 36px;
+            color: #f4e4bc;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.5); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.8); }
+        }
+        
+        .page-subtitle {
+            font-size: 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        /* Essay Container */
+        .essay-container {
+            background: rgba(42, 30, 20, 0.9);
+            border: 3px solid #8b6914;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            min-height: 600px;
+            position: relative;
+        }
+        
+        /* Slide System */
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Navigation Buttons */
+        .slide-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #8b6914;
+        }
+        
+        .nav-btn {
+            background: rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .slide-indicator {
+            font-size: 16px;
+            color: #b8860b;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 26px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Venn Diagram Section */
+        .venn-diagram-section {
+            margin: 30px 0;
+        }
+        
+        
+        .subsection-title {
+            font-size: 18px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+        }
+        
+        /* Venn Legend Box */
+        .venn-legend-box {
+            margin: 30px auto;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            background: rgba(26, 15, 10, 0.6);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+        }
+        
+        .legend-column {
+            padding: 20px;
+        }
+        
+        .legend-column.center {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 1px solid #8b6914;
+            border-right: 1px solid #8b6914;
+        }
+        
+        .legend-column h4 {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 18px;
+            color: #f4e4bc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .legend-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .legend-column li {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 19px;
+            color: #d4af37;
+        }
+        
+        .legend-num {
+            display: inline-flex;
+            width: 30px;
+            height: 30px;
+            background: rgba(212, 175, 55, 0.3);
+            border: 1px solid #d4af37;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #f4e4bc;
+            flex-shrink: 0;
+        }
+        
+        .legend-num.letter {
+            background: rgba(244, 228, 188, 0.3);
+            border-color: #f4e4bc;
+        }
+        
+        .venn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            background: rgba(26, 15, 10, 0.6);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+        }
+        
+        .venn-left, .venn-center, .venn-right {
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .venn-left {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+        }
+        
+        .venn-center {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+        }
+        
+        .venn-right {
+            background: rgba(184, 134, 11, 0.1);
+            border: 1px solid #b8860b;
+        }
+        
+        .venn-container h4 {
+            color: #f4e4bc;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .venn-container ul {
+            list-style: none;
+        }
+        
+        .venn-container li {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #d4af37;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .venn-container li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Teaching Point Box */
+        .teaching-point-box {
+            background: linear-gradient(135deg, rgba(139, 32, 32, 0.1), rgba(212, 175, 55, 0.2));
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .teaching-point-box h3 {
+            color: #f4e4bc;
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+        
+        .teaching-point-box p {
+            font-size: 23px;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+        
+        .teaching-point-box ul {
+            list-style: none;
+        }
+        
+        .teaching-point-box li {
+            font-size: 21px;
+            line-height: 1.7;
+            margin: 10px 0;
+            color: #d4af37;
+        }
+        
+        .metaphor-example {
+            background: rgba(26, 15, 10, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        
+        .metaphor-example ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .metaphor-example li {
+            margin: 10px 0;
+            color: #d4af37;
+            line-height: 1.6;
+        }
+        
+        .challenge-text {
+            color: #ffd700;
+            font-size: 18px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Evidence Bank */
+        .evidence-bank {
+            margin: 40px 0;
+        }
+        
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .evidence-column {
+            background: rgba(42, 30, 20, 0.6);
+            border: 1px solid #8b6914;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .evidence-column h4 {
+            color: #f4e4bc;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .evidence-column ul {
+            list-style: none;
+        }
+        
+        .evidence-column li {
+            margin: 10px 0;
+            font-size: 17px;
+            color: #b8860b;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .evidence-column li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+        
+        /* Vocabulary Requirements */
+        .vocab-requirements {
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .vocab-requirements h3 {
+            color: #f4e4bc;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .level-box {
+            background: rgba(26, 15, 10, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .level-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .level-box.level-4 {
+            border: 2px solid #4caf50;
+        }
+        
+        .level-box.level-3 {
+            border: 2px solid #2196f3;
+        }
+        
+        .level-box.level-2 {
+            border: 2px solid #ff9800;
+        }
+        
+        .level-box h4 {
+            color: #f4e4bc;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .level-box p {
+            color: #d4af37;
+            font-size: 16px;
+        }
+        
+        /* Writing Tasks */
+        .task-box {
+            background: rgba(42, 30, 20, 0.8);
+            border: 2px solid #8b6914;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        /* Essay paragraphs and general text */
+        .task-box p,
+        .essay-container p {
+            font-size: 22px;
+            line-height: 1.8;
+        }
+        
+        .task-box h3 {
+            font-size: 18px;
+            color: #f4e4bc;
+            margin-bottom: 15px;
+        }
+        
+        .task-title {
+            color: #f4e4bc;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .task-instruction {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .formula-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .formula-box p {
+            color: #f4e4bc;
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .task-hint {
+            color: #b8860b;
+            font-size: 21px;
+            font-style: italic;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        .structure-list ol {
+            margin-left: 30px;
+            color: #d4af37;
+        }
+        
+        .structure-list li {
+            margin: 12px 0;
+            line-height: 1.8;
+            font-size: 21px;
+        }
+        
+        .task-checklist p {
+            color: #d4af37;
+            margin: 10px 0;
+            font-size: 21px;
+            line-height: 1.7;
+        }
+        
+        .prompt-timer {
+            display: inline-block;
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196f3;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4fc3f7;
+        }
+        
+        .prompt-timer:hover {
+            background: rgba(33, 150, 243, 0.3);
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .essay-container {
+                padding: 30px 20px;
+            }
+            
+            
+            .venn-legend-box {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .legend-column.center {
+                border-left: none;
+                border-right: none;
+                border-top: 1px solid #8b6914;
+                border-bottom: 1px solid #8b6914;
+                margin: 10px 0;
+            }
+            
+            
+            .evidence-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .level-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .task-box {
+                padding: 20px;
+            }
+            
+            .formula-box {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+        
+        /* ======================
+           SIDEBAR SYSTEM STYLES
+           ====================== */
+        
+        /* Updated Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            padding: 12px 24px;
+            font-family: "Cinzel", serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* Sidebar toggle buttons */
+        .sidebar-toggle {
+            position: fixed;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border: 2px solid #8b6914;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: "Cinzel", serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .left-toggle {
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 0 10px 10px 0;
+            border-left: none;
+        }
+        
+        .right-toggle {
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 10px 0 0 10px;
+            border-right: none;
+        }
+        
+        .sidebar-toggle:hover {
+            background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            width: 60px;
+        }
+        
+        /* Mobile overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 98;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Left Sidebar */
+        .left-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-right: 2px solid #8b6914;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 200;
+            transform: translateX(-250px);
+        }
+        
+        .left-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+            border-left: 2px solid #8b6914;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 100;
+            transform: translateX(350px);
+        }
+        
+        .right-sidebar.expanded {
+            transform: translateX(0);
+        }
+        
+        /* Sidebar header */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 1px solid #8b6914;
+        }
+        
+        .sidebar-title {
+            font-family: "Uncial Antiqua", cursive;
+            font-size: 20px;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .points-title {
+            font-family: "Cinzel", serif;
+            font-size: 24px;
+            text-align: center;
+            color: #f4e4bc;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Close button */
+        .close-btn {
+            background: rgba(139, 105, 20, 0.3);
+            border: 1px solid #8b6914;
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        /* Navigation items */
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(139, 32, 32, 0.3) 100%);
+            border-color: #f4e4bc;
+            box-shadow: inset 0 0 10px rgba(139, 32, 32, 0.5);
+        }
+        
+        /* Section styling for right sidebar */
+        .section-subtitle {
+            font-family: "Uncial Antiqua", cursive;
+            font-size: 16px;
+            color: #d4af37;
+            text-align: center;
+            margin: 20px 0 15px;
+        }
+        
+        .add-section {
+            background: rgba(139, 105, 20, 0.2);
+            border: 1px solid #8b6914;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .dropdown-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(139, 105, 20, 0.3);
+            border: 2px solid #8b6914;
+            color: #f4e4bc;
+            font-family: "Cinzel", serif;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .add-student-to-daily {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: "Cinzel", serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-student-to-daily:hover {
+            background: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .divider-ornament {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #8b6914, transparent);
+            margin: 20px 0;
+        }
+        
+        #dailyStudentsList {
+            min-height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b8860b;
+            font-style: italic;
+        }
+        
+        .sidebar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border: 2px solid #d4af37;
+            color: #f4e4bc;
+            font-family: "Cinzel", serif;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+            border-color: #2e7d32;
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #1a0f0a;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+    
+    <!-- Sidebar toggle buttons -->
+    <div class="sidebar-toggle left-toggle" onclick="toggleLeftSidebar()">MENU</div>
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</div>
+    
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+    
+    <!-- Left Sidebar -->
+    <div class="left-sidebar" id="leftSidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Navigation</h2>
+            <button class="close-btn" onclick="toggleLeftSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <a href="/index.html" class="nav-item">Library</a>
+            <a href="/vocab/vocab.html" class="nav-item">Vocab</a>
+            <a href="/grammar/grammar.html" class="nav-item">Grammar</a>
+            <a href="/novel/novel.html" class="nav-item">Novel</a>
+            <a href="/listening/listening.html" class="nav-item">Listening</a>
+            <a href="/speaking/speaking.html" class="nav-item">Speaking</a>
+            <a href="/reading/reading.html" class="nav-item">Reading</a>
+            <a href="/essay/essay.html" class="nav-item active">Essay</a>
+            <a href="/ted/ted-hub.html" class="nav-item">TED</a>
+            <a href="/science/science.html" class="nav-item">Science</a>
+            <a href="/review/review.html" class="nav-item">Review</a>
+            <a href="/timer/timer.html" class="nav-item">Timer</a>
+            <a href="/conquest/conquest-of-rayhaven.html" class="nav-item">Conquest</a>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="sidebar-header">
+            <h2 class="points-title">Daily Treasury</h2>
+            <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Class Selection Section -->
+            <h3 class="section-subtitle">Quick Add by Class</h3>
+            <div class="add-section add-class-section">
+                <select class="dropdown-select class-select" id="classSelect">
+                    <option value="">Select a class...</option>
+                    <option value="m1">Monday 1 (m1)</option>
+                    <option value="m2">Monday 2 (m2)</option>
+                    <option value="tu1">Tuesday 1 (tu1)</option>
+                    <option value="tu2">Tuesday 2 (tu2)</option>
+                    <option value="w1">Wednesday 1 (w1)</option>
+                    <option value="w2">Wednesday 2 (w2)</option>
+                    <option value="th1">Thursday 1 (th1)</option>
+                    <option value="th2">Thursday 2 (th2)</option>
+                    <option value="s1">Saturday 1 (s1)</option>
+                    <option value="s2">Saturday 2 (s2)</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addClassToDaily()">Add Entire Class</button>
+            </div>
+            
+            <div class="divider-ornament"></div>
+            
+            <!-- Individual Student Selection -->
+            <h3 class="section-subtitle">Add Individual Student</h3>
+            <div class="add-section add-student-section">
+                <select class="dropdown-select student-select" id="studentSelect">
+                    <option value="">Select a scholar...</option>
+                </select>
+                <button class="add-student-to-daily" onclick="addStudentToDaily()">Add to Daily Points</button>
+            </div>
+            
+            <div class="divider-ornament"></div>
+            
+            <!-- Today's Scholars -->
+            <h3 class="section-subtitle">Today's Scholars</h3>
+            <div id="dailyStudentsList">
+                <div class="empty-state">No scholars in today's class yet.<br>Add students from the options above.</div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="sidebar-buttons">
+                <button class="action-btn" onclick="resetDailyTreasury()">Reset All Points</button>
+                <button class="action-btn save-btn" onclick="saveToConquest()">Save to Conquest</button>
+                <button class="action-btn">Export Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Timer Container -->
+    <div id="timerContainer" class="timer-container">
+        <div class="timer-display" id="timerDisplay">15:00</div>
+        <div class="timer-controls">
+            <button class="timer-btn" onclick="pauseTimer()">Pause</button>
+            <button class="timer-btn" onclick="resetTimer()">Reset</button>
+            <button class="timer-btn" onclick="stopTimer()">Stop</button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="page-title">Compare & Contrast Essay</h1>
+            <p class="page-subtitle">Master the Art of Analytical Comparison</p>
+        </div>
+        
+        <!-- Essay Container -->
+        <div class="essay-container">
+            <!-- Slide 1: Venn Diagram & Teaching Point -->
+            <div class="slide active" id="slide1">
+                <h2 class="section-title">
+                    <span>💼</span> Starting Your Own Business vs. Joining a Company
+                </h2>
+                
+                <!-- Square Venn Diagram Format -->
+                <div class="venn-legend-box">
+                    <div class="legend-column">
+                        <h4>Starting a Business</h4>
+                        <ul>
+                            <li><span class="legend-num">1</span> Be your own boss</li>
+                            <li><span class="legend-num">2</span> Control schedule</li>
+                            <li><span class="legend-num">3</span> Financial risk</li>
+                            <li><span class="legend-num">4</span> No guaranteed pay</li>
+                            <li><span class="legend-num">5</span> Choose direction</li>
+                        </ul>
+                    </div>
+                    <div class="legend-column center">
+                        <h4>Both</h4>
+                        <ul>
+                            <li><span class="legend-num letter">A</span> Need dedication</li>
+                            <li><span class="legend-num letter">B</span> Work with people</li>
+                            <li><span class="legend-num letter">C</span> Long hours</li>
+                            <li><span class="legend-num letter">D</span> Need skills</li>
+                            <li><span class="legend-num letter">E</span> Career growth</li>
+                        </ul>
+                    </div>
+                    <div class="legend-column">
+                        <h4>Joining a Company</h4>
+                        <ul>
+                            <li><span class="legend-num">1</span> Steady income</li>
+                            <li><span class="legend-num">2</span> Benefits package</li>
+                            <li><span class="legend-num">3</span> Team support</li>
+                            <li><span class="legend-num">4</span> Follow directions</li>
+                            <li><span class="legend-num">5</span> Fixed schedule</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Extended Metaphor Teaching -->
+                <div class="teaching-point-box">
+                    <h3>🎯 Advanced Technique: Extended Metaphor</h3>
+                    <p><strong>Extended Metaphor</strong>: Take your metaphor beyond one sentence and weave it throughout your essay!</p>
+                    <div class="metaphor-example">
+                        <p><strong>Example</strong>: If you compare career choice to "sailing a ship"...</p>
+                        <ul>
+                            <li><strong>Introduction</strong>: "...sailing your own ship vs. boarding a cruise liner"</li>
+                            <li><strong>Body 1</strong>: "Entrepreneurs must navigate stormy markets..."</li>
+                            <li><strong>Body 2</strong>: "Company employees have an experienced captain at the helm..."</li>
+                            <li><strong>Conclusion</strong>: "Whether you chart your own course or trust another's navigation..."</li>
+                        </ul>
+                        <p class="challenge-text">💡 <strong>Challenge</strong>: Create an extended metaphor that appears in all 4 paragraphs!</p>
+                    </div>
+                </div>
+                
+                <!-- Vocabulary Requirements -->
+                <div class="vocab-requirements">
+                    <h3>📝 Vocabulary Requirements by Level</h3>
+                    <div class="level-grid">
+                        <div class="level-box level-4">
+                            <h4>Level 4</h4>
+                            <p>Use <strong>6 vocabulary words</strong> throughout your essay</p>
+                        </div>
+                        <div class="level-box level-3">
+                            <h4>Level 3</h4>
+                            <p>Use <strong>7 vocabulary words</strong> throughout your essay</p>
+                        </div>
+                        <div class="level-box level-2">
+                            <h4>Level 2</h4>
+                            <p>Use <strong>8 vocabulary words</strong> throughout your essay</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" disabled>Previous</button>
+                    <span class="slide-indicator">Slide 1 of 6</span>
+                    <button class="nav-btn" onclick="showSlide(2)">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Slide 2: Evidence Bank -->
+            <div class="slide" id="slide2">
+                <h2 class="section-title">
+                    <span>📚</span> Evidence Bank (Review Before Writing)
+                </h2>
+                
+                <div class="evidence-grid">
+                    <div class="evidence-column">
+                        <h4>Starting a Business</h4>
+                        <ul>
+                            <li>Financial potential - possibility of significant wealth</li>
+                            <li>Being your own boss</li>
+                            <li>No guaranteed stable income</li>
+                            <li>High failure risk</li>
+                            <li>Over 30 million entrepreneurs in the U.S.</li>
+                            <li>Having control over your schedule</li>
+                            <li>May have periods with no income at all</li>
+                        </ul>
+                    </div>
+                    <div class="evidence-column">
+                        <h4>Joining a Company</h4>
+                        <ul>
+                            <li>Regular salaries</li>
+                            <li>Guaranteed stable income</li>
+                            <li>Set schedules and vacation time</li>
+                            <li>Less personal financial risk</li>
+                            <li>Team support and resources</li>
+                            <li>Company benefits and structure</li>
+                        </ul>
+                    </div>
+                    <div class="evidence-column">
+                        <h4>Both</h4>
+                        <ul>
+                            <li>Need "extreme dedication"</li>
+                            <li>Require people skills - "put yourself in your customer's shoes"</li>
+                            <li>Involve "managing deadlines"</li>
+                            <li>"A company is simply a group of people"</li>
+                            <li>Offer career growth opportunities</li>
+                            <li>Require learning from mistakes</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="teaching-point-box" style="margin-top: 30px;">
+                    <h3>💡 Vocabulary Connection Examples</h3>
+                    <ul style="list-style: none; color: #d4af37;">
+                        <li>• The <strong>demanding</strong> nature of both career paths</li>
+                        <li>• <strong>Critical</strong> decisions about your future</li>
+                        <li>• <strong>Circumstances</strong> that influence your choice</li>
+                        <li>• Jobs that <strong>contain</strong> different responsibilities</li>
+                        <li>• Ways to <strong>boost</strong> your income</li>
+                        <li>• Having <strong>conviction</strong> in your choice</li>
+                    </ul>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" onclick="showSlide(1)">← Previous</button>
+                    <span class="slide-indicator">Slide 2 of 6</span>
+                    <button class="nav-btn" onclick="showSlide(3)">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Slide 3: Introduction Task -->
+            <div class="slide" id="slide3">
+                <h2 class="section-title">
+                    <span>✍️</span> Task 1: Introduction (3 minutes)
+                </h2>
+                
+                <div class="task-box">
+                    <p class="task-instruction"><strong>Write a Thesis Statement</strong></p>
+                    
+                    <div class="formula-box">
+                        <p><strong>Formula</strong>: While both _______ and _______ share _______ and _______, they differ in _______ and _______.</p>
+                    </div>
+                    
+                    <div class="teaching-point-box">
+                        <h3>Transition Words to Consider:</h3>
+                        <ul style="list-style: none;">
+                            <li><strong>Similarities:</strong> both, similarly, likewise, also</li>
+                            <li><strong>Differences:</strong> however, whereas, while, in contrast</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px; color: #b8860b;">
+                            <strong>Teacher Example (bare bones):</strong><br>
+                            "While both paths involve _______, they differ in _______."
+                        </p>
+                    </div>
+                    
+                    <p class="task-hint">
+                        <strong>Reminder:</strong> Look at the evidence bank to choose your strongest points!
+                    </p>
+                    
+                    <span class="prompt-timer" onclick="startTimer(3)">⏱️ Start 3-minute timer</span>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" onclick="showSlide(2)">← Previous</button>
+                    <span class="slide-indicator">Slide 3 of 6</span>
+                    <button class="nav-btn" onclick="showSlide(4)">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Slide 4: Body Paragraph 1 -->
+            <div class="slide" id="slide4">
+                <h2 class="section-title">
+                    <span>📝</span> Task 2: Body Paragraph 1 - Starting a Business (4 minutes)
+                </h2>
+                
+                <div class="task-box">
+                    <h3 style="color: #f4e4bc; margin-bottom: 20px;">Structure:</h3>
+                    <div class="structure-list">
+                        <ol>
+                            <li><strong>Topic Sentence</strong>: Focus on entrepreneurship with both similarities and differences</li>
+                            <li><strong>Similarity</strong>: What it shares with joining a company</li>
+                            <li><strong>Difference</strong>: What makes it unique</li>
+                            <li><strong>Closing Sentence</strong>: Wrap up the paragraph</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="teaching-point-box" style="margin-top: 20px;">
+                        <h3>Transition Starters:</h3>
+                        <ul style="list-style: none; color: #d4af37;">
+                            <li>• <strong>Topic:</strong> "Starting your own business..."</li>
+                            <li>• <strong>Similarity:</strong> "Like employees in companies..."</li>
+                            <li>• <strong>Difference:</strong> "However..." / "Unlike..." / "In contrast..."</li>
+                            <li>• <strong>Closing:</strong> "Therefore..." / "Thus..."</li>
+                        </ul>
+                    </div>
+                    
+                    <span class="prompt-timer" onclick="startTimer(4)">⏱️ Start 4-minute timer</span>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" onclick="showSlide(3)">← Previous</button>
+                    <span class="slide-indicator">Slide 4 of 6</span>
+                    <button class="nav-btn" onclick="showSlide(5)">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Slide 5: Body Paragraph 2 -->
+            <div class="slide" id="slide5">
+                <h2 class="section-title">
+                    <span>📝</span> Task 3: Body Paragraph 2 - Joining a Company (4 minutes)
+                </h2>
+                
+                <div class="task-box">
+                    <h3 style="color: #f4e4bc; margin-bottom: 20px;">Structure:</h3>
+                    <div class="structure-list">
+                        <ol>
+                            <li><strong>Topic Sentence</strong>: Focus on company employment with both similarities and differences</li>
+                            <li><strong>Similarity</strong>: What it shares with entrepreneurship</li>
+                            <li><strong>Difference</strong>: What makes it unique</li>
+                            <li><strong>Closing Sentence</strong>: Wrap up the paragraph</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="teaching-point-box" style="margin-top: 20px;">
+                        <h3>Transition Starters:</h3>
+                        <ul style="list-style: none; color: #d4af37;">
+                            <li>• <strong>Topic:</strong> "Joining an established company..."</li>
+                            <li>• <strong>Similarity:</strong> "Similar to entrepreneurs..."</li>
+                            <li>• <strong>Difference:</strong> "On the other hand..." / "Conversely..."</li>
+                            <li>• <strong>Closing:</strong> "As a result..." / "Ultimately..."</li>
+                        </ul>
+                    </div>
+                    
+                    <span class="prompt-timer" onclick="startTimer(4)">⏱️ Start 4-minute timer</span>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" onclick="showSlide(4)">← Previous</button>
+                    <span class="slide-indicator">Slide 5 of 6</span>
+                    <button class="nav-btn" onclick="showSlide(6)">Next →</button>
+                </div>
+            </div>
+            
+            <!-- Slide 6: Conclusion -->
+            <div class="slide" id="slide6">
+                <h2 class="section-title">
+                    <span>🎯</span> Task 4: Conclusion (2 minutes)
+                </h2>
+                
+                <div class="task-box">
+                    <h3 style="color: #f4e4bc; margin-bottom: 20px;">Your Task:</h3>
+                    <div class="task-checklist">
+                        <p>✓ Restate thesis in different words</p>
+                        <p>✓ Add final insight about the choice</p>
+                    </div>
+                    
+                    <div class="teaching-point-box" style="margin-top: 20px;">
+                        <h3>Transition Phrases:</h3>
+                        <ul style="list-style: none; color: #d4af37;">
+                            <li>• "In conclusion..."</li>
+                            <li>• "Ultimately..."</li>
+                            <li>• "The choice between..."</li>
+                        </ul>
+                        
+                        <p style="margin-top: 20px; color: #ff6b6b;">
+                            <strong>⚠️ Avoid:</strong> Simply repeating your introduction
+                        </p>
+                    </div>
+                    
+                    <span class="prompt-timer" onclick="startTimer(2)">⏱️ Start 2-minute timer</span>
+                </div>
+                
+                <div class="teaching-point-box" style="margin-top: 30px; background: rgba(76, 175, 80, 0.1); border-color: #4caf50;">
+                    <h3 style="color: #81c784;">✨ Teacher Notes</h3>
+                    <p style="color: #a5d6a7;">
+                        <strong>Total Writing Time:</strong> 13 minutes<br>
+                        <strong>Bonus Points:</strong> Successful extended metaphor use throughout essay<br>
+                        <strong>Remember:</strong> Check your vocabulary count for your level!
+                    </p>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="slide-nav">
+                    <button class="nav-btn" onclick="showSlide(5)">← Previous</button>
+                    <span class="slide-indicator">Slide 6 of 6</span>
+                    <button class="nav-btn" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Slide Navigation
+        let currentSlide = 1;
+        
+        function showSlide(slideNum) {
+            // Hide all slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Show selected slide
+            document.getElementById(`slide${slideNum}`).classList.add('active');
+            currentSlide = slideNum;
+        }
+        
+        // Timer functionality
+        let timerInterval = null;
+        let timeRemaining = 900; // 15 minutes default
+        let isPaused = false;
+        
+        function startTimer(minutes) {
+            // Reset any existing timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Set time
+            timeRemaining = minutes * 60;
+            isPaused = false;
+            
+            // Show timer
+            document.getElementById('timerContainer').classList.add('active');
+            updateTimerDisplay();
+            
+            // Start countdown
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                    
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        timerComplete();
+                    }
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function pauseTimer() {
+            isPaused = !isPaused;
+            event.target.textContent = isPaused ? 'Resume' : 'Pause';
+        }
+        
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            timeRemaining = 900; // Reset to 15 minutes
+            isPaused = false;
+            updateTimerDisplay();
+            document.querySelector('.timer-btn').textContent = 'Pause';
+        }
+        
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            document.getElementById('timerContainer').classList.remove('active');
+            resetTimer();
+        }
+        
+        function timerComplete() {
+            // Visual indication
+            const display = document.getElementById('timerDisplay');
+            display.style.color = '#ff6b6b';
+            display.textContent = 'Time\'s Up!';
+            
+            // Play beep sequence
+            playBeepSequence();
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                display.style.color = '#f4e4bc';
+                stopTimer();
+            }, 3000);
+        }
+        
+        function playBeepSequence() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Play 3 beeps
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    playBeep(audioContext, 800, 200);
+                }, i * 300);
+            }
+        }
+        
+        function playBeep(audioContext, frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration / 1000);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < 6) {
+                showSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft' && currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        });
+        
+        // =====================
+        // SIDEBAR FUNCTIONS
+        // =====================
+        
+        // Toggle functions
+        function toggleLeftSidebar() {
+            const sidebar = document.getElementById('leftSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+        
+        function toggleRightSidebar() {
+            const sidebar = document.getElementById('rightSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('expanded');
+            if (sidebar.classList.contains('expanded')) {
+                overlay.classList.add('active');
+                populateStudentDropdown();
+                renderDailyStudents();
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+        
+        function closeSidebars() {
+            document.getElementById('leftSidebar').classList.remove('expanded');
+            document.getElementById('rightSidebar').classList.remove('expanded');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Student Management Functions
+        let dailyStudents = JSON.parse(localStorage.getItem('dailyStudents')) || [];
+        let allStudents = JSON.parse(localStorage.getItem('students')) || [];
+        let teamInfo = JSON.parse(localStorage.getItem('teamInfo')) || {};
+        
+        function populateStudentDropdown() {
+            const dropdown = document.getElementById('studentSelect');
+            dropdown.innerHTML = '<option value="">Select a scholar...</option>';
+            
+            const sortedStudents = [...allStudents].sort((a, b) => a.name.localeCompare(b.name));
+            
+            sortedStudents.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} (${student.class})`;
+                dropdown.appendChild(option);
+            });
+        }
+        
+        function addStudentToDaily() {
+            const dropdown = document.getElementById('studentSelect');
+            const studentId = dropdown.value;
+            
+            if (!studentId) {
+                showToast('Please select a student');
+                return;
+            }
+            
+            const student = allStudents.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const existingIndex = dailyStudents.findIndex(s => s.id === studentId);
+            if (existingIndex === -1) {
+                dailyStudents.push({
+                    ...student,
+                    dailyPoints: 0
+                });
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                renderDailyStudents();
+                showToast(`${student.name} added to daily points`);
+            } else {
+                showToast(`${student.name} is already in daily points`);
+            }
+            
+            dropdown.value = '';
+        }
+        
+        function addClassToDaily() {
+            const classSelect = document.getElementById('classSelect');
+            const selectedClass = classSelect.value;
+            
+            if (!selectedClass) {
+                showToast('Please select a class');
+                return;
+            }
+            
+            const classStudents = allStudents.filter(s => s.class === selectedClass);
+            let addedCount = 0;
+            
+            classStudents.forEach(student => {
+                const existingIndex = dailyStudents.findIndex(s => s.id === student.id);
+                if (existingIndex === -1) {
+                    dailyStudents.push({
+                        ...student,
+                        dailyPoints: 0
+                    });
+                    addedCount++;
+                }
+            });
+            
+            if (addedCount > 0) {
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                renderDailyStudents();
+                showToast(`Added ${addedCount} students from ${selectedClass}`);
+            } else {
+                showToast(`All students from ${selectedClass} are already added`);
+            }
+            
+            classSelect.value = '';
+        }
+        
+        function renderDailyStudents() {
+            const container = document.getElementById('dailyStudentsList');
+            
+            if (dailyStudents.length === 0) {
+                container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the options above.</div>';
+                return;
+            }
+            
+            container.innerHTML = dailyStudents.map(student => {
+                const teamColor = teamInfo[student.team]?.color || '#666';
+                return `
+                    <div class="student-item">
+                        <div class="student-info">
+                            <div class="student-name">${student.name}</div>
+                            <span class="team-badge" style="color: ${teamColor}; border-color: ${teamColor};">
+                                ${student.team}
+                            </span>
+                        </div>
+                        <div class="coin-display">
+                            <button class="points-btn" onclick="addPointsToStudent('${student.id}')">
+                                <span class="points-value">${student.dailyPoints || 0}</span>
+                                <span class="coin-icon"></span>
+                            </button>
+                            <button class="remove-student" onclick="removeStudentFromDaily('${student.id}')">×</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function addPointsToStudent(studentId) {
+            const student = dailyStudents.find(s => s.id === studentId);
+            if (student) {
+                student.dailyPoints = (student.dailyPoints || 0) + 1;
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                renderDailyStudents();
+            }
+        }
+        
+        function removeStudentFromDaily(studentId) {
+            const index = dailyStudents.findIndex(s => s.id === studentId);
+            if (index !== -1) {
+                const student = dailyStudents[index];
+                dailyStudents.splice(index, 1);
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                renderDailyStudents();
+                showToast(`${student.name} removed from daily points`);
+            }
+        }
+        
+        function resetDailyTreasury() {
+            if (confirm('Are you sure you want to reset all daily points? This cannot be undone.')) {
+                dailyStudents.forEach(student => {
+                    student.dailyPoints = 0;
+                });
+                localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+                renderDailyStudents();
+                showToast('All daily points have been reset');
+            }
+        }
+        
+        function saveToConquest() {
+            if (dailyStudents.length === 0) {
+                showToast('No students to save');
+                return;
+            }
+            
+            // Update main student data with daily points
+            dailyStudents.forEach(dailyStudent => {
+                const mainStudent = allStudents.find(s => s.id === dailyStudent.id);
+                if (mainStudent) {
+                    mainStudent.points = (mainStudent.points || 0) + (dailyStudent.dailyPoints || 0);
+                }
+            });
+            
+            localStorage.setItem('students', JSON.stringify(allStudents));
+            showToast('Daily points saved to Conquest!');
+            
+            // Reset daily points after saving
+            dailyStudents = [];
+            localStorage.setItem('dailyStudents', JSON.stringify(dailyStudents));
+            renderDailyStudents();
+        }
+        
+        function showToast(message) {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
