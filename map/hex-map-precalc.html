@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayhaven Hex Map - Pre-Calculated Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <style>
+        /* Basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            overflow: hidden;
+        }
+
+        /* Map Container */
+        .map-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #0a0a0a;
+        }
+
+        /* Map Image */
+        .map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: 0 0;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* Hex Grid Overlay */
+        .hex-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            transform-origin: 0 0;
+        }
+
+        .hex {
+            position: absolute;
+            pointer-events: all;
+            cursor: pointer;
+        }
+
+        .hex polygon {
+            fill: transparent;
+            stroke: rgba(212, 175, 55, 0.2);
+            stroke-width: 0.5;
+        }
+
+        .hex:hover polygon {
+            fill: rgba(212, 175, 55, 0.1);
+            stroke: rgba(212, 175, 55, 0.6);
+            stroke-width: 1;
+        }
+
+        /* Simple Info */
+        .info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #8b6914;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="map-container" id="mapContainer">
+        <img class="map-image" id="mapImage" src="Rayhaven Final_2.jpg" alt="Rayhaven Map">
+        <svg class="hex-grid" id="hexGrid" width="2048" height="1167"></svg>
+    </div>
+
+    <div class="info">
+        <h3>Pre-Calculated Hex Map</h3>
+        <p>Hexes: <span id="hexCount">0</span></p>
+        <p>Status: <span id="status">Loading...</span></p>
+    </div>
+
+    <script>
+        // Pre-calculated hex data - Generated for a 2048x1167 map with hex size 15
+        // Format: [x, y, points] where points is the SVG polygon points string
+        const HEX_DATA = [
+            // First row of hexes (just a sample - in reality you'd have thousands)
+            [0, 0, "15,0 7.5,13 -7.5,13 -15,0 -7.5,-13 7.5,-13"],
+            [26, 0, "41,0 33.5,13 18.5,13 11,0 18.5,-13 33.5,-13"],
+            [52, 0, "67,0 59.5,13 44.5,13 37,0 44.5,-13 59.5,-13"],
+            [78, 0, "93,0 85.5,13 70.5,13 63,0 70.5,-13 85.5,-13"],
+            [104, 0, "119,0 111.5,13 96.5,13 89,0 96.5,-13 111.5,-13"],
+            [130, 0, "145,0 137.5,13 122.5,13 115,0 122.5,-13 137.5,-13"],
+            [156, 0, "171,0 163.5,13 148.5,13 141,0 148.5,-13 163.5,-13"],
+            [182, 0, "197,0 189.5,13 174.5,13 167,0 174.5,-13 189.5,-13"],
+            [208, 0, "223,0 215.5,13 200.5,13 193,0 200.5,-13 215.5,-13"],
+            [234, 0, "249,0 241.5,13 226.5,13 219,0 226.5,-13 241.5,-13"],
+            // Continue for all hexes...
+        ];
+
+        // Generate complete hex data (this would normally be pre-generated)
+        function generateHexData() {
+            const hexSize = 15;
+            const hexWidth = Math.sqrt(3) * hexSize;
+            const hexHeight = hexSize * 2;
+            const vertDist = hexHeight * 3/4;
+            const data = [];
+            
+            // Generate a reasonable grid
+            const cols = Math.ceil(2048 / hexWidth) + 2;
+            const rows = Math.ceil(1167 / vertDist) + 2;
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const offsetCol = row % 2 === 0 ? col : col + 0.5;
+                    const x = offsetCol * hexWidth;
+                    const y = row * vertDist;
+                    
+                    // Skip hexes outside bounds
+                    if (x < -hexWidth || x > 2048 + hexWidth || 
+                        y < -hexHeight || y > 1167 + hexHeight) {
+                        continue;
+                    }
+                    
+                    // Generate hex points
+                    const points = [];
+                    for (let i = 0; i < 6; i++) {
+                        const angle = (60 * i - 30) * Math.PI / 180;
+                        const px = x + hexSize * Math.cos(angle);
+                        const py = y + hexSize * Math.sin(angle);
+                        points.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+                    }
+                    
+                    data.push([x, y, points.join(' ')]);
+                }
+            }
+            
+            return data;
+        }
+
+        // Simple initialization
+        let mapImage = null;
+        let hexGrid = null;
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+
+        function init() {
+            mapImage = document.getElementById('mapImage');
+            hexGrid = document.getElementById('hexGrid');
+            
+            // Center the map initially
+            const mapContainer = document.getElementById('mapContainer');
+            const containerRect = mapContainer.getBoundingClientRect();
+            translateX = (containerRect.width - 2048) / 2;
+            translateY = (containerRect.height - 1167) / 2;
+            updateTransform();
+            
+            // Generate hex data
+            const hexData = generateHexData();
+            
+            // Create all hex elements
+            const fragment = document.createDocumentFragment();
+            
+            hexData.forEach((hex, index) => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.classList.add('hex');
+                g.setAttribute('data-index', index);
+                
+                const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                polygon.setAttribute('points', hex[2]);
+                
+                g.appendChild(polygon);
+                fragment.appendChild(g);
+            });
+            
+            hexGrid.appendChild(fragment);
+            
+            // Update status
+            document.getElementById('hexCount').textContent = hexData.length;
+            document.getElementById('status').textContent = 'Ready';
+            
+            // Simple pan functionality
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            
+            mapContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+            });
+            
+            mapContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                updateTransform();
+            });
+            
+            mapContainer.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            mapContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
+            });
+            
+            // Simple zoom
+            mapContainer.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                scale *= delta;
+                scale = Math.min(Math.max(scale, 0.5), 5);
+                updateTransform();
+            });
+        }
+
+        function updateTransform() {
+            const transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            mapImage.style.transform = transform;
+            hexGrid.style.transform = transform;
+        }
+
+        // Wait for image load
+        window.addEventListener('load', () => {
+            const img = document.getElementById('mapImage');
+            if (img.complete) {
+                init();
+            } else {
+                img.addEventListener('load', init);
+            }
+        });
+    </script>
+</body>
+</html>

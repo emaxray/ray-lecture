@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayhaven Hex Map - Red Blob Games Implementation</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #viewport {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        #map-container {
+            position: absolute;
+            width: 2048px;
+            height: 1167px;
+            transform-origin: 0 0;
+        }
+
+        #map-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        #hex-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .hex {
+            pointer-events: all;
+            cursor: pointer;
+            transition: fill 0.2s;
+        }
+
+        .hex:hover {
+            fill: rgba(212, 175, 55, 0.3);
+            stroke: rgba(212, 175, 55, 0.8);
+            stroke-width: 1.5;
+        }
+
+        .hex.selected {
+            fill: rgba(0, 255, 0, 0.3);
+        }
+        
+        .hex.occupied-jiggleboggle {
+            fill: rgba(0, 255, 0, 0.2);
+            stroke: rgba(0, 255, 0, 0.8);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.6));
+        }
+        
+        .hex.occupied-pinkie {
+            fill: rgba(255, 192, 203, 0.3) !important;
+            stroke: rgba(255, 105, 180, 0.9) !important;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.7)) !important;
+        }
+        
+        .hex.occupied-bomi {
+            fill: rgba(255, 255, 0, 0.3) !important;
+            stroke: rgba(255, 215, 0, 0.9) !important;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7)) !important;
+        }
+        
+        .hex.occupied-prettyeggplant {
+            fill: rgba(128, 0, 128, 0.3) !important;
+            stroke: rgba(148, 0, 211, 0.9) !important;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(148, 0, 211, 0.7)) !important;
+        }
+        
+        .hex.occupied-handsomejoon {
+            fill: rgba(255, 0, 0, 0.3) !important;
+            stroke: rgba(220, 20, 60, 0.9) !important;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(220, 20, 60, 0.7)) !important;
+        }
+        
+        .hex.occupied-geniusirene {
+            fill: rgba(135, 206, 235, 0.3) !important;
+            stroke: rgba(0, 191, 255, 0.9) !important;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.7)) !important;
+        }
+        
+        .hex.castle-preview {
+            fill: rgba(212, 175, 55, 0.2);
+            stroke: rgba(212, 175, 55, 0.5);
+        }
+        
+        .hex.land-jiggleboggle {
+            fill: rgba(0, 255, 0, 0.2);
+            stroke: rgba(0, 255, 0, 0.8);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.6));
+        }
+        
+        .hex.land-pinkie {
+            fill: rgba(255, 192, 203, 0.3);
+            stroke: rgba(255, 105, 180, 0.9);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.7));
+        }
+        
+        .hex.land-bomi {
+            fill: rgba(255, 255, 0, 0.3);
+            stroke: rgba(255, 215, 0, 0.9);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+        }
+        
+        .hex.land-prettyeggplant {
+            fill: rgba(128, 0, 128, 0.3);
+            stroke: rgba(148, 0, 211, 0.9);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(148, 0, 211, 0.7));
+        }
+        
+        .hex.land-handsomejoon {
+            fill: rgba(255, 0, 0, 0.3);
+            stroke: rgba(220, 20, 60, 0.9);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(220, 20, 60, 0.7));
+        }
+        
+        .hex.land-geniusirene {
+            fill: rgba(135, 206, 235, 0.3);
+            stroke: rgba(0, 191, 255, 0.9);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.7));
+        }
+        
+        .land-mode .hex:hover {
+            fill: rgba(255, 255, 0, 0.3);
+            stroke: rgba(255, 255, 0, 0.8);
+        }
+        
+        .hex-edge {
+            stroke: transparent;
+            stroke-width: 8;
+            fill: none;
+            pointer-events: stroke;
+            cursor: pointer;
+        }
+        
+        .wall-mode .hex-edge:hover {
+            stroke: rgba(101, 87, 71, 0.5);
+        }
+        
+        .hex-edge.has-wall {
+            stroke: transparent;
+            stroke-width: 8;
+        }
+        
+        .wall-image {
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        #controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #d4af37;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        button {
+            background: #d4af37;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            background: #f4e4bc;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            margin: 0 5px;
+        }
+
+        label {
+            color: #d4af37;
+            font-size: 14px;
+        }
+
+        .hide-borders .hex {
+            stroke: transparent;
+        }
+
+        .hide-borders .hex:hover {
+            stroke: rgba(212, 175, 55, 0.8);
+        }
+        
+        .castle {
+            position: absolute;
+            z-index: 10;
+            pointer-events: all;
+            cursor: pointer;
+        }
+        
+        .castle:hover {
+            filter: brightness(1.2);
+        }
+        
+        .castle-mode .hex:hover {
+            fill: rgba(255, 100, 100, 0.3);
+            stroke: rgba(255, 100, 100, 0.8);
+        }
+        
+        #castleToggle {
+            background: #d4af37;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        #castleToggle.active, #landToggle.active, #wallToggle.active {
+            background: #8b7023;
+            color: white;
+        }
+
+        .castle-mode .hex:hover {
+            fill: rgba(255, 0, 0, 0.3);
+            stroke: rgba(255, 0, 0, 0.8);
+        }
+
+        button.active {
+            background: #8b6914;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="viewport">
+        <div id="map-container">
+            <img id="map-image" src="Rayhaven Final_2.jpg" alt="Map">
+            <svg id="hex-overlay"></svg>
+        </div>
+    </div>
+
+    <div id="controls">
+        <h3 style="margin: 0 0 10px; color: #f4e4bc;">Red Blob Games Hex Grid</h3>
+        
+        <div>
+            <label><input type="radio" name="orientation" value="pointy" checked onchange="updateOrientation()"> Pointy-top</label>
+            <label><input type="radio" name="orientation" value="flat" onchange="updateOrientation()"> Flat-top</label>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetView()">Reset</button>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label>Hex Size: <input type="number" id="hexSize" value="25.5" step="0.1" onchange="generateGrid()"></label><br>
+            <label>Origin X: <input type="number" id="originX" value="64" step="1" onchange="generateGrid()"></label><br>
+            <label>Origin Y: <input type="number" id="originY" value="85" step="1" onchange="generateGrid()"></label>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label>Map Width: <input type="number" id="mapWidth" value="44" min="1" max="100" onchange="generateGrid()"></label><br>
+            <label>Map Height: <input type="number" id="mapHeight" value="27" min="1" max="100" onchange="generateGrid()"></label>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><input type="checkbox" id="showBorders" checked onchange="toggleBorders()"> Show Borders</label><br>
+            <label><input type="checkbox" id="showCoords" onchange="generateGrid()"> Show Coords</label>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <button id="castleToggle" onclick="toggleCastleMode()">Castle Mode</button>
+            <button id="landToggle" onclick="toggleLandMode()">Land Mode</button>
+            <button id="wallToggle" onclick="toggleWallMode()">Wall Mode</button>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <button onclick="saveMapData()">💾 Save Map</button>
+            <button onclick="loadMapData()">📂 Load Map</button>
+            <button onclick="clearMapData()">🗑️ Clear All</button>
+        </div>
+        
+        <div id="landControls" style="margin-top: 10px; display: none;">
+            <label>Assign to Team: 
+                <select id="teamSelect">
+                    <option value="jiggleboggle">Jiggleboggle (Green)</option>
+                    <option value="pinkie">Pinkie (Pink)</option>
+                    <option value="bomi">Bomi (Yellow)</option>
+                    <option value="prettyeggplant">Pretty Eggplant (Purple)</option>
+                    <option value="handsomejoon">Handsome Joon (Red)</option>
+                    <option value="geniusirene">Genius Irene (Sky Blue)</option>
+                    <option value="none">Remove Assignment</option>
+                </select>
+            </label>
+        </div>
+        
+        <div id="status" style="margin-top: 10px; font-size: 12px;">Ready</div>
+    </div>
+
+    <script>
+        // Red Blob Games hex implementation
+        // Using Axial coordinates (q, r) with cube constraint q + r + s = 0
+        
+        let selectedHexes = new Set();
+        let layout = null;
+        let scale = 1;
+        let posX = 0;
+        let posY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let castleMode = false;
+        let landMode = false;
+        let wallMode = false;
+        let castles = new Map(); // Store castles by center hex coordinates
+        let occupiedHexes = new Set(); // Track all hexes occupied by castles
+        let landAssignments = new Map(); // Track land ownership by hex
+        let walls = new Set(); // Track walls by edge key (e.g., "q,r,side")
+
+        const viewport = document.getElementById('viewport');
+        const container = document.getElementById('map-container');
+        const status = document.getElementById('status');
+
+        // Hex class using axial coordinates
+        class Hex {
+            constructor(q, r) {
+                this.q = q;
+                this.r = r;
+                this.s = -q - r; // Constraint: q + r + s = 0
+            }
+            
+            equals(other) {
+                return this.q === other.q && this.r === other.r;
+            }
+            
+            toString() {
+                return `Hex(${this.q}, ${this.r})`;
+            }
+        }
+        
+        // Layout configuration
+        class Layout {
+            constructor(orientation, size, origin) {
+                this.orientation = orientation;
+                this.size = size;
+                this.origin = origin;
+            }
+        }
+        
+        // Orientation matrices for pointy-top and flat-top
+        const Orientation = {
+            pointy: {
+                f0: Math.sqrt(3.0), f1: Math.sqrt(3.0) / 2.0, f2: 0.0, f3: 3.0 / 2.0,
+                b0: Math.sqrt(3.0) / 3.0, b1: -1.0 / 3.0, b2: 0.0, b3: 2.0 / 3.0,
+                start_angle: 0.5 // 30 degrees
+            },
+            flat: {
+                f0: 3.0 / 2.0, f1: 0.0, f2: Math.sqrt(3.0) / 2.0, f3: Math.sqrt(3.0),
+                b0: 2.0 / 3.0, b1: 0.0, b2: -1.0 / 3.0, b3: Math.sqrt(3.0) / 3.0,
+                start_angle: 0.0
+            }
+        };
+        
+        // Convert hex to pixel
+        function hexToPixel(hex) {
+            const M = layout.orientation;
+            const size = layout.size;
+            const origin = layout.origin;
+            const x = (M.f0 * hex.q + M.f1 * hex.r) * size;
+            const y = (M.f2 * hex.q + M.f3 * hex.r) * size;
+            return { x: x + origin.x, y: y + origin.y };
+        }
+        
+        // Get corner offset for drawing hexagon
+        function hexCornerOffset(corner) {
+            const M = layout.orientation;
+            const size = layout.size;
+            const angle = 2.0 * Math.PI * (M.start_angle + corner) / 6;
+            return { x: size * Math.cos(angle), y: size * Math.sin(angle) };
+        }
+        
+        // Get polygon points for a hex
+        function polygonCorners(hex) {
+            const corners = [];
+            const center = hexToPixel(hex);
+            for (let i = 0; i < 6; i++) {
+                const offset = hexCornerOffset(i);
+                corners.push({ x: center.x + offset.x, y: center.y + offset.y });
+            }
+            return corners;
+        }
+        
+        // Update orientation
+        function updateOrientation() {
+            const orientation = document.querySelector('input[name="orientation"]:checked').value;
+            updateLayout(orientation);
+            generateGrid();
+        }
+        
+        // Update layout configuration
+        function updateLayout(orientation = 'pointy') {
+            const size = parseFloat(document.getElementById('hexSize').value);
+            const originX = parseFloat(document.getElementById('originX').value);
+            const originY = parseFloat(document.getElementById('originY').value);
+            
+            layout = new Layout(
+                Orientation[orientation],
+                size,
+                { x: originX, y: originY }
+            );
+        }
+        
+        // Generate hex grid
+        function generateGrid() {
+            updateLayout();
+            
+            const svg = document.getElementById('hex-overlay');
+            const mapWidth = parseInt(document.getElementById('mapWidth').value);
+            const mapHeight = parseInt(document.getElementById('mapHeight').value);
+            const showCoords = document.getElementById('showCoords').checked;
+            
+            // Clear existing
+            svg.innerHTML = '';
+            selectedHexes.clear();
+            
+            // Set SVG dimensions to match map
+            svg.style.width = '2048px';
+            svg.style.height = '1167px';
+            svg.setAttribute('viewBox', '0 0 2048 1167');
+            
+            // Generate hexagons using offset coordinates
+            // For pointy-top, use odd-r offset
+            const orientation = document.querySelector('input[name="orientation"]:checked').value;
+            
+            for (let row = 0; row < mapHeight; row++) {
+                for (let col = 0; col < mapWidth; col++) {
+                    let hex;
+                    
+                    if (orientation === 'pointy') {
+                        // odd-r offset to axial
+                        const q = col - (row - (row & 1)) / 2;
+                        const r = row;
+                        hex = new Hex(q, r);
+                    } else {
+                        // odd-q offset to axial
+                        const q = col;
+                        const r = row - (col - (col & 1)) / 2;
+                        hex = new Hex(q, r);
+                    }
+                    
+                    const corners = polygonCorners(hex);
+                    const center = hexToPixel(hex);
+                    
+                    // Skip hexes outside map bounds
+                    if (center.x < -50 || center.x > 2098 || center.y < -50 || center.y > 1217) {
+                        continue;
+                    }
+                    
+                    const points = corners.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
+                    
+                    const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                    polygon.setAttribute('points', points);
+                    polygon.setAttribute('fill', 'transparent');
+                    polygon.setAttribute('stroke', 'black');
+                    polygon.setAttribute('stroke-width', '0.4');
+                    polygon.setAttribute('vector-effect', 'non-scaling-stroke');
+                    polygon.setAttribute('class', 'hex');
+                    polygon.setAttribute('data-q', hex.q);
+                    polygon.setAttribute('data-r', hex.r);
+                    polygon.setAttribute('data-row', row);
+                    polygon.setAttribute('data-col', col);
+                    
+                    // Add hover preview for castle placement
+                    polygon.addEventListener('mouseenter', function() {
+                        if (castleMode && canPlaceCastle(hex)) {
+                            highlightCastleArea(hex, true);
+                        }
+                    });
+                    
+                    polygon.addEventListener('mouseleave', function() {
+                        if (castleMode) {
+                            highlightCastleArea(hex, false);
+                        }
+                    });
+                    
+                    polygon.addEventListener('click', function() {
+                        const hexKey = `${hex.q},${hex.r}`;
+                        
+                        if (castleMode) {
+                            // In castle mode, check if this hex is part of any castle
+                            let castleToRemove = null;
+                            
+                            // Check if this hex is a center of a castle
+                            if (castles.has(hexKey)) {
+                                castleToRemove = hexKey;
+                            } else {
+                                // Check if this hex is occupied by any castle
+                                for (const [centerKey, castleData] of castles) {
+                                    if (castleData.hexes.some(h => h.q === hex.q && h.r === hex.r)) {
+                                        castleToRemove = centerKey;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (castleToRemove) {
+                                removeCastle(castleToRemove);
+                            } else {
+                                placeCastle(hex, hexKey);
+                            }
+                        } else if (landMode) {
+                            // Land assignment mode
+                            const selectedTeam = document.getElementById('teamSelect').value;
+                            
+                            if (selectedTeam === 'none') {
+                                // Remove land assignment
+                                landAssignments.delete(hexKey);
+                                this.classList.remove('land-jiggleboggle', 'land-pinkie', 
+                                    'land-bomi', 'land-prettyeggplant', 'land-handsomejoon', 'land-geniusirene');
+                                status.textContent = `Land assignment removed from hex ${hexKey}`;
+                            } else {
+                                // Assign land to team
+                                landAssignments.set(hexKey, selectedTeam);
+                                this.classList.remove('land-jiggleboggle', 'land-pinkie', 
+                                    'land-bomi', 'land-prettyeggplant', 'land-handsomejoon', 'land-geniusirene');
+                                this.classList.add(`land-${selectedTeam}`);
+                                status.textContent = `Hex ${hexKey} assigned to ${selectedTeam}`;
+                            }
+                        } else {
+                            // Normal selection mode
+                            if (selectedHexes.has(hexKey)) {
+                                selectedHexes.delete(hexKey);
+                                this.classList.remove('selected');
+                            } else {
+                                selectedHexes.add(hexKey);
+                                this.classList.add('selected');
+                            }
+                        }
+                    });
+                    
+                    svg.appendChild(polygon);
+                    
+                    // Add edge lines for wall placement
+                    for (let side = 0; side < 6; side++) {
+                        const edge = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        const p1 = corners[side];
+                        const p2 = corners[(side + 1) % 6];
+                        
+                        edge.setAttribute('x1', p1.x.toFixed(2));
+                        edge.setAttribute('y1', p1.y.toFixed(2));
+                        edge.setAttribute('x2', p2.x.toFixed(2));
+                        edge.setAttribute('y2', p2.y.toFixed(2));
+                        edge.setAttribute('class', 'hex-edge');
+                        edge.setAttribute('data-q', hex.q);
+                        edge.setAttribute('data-r', hex.r);
+                        edge.setAttribute('data-side', side);
+                        
+                        const edgeKey = `${hex.q},${hex.r},${side}`;
+                        edge.setAttribute('data-edge-key', edgeKey);
+                        
+                        // Check if this edge has a wall
+                        if (walls.has(edgeKey)) {
+                            edge.classList.add('has-wall');
+                        }
+                        
+                        edge.addEventListener('click', function(e) {
+                            if (wallMode) {
+                                e.stopPropagation();
+                                toggleWall(edgeKey, this);
+                            }
+                        });
+                        
+                        svg.appendChild(edge);
+                    }
+                    
+                    // Add coordinate text if enabled
+                    if (showCoords) {
+                        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        text.setAttribute('x', center.x);
+                        text.setAttribute('y', center.y + 3);
+                        text.setAttribute('text-anchor', 'middle');
+                        text.setAttribute('font-size', '8');
+                        text.setAttribute('fill', 'white');
+                        text.setAttribute('stroke', 'black');
+                        text.setAttribute('stroke-width', '0.5');
+                        text.setAttribute('pointer-events', 'none');
+                        text.textContent = `${hex.q},${hex.r}`;
+                        svg.appendChild(text);
+                    }
+                }
+            }
+            
+            status.textContent = `Generated ${mapHeight}×${mapWidth} hex grid using Red Blob Games algorithm`;
+            
+            // Restore land assignments
+            landAssignments.forEach((team, hexKey) => {
+                const [q, r] = hexKey.split(',');
+                const hexElement = document.querySelector(`[data-q="${q}"][data-r="${r}"]`);
+                if (hexElement) {
+                    hexElement.classList.add(`land-${team}`);
+                }
+            });
+            
+            // Restore walls with images
+            walls.forEach(edgeKey => {
+                const edgeElement = document.querySelector(`[data-edge-key="${edgeKey}"]`);
+                
+                if (edgeElement) {
+                    edgeElement.classList.add('has-wall');
+                    
+                    // Calculate wall position and angle
+                    const x1 = parseFloat(edgeElement.getAttribute('x1'));
+                    const y1 = parseFloat(edgeElement.getAttribute('y1'));
+                    const x2 = parseFloat(edgeElement.getAttribute('x2'));
+                    const y2 = parseFloat(edgeElement.getAttribute('y2'));
+                    
+                    const centerX = (x1 + x2) / 2;
+                    const centerY = (y1 + y2) / 2;
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    // Create wall image
+                    const wallImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+                    wallImage.setAttribute('id', `wall-img-${edgeKey.replace(/,/g, '-')}`);
+                    wallImage.setAttribute('href', 'castle-wall.png');
+                    
+                    // Make wall image larger to fully cover the edge
+                    const wallHeight = 20; // Increased height
+                    const wallLength = length + 4; // Slightly longer than edge
+                    
+                    wallImage.setAttribute('x', centerX - wallLength / 2);
+                    wallImage.setAttribute('y', centerY - wallHeight / 2);
+                    wallImage.setAttribute('width', wallLength);
+                    wallImage.setAttribute('height', wallHeight);
+                    wallImage.setAttribute('transform', `rotate(${angle} ${centerX} ${centerY})`);
+                    wallImage.setAttribute('class', 'wall-image');
+                    wallImage.setAttribute('preserveAspectRatio', 'none'); // Stretch to fit
+                    
+                    edgeElement.parentNode.insertBefore(wallImage, edgeElement.nextSibling);
+                }
+            });
+            
+            // Restore castles after regenerating grid
+            restoreCastles();
+        }
+        
+        // Pan and zoom controls
+        viewport.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartX = e.clientX - posX;
+            dragStartY = e.clientY - posY;
+            viewport.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            posX = e.clientX - dragStartX;
+            posY = e.clientY - dragStartY;
+            updateTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            viewport.style.cursor = 'grab';
+        });
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            
+            const rect = viewport.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            const newScale = Math.max(0.1, Math.min(5, scale * delta));
+            
+            posX = mouseX - (mouseX - posX) * (newScale / scale);
+            posY = mouseY - (mouseY - posY) * (newScale / scale);
+            
+            scale = newScale;
+            updateTransform();
+        });
+
+        function updateTransform() {
+            container.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+        }
+
+        function zoomIn() {
+            scale = Math.min(5, scale * 1.2);
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale = Math.max(0.1, scale * 0.8);
+            updateTransform();
+        }
+
+        function resetView() {
+            scale = 1;
+            const viewportRect = viewport.getBoundingClientRect();
+            posX = (viewportRect.width - 2048) / 2;
+            posY = (viewportRect.height - 1167) / 2;
+            updateTransform();
+        }
+        
+        function toggleBorders() {
+            const svg = document.getElementById('hex-overlay');
+            const showBorders = document.getElementById('showBorders').checked;
+            if (showBorders) {
+                svg.classList.remove('hide-borders');
+            } else {
+                svg.classList.add('hide-borders');
+            }
+        }
+        
+        // Get the 6 neighbors of a hex
+        function getHexNeighbors(hex) {
+            const directions = [
+                new Hex(1, 0), new Hex(1, -1), new Hex(0, -1),
+                new Hex(-1, 0), new Hex(-1, 1), new Hex(0, 1)
+            ];
+            return directions.map(dir => new Hex(hex.q + dir.q, hex.r + dir.r));
+        }
+        
+        // Check if a hex position would allow placing a 7-hex castle
+        function canPlaceCastle(centerHex) {
+            // Check center hex
+            if (occupiedHexes.has(`${centerHex.q},${centerHex.r}`)) return false;
+            
+            // Check all 6 neighbors
+            const neighbors = getHexNeighbors(centerHex);
+            for (const neighbor of neighbors) {
+                if (occupiedHexes.has(`${neighbor.q},${neighbor.r}`)) return false;
+            }
+            
+            return true;
+        }
+        
+        // Get all 7 hexes for a castle placement
+        function getCastleHexes(centerHex) {
+            const hexes = [centerHex];
+            hexes.push(...getHexNeighbors(centerHex));
+            return hexes;
+        }
+        
+        // Highlight hexes that would be occupied by a castle
+        function highlightCastleArea(centerHex, highlight = true) {
+            const hexes = getCastleHexes(centerHex);
+            hexes.forEach(hex => {
+                const element = document.querySelector(`[data-q="${hex.q}"][data-r="${hex.r}"]`);
+                if (element) {
+                    if (highlight) {
+                        element.classList.add('castle-preview');
+                    } else {
+                        element.classList.remove('castle-preview');
+                    }
+                }
+            });
+        }
+        
+        // Castle placement functions
+        function toggleCastleMode() {
+            // Disable other modes if active
+            if (landMode) toggleLandMode();
+            if (wallMode) toggleWallMode();
+            
+            castleMode = !castleMode;
+            const button = document.getElementById('castleToggle');
+            const svg = document.getElementById('hex-overlay');
+            
+            if (castleMode) {
+                button.classList.add('active');
+                svg.classList.add('castle-mode');
+                status.textContent = 'Castle placement mode active - castles occupy 7 hexes (1 center + 6 neighbors)';
+            } else {
+                button.classList.remove('active');
+                svg.classList.remove('castle-mode');
+                status.textContent = 'Castle placement mode deactivated';
+            }
+        }
+        
+        // Land assignment functions
+        function toggleLandMode() {
+            // Disable other modes if active
+            if (castleMode) toggleCastleMode();
+            if (wallMode) toggleWallMode();
+            
+            landMode = !landMode;
+            const button = document.getElementById('landToggle');
+            const svg = document.getElementById('hex-overlay');
+            const landControls = document.getElementById('landControls');
+            
+            if (landMode) {
+                button.classList.add('active');
+                svg.classList.add('land-mode');
+                landControls.style.display = 'block';
+                status.textContent = 'Land assignment mode active - click hexes to assign to selected team';
+            } else {
+                button.classList.remove('active');
+                svg.classList.remove('land-mode');
+                landControls.style.display = 'none';
+                status.textContent = 'Land assignment mode deactivated';
+            }
+        }
+        
+        // Wall building functions
+        function toggleWallMode() {
+            // Disable other modes if active
+            if (castleMode) toggleCastleMode();
+            if (landMode) toggleLandMode();
+            
+            wallMode = !wallMode;
+            const button = document.getElementById('wallToggle');
+            const svg = document.getElementById('hex-overlay');
+            
+            if (wallMode) {
+                button.classList.add('active');
+                svg.classList.add('wall-mode');
+                status.textContent = 'Wall building mode active - click hex edges to build/remove walls';
+            } else {
+                button.classList.remove('active');
+                svg.classList.remove('wall-mode');
+                status.textContent = 'Wall building mode deactivated';
+            }
+        }
+        
+        function toggleWall(edgeKey, edgeElement) {
+            const [q, r, side] = edgeKey.split(',');
+            
+            if (walls.has(edgeKey)) {
+                // Remove wall
+                walls.delete(edgeKey);
+                edgeElement.classList.remove('has-wall');
+                
+                // Remove wall image if exists
+                const wallImage = document.getElementById(`wall-img-${edgeKey.replace(/,/g, '-')}`);
+                if (wallImage) {
+                    wallImage.remove();
+                }
+                
+                status.textContent = `Wall removed from edge ${edgeKey}`;
+            } else {
+                // Add wall
+                walls.add(edgeKey);
+                edgeElement.classList.add('has-wall');
+                
+                // Calculate wall position and angle
+                const x1 = parseFloat(edgeElement.getAttribute('x1'));
+                const y1 = parseFloat(edgeElement.getAttribute('y1'));
+                const x2 = parseFloat(edgeElement.getAttribute('x2'));
+                const y2 = parseFloat(edgeElement.getAttribute('y2'));
+                
+                const centerX = (x1 + x2) / 2;
+                const centerY = (y1 + y2) / 2;
+                const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                
+                // Create wall image
+                const wallImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+                wallImage.setAttribute('id', `wall-img-${edgeKey.replace(/,/g, '-')}`);
+                wallImage.setAttribute('href', 'castle-wall.png');
+                
+                // Make wall image larger to fully cover the edge
+                const wallHeight = 20; // Increased height
+                const wallLength = length + 4; // Slightly longer than edge
+                
+                wallImage.setAttribute('x', centerX - wallLength / 2);
+                wallImage.setAttribute('y', centerY - wallHeight / 2);
+                wallImage.setAttribute('width', wallLength);
+                wallImage.setAttribute('height', wallHeight);
+                wallImage.setAttribute('transform', `rotate(${angle} ${centerX} ${centerY})`);
+                wallImage.setAttribute('class', 'wall-image');
+                wallImage.setAttribute('preserveAspectRatio', 'none'); // Stretch to fit
+                
+                // Insert wall image after the edge
+                edgeElement.parentNode.insertBefore(wallImage, edgeElement.nextSibling);
+                
+                status.textContent = `Wall built on edge ${edgeKey}`;
+            }
+        }
+        
+        function placeCastle(hex, hexKey, team = 'jiggleboggle') {
+            if (!canPlaceCastle(hex)) {
+                status.textContent = `Cannot place castle - area is occupied`;
+                return;
+            }
+            
+            const center = hexToPixel(hex);
+            const castle = document.createElement('img');
+            
+            // Set castle image based on team
+            switch(team) {
+                case 'pinkie':
+                    castle.src = 'pinkie-castle.png';
+                    break;
+                case 'jiggleboggle':
+                    castle.src = 'jiggleboggle-castle.png';
+                    break;
+                case 'bomi':
+                    castle.src = 'bomi-castle.png';
+                    break;
+                case 'prettyeggplant':
+                    castle.src = 'prettyeggplant-castle.png';
+                    break;
+                case 'handsomejoon':
+                    castle.src = 'handsomejoon-castle.png';
+                    break;
+                case 'geniusirene':
+                    castle.src = 'geniusirene-castle.png';
+                    break;
+                default:
+                    castle.src = 'jiggleboggle-castle.png';
+            }
+            
+            castle.className = 'castle';
+            
+            // Calculate size - width constrained to 2 hex tiles
+            let castleWidth = layout.size * 2 * Math.sqrt(3); // Width of 2 hex tiles
+            
+            // Make all castles except Jiggleboggle 20% smaller
+            if (team !== 'jiggleboggle') {
+                castleWidth = castleWidth * 0.8;
+            }
+            
+            castle.style.width = castleWidth + 'px';
+            // Let height auto-adjust to maintain aspect ratio - will be taller
+            castle.style.height = 'auto';
+            castle.style.maxHeight = 'none'; // No height restriction
+            castle.style.left = center.x + 'px';
+            castle.style.top = center.y + 'px';
+            castle.style.transform = 'translate(-50%, -70%)';
+            castle.setAttribute('data-hex-key', hexKey);
+            castle.setAttribute('data-team', team);
+            
+            // Add click handler to remove castle
+            castle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (castleMode) {
+                    removeCastle(hexKey);
+                }
+            });
+            
+            // Mark all 7 hexes as occupied with appropriate style
+            const castleHexes = getCastleHexes(hex);
+            castleHexes.forEach(h => {
+                occupiedHexes.add(`${h.q},${h.r}`);
+                // Mark hex visually as occupied
+                const hexElement = document.querySelector(`[data-q="${h.q}"][data-r="${h.r}"]`);
+                if (hexElement) {
+                    hexElement.classList.add('occupied');
+                    hexElement.classList.add(`occupied-${team}`);
+                }
+            });
+            
+            container.appendChild(castle);
+            castles.set(hexKey, { hex: hex, element: castle, hexes: castleHexes, team: team });
+            status.textContent = `Castle placed at hex ${hexKey} (occupying 7 hexes)`;
+        }
+        
+        function removeCastle(hexKey) {
+            const castleData = castles.get(hexKey);
+            if (castleData) {
+                // Clear all occupied hexes
+                castleData.hexes.forEach(h => {
+                    occupiedHexes.delete(`${h.q},${h.r}`);
+                    // Remove occupied visual marker
+                    const hexElement = document.querySelector(`[data-q="${h.q}"][data-r="${h.r}"]`);
+                    if (hexElement) {
+                        hexElement.classList.remove('occupied');
+                        hexElement.classList.remove('occupied-jiggleboggle', 'occupied-pinkie', 
+                            'occupied-bomi', 'occupied-prettyeggplant', 'occupied-handsomejoon', 'occupied-geniusirene');
+                    }
+                });
+                
+                castleData.element.remove();
+                castles.delete(hexKey);
+                status.textContent = `Castle removed from hex ${hexKey} (freed 7 hexes)`;
+            }
+        }
+        
+        function restoreCastles() {
+            // Re-create all castle elements after grid regeneration
+            const existingCastles = new Map(castles);
+            
+            // Remove old castle elements and clear occupied hexes
+            document.querySelectorAll('.castle').forEach(el => el.remove());
+            castles.clear();
+            occupiedHexes.clear();
+            
+            // Re-place all castles
+            existingCastles.forEach((castleData, hexKey) => {
+                placeCastle(castleData.hex, hexKey);
+            });
+        }
+        
+        // Save/Load functions
+        function saveMapData() {
+            const mapData = {
+                castles: Array.from(castles.entries()).map(([key, data]) => ({
+                    key: key,
+                    hex: { q: data.hex.q, r: data.hex.r },
+                    team: data.team
+                })),
+                landAssignments: Array.from(landAssignments.entries()),
+                walls: Array.from(walls),
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('rayhavenMapData', JSON.stringify(mapData));
+            status.textContent = `Map saved successfully at ${new Date().toLocaleTimeString()}`;
+        }
+        
+        function loadMapData() {
+            const savedData = localStorage.getItem('rayhavenMapData');
+            if (!savedData) {
+                status.textContent = 'No saved map data found';
+                return;
+            }
+            
+            try {
+                const mapData = JSON.parse(savedData);
+                
+                // Clear current data
+                clearMapDataWithoutConfirm();
+                
+                // Restore land assignments
+                mapData.landAssignments.forEach(([hexKey, team]) => {
+                    landAssignments.set(hexKey, team);
+                });
+                
+                // Restore walls
+                mapData.walls.forEach(edgeKey => {
+                    walls.add(edgeKey);
+                });
+                
+                // Regenerate grid to apply visual changes
+                generateGrid();
+                
+                // Restore castles after grid is ready
+                setTimeout(() => {
+                    mapData.castles.forEach(castleData => {
+                        const hex = new Hex(castleData.hex.q, castleData.hex.r);
+                        placeCastle(hex, castleData.key, castleData.team);
+                    });
+                    
+                    status.textContent = `Map loaded successfully (saved ${new Date(mapData.timestamp).toLocaleString()})`;
+                }, 100);
+                
+            } catch (error) {
+                status.textContent = 'Error loading map data';
+                console.error('Load error:', error);
+            }
+        }
+        
+        function clearMapData() {
+            if (confirm('Are you sure you want to clear all map data? This cannot be undone.')) {
+                clearMapDataWithoutConfirm();
+                generateGrid();
+                status.textContent = 'All map data cleared';
+            }
+        }
+        
+        function clearMapDataWithoutConfirm() {
+            // Clear all castles
+            castles.forEach((data, key) => {
+                data.element.remove();
+            });
+            castles.clear();
+            occupiedHexes.clear();
+            
+            // Clear all land assignments
+            landAssignments.clear();
+            
+            // Clear all walls
+            walls.clear();
+            
+            // Clear visual elements
+            document.querySelectorAll('.castle').forEach(el => el.remove());
+            document.querySelectorAll('.occupied').forEach(el => {
+                el.classList.remove('occupied', 'occupied-jiggleboggle', 'occupied-pinkie', 
+                    'occupied-bomi', 'occupied-prettyeggplant', 'occupied-handsomejoon', 'occupied-geniusirene');
+            });
+            document.querySelectorAll('[class*="land-"]').forEach(el => {
+                el.classList.remove('land-jiggleboggle', 'land-pinkie', 
+                    'land-bomi', 'land-prettyeggplant', 'land-handsomejoon', 'land-geniusirene');
+            });
+            document.querySelectorAll('.has-wall').forEach(el => {
+                el.classList.remove('has-wall');
+            });
+            document.querySelectorAll('.wall-image').forEach(el => el.remove());
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            updateOrientation();
+            resetView();
+            
+            // Check for saved data
+            const savedData = localStorage.getItem('rayhavenMapData');
+            if (savedData) {
+                // Ask user if they want to load saved data
+                setTimeout(() => {
+                    if (confirm('Found saved map data. Would you like to load it?')) {
+                        loadMapData();
+                    } else {
+                        // Place default castles
+                        placeDefaultCastles();
+                    }
+                }, 500);
+            } else {
+                // Place default castles
+                setTimeout(placeDefaultCastles, 500);
+            }
+        });
+        
+        function placeDefaultCastles() {
+            // Jiggleboggle castle at (2,11)
+            const jiggleboggleHex = new Hex(2, 11);
+            placeCastle(jiggleboggleHex, '2,11', 'jiggleboggle');
+            
+            // Pinkie castle at (27,12)
+            const pinkieHex = new Hex(27, 12);
+            placeCastle(pinkieHex, '27,12', 'pinkie');
+            
+            // Handsome Joon castle at (14,21)
+            const joonHex = new Hex(14, 21);
+            placeCastle(joonHex, '14,21', 'handsomejoon');
+            
+            // Bomi castle at (0,21)
+            const bomiHex = new Hex(0, 21);
+            placeCastle(bomiHex, '0,21', 'bomi');
+            
+            // Pretty Eggplant castle at (23,19)
+            const eggplantHex = new Hex(23, 19);
+            placeCastle(eggplantHex, '23,19', 'prettyeggplant');
+            
+            // Genius Irene castle at (31,5)
+            const ireneHex = new Hex(31, 5);
+            placeCastle(ireneHex, '31,5', 'geniusirene');
+        }
+    </script>
+</body>
+</html>

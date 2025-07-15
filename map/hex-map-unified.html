@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayhaven Hex Map - Unified Grid</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #viewport {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #map-container {
+            position: absolute;
+            width: 2048px;
+            height: 1167px;
+            transform-origin: 0 0;
+        }
+
+        #map-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        #hex-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #hex-grid svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .hex-path {
+            fill: transparent;
+            stroke: rgba(212, 175, 55, 0.3);
+            stroke-width: 0.4;
+            vector-effect: non-scaling-stroke;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.2s;
+        }
+
+        .hex-path:hover {
+            fill: rgba(212, 175, 55, 0.1);
+            stroke: rgba(212, 175, 55, 0.6);
+            stroke-width: 1;
+        }
+
+        #controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #d4af37;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        button {
+            background: #d4af37;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            background: #f4e4bc;
+        }
+        
+        /* Hide borders when toggled off */
+        .hide-borders .hex-path {
+            stroke: transparent;
+        }
+        
+        .hide-borders .hex-path:hover {
+            stroke: rgba(212, 175, 55, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="viewport">
+        <div id="map-container">
+            <img id="map-image" src="Rayhaven Final_2.jpg" alt="Map">
+            <div id="hex-grid">
+                <svg id="hex-svg"></svg>
+            </div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <h3>Unified Hex Grid</h3>
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+        <button onclick="resetView()">Reset</button>
+        <div style="margin-top: 10px;">
+            <label>Hex Offset X: <input type="number" id="offsetX" value="22.5" step="0.5" onchange="updateHexGrid()" style="width: 60px;"></label><br>
+            <label>Hex Offset Y: <input type="number" id="offsetY" value="20" step="0.5" onchange="updateHexGrid()" style="width: 60px;"></label><br>
+            <label>Hex Size Scale: <input type="number" id="hexScale" value="1.0" step="0.001" min="0.9" max="1.1" onchange="updateHexGrid()" style="width: 60px;"></label><br>
+            <label>Hex Rotation: <input type="number" id="hexRotation" value="0" step="0.1" min="-5" max="5" onchange="updateHexGrid()" style="width: 60px;"> °</label><br>
+            <label>Show Borders: <input type="checkbox" id="showBorders" checked onchange="toggleBorders()"></label>
+        </div>
+        <div id="status">Ready</div>
+    </div>
+
+    <script>
+        // Simple variables
+        let scale = 1;
+        let posX = 0;
+        let posY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+
+        const viewport = document.getElementById('viewport');
+        const container = document.getElementById('map-container');
+        const hexGrid = document.getElementById('hex-grid');
+        const hexSvg = document.getElementById('hex-svg');
+        const status = document.getElementById('status');
+
+        // Create unified hex grid as single SVG
+        function createUnifiedHexGrid() {
+            // Get scale adjustment
+            const hexScale = parseFloat(document.getElementById('hexScale').value) || 1.0;
+            const hexRotation = parseFloat(document.getElementById('hexRotation').value) || 0;
+            
+            // Exact scaled dimensions from original 51 side length
+            const baseSideLength = 51 / 2;  // Base: 25.5
+            const sideLength = baseSideLength * hexScale;
+            const sqrt3 = 1.7320508075688772;  // Exact Math.sqrt(3)
+            const hexWidth = sideLength * sqrt3;
+            const hexHeight = sideLength * 2;
+            
+            // Exact spacing calculations
+            const horizDist = hexWidth;
+            const vertDist = sideLength * 3 / 2;
+            
+            const startX = parseFloat(document.getElementById('offsetX').value) || 22.5;
+            const startY = parseFloat(document.getElementById('offsetY').value) || 20;
+            const rows = 40;
+            const cols = 55;
+
+            // Clear previous grid
+            hexSvg.innerHTML = '';
+            
+            // Create single SVG with all hexes
+            let svgContent = '';
+            
+            // Add rotation group if needed
+            if (hexRotation !== 0) {
+                const rotationCenterX = 2048 / 2;
+                const rotationCenterY = 1167 / 2;
+                svgContent += `<g transform="rotate(${hexRotation} ${rotationCenterX} ${rotationCenterY})">`;
+            }
+            
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    // Calculate exact position using axial coordinates
+                    const x = startX + col * horizDist + (row % 2) * (horizDist / 2);
+                    const y = startY + row * vertDist;
+                    
+                    // Only create hexes that are within or near the map bounds
+                    if (x > -hexWidth && x < 2048 + hexWidth && y > -hexHeight && y < 1167 + hexHeight) {
+                        // Create hex path with exact mathematical points
+                        const hexPath = createHexPath(x, y, sideLength);
+                        svgContent += `<path d="${hexPath}" class="hex-path" data-row="${row}" data-col="${col}"/>`;
+                    }
+                }
+            }
+            
+            if (hexRotation !== 0) {
+                svgContent += '</g>';
+            }
+            
+            hexSvg.innerHTML = svgContent;
+            status.textContent = `Unified grid created: ${rows}x${cols} hexes`;
+        }
+
+        // Create exact hex path using mathematical calculations
+        function createHexPath(centerX, centerY, sideLength) {
+            const points = [];
+            
+            // Calculate 6 vertices of pointy-topped hexagon
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i - Math.PI / 6; // Start at top point
+                const x = centerX + sideLength * Math.cos(angle);
+                const y = centerY + sideLength * Math.sin(angle);
+                points.push([x.toFixed(6), y.toFixed(6)]);
+            }
+            
+            // Create SVG path
+            let path = `M ${points[0][0]} ${points[0][1]}`;
+            for (let i = 1; i < points.length; i++) {
+                path += ` L ${points[i][0]} ${points[i][1]}`;
+            }
+            path += ' Z'; // Close path
+            
+            return path;
+        }
+
+        // Initialize
+        function init() {
+            createUnifiedHexGrid();
+            
+            // Center the map both horizontally and vertically
+            const viewportRect = viewport.getBoundingClientRect();
+            posX = (viewportRect.width - 2048) / 2;
+            posY = (viewportRect.height - 1167) / 2;
+            updateTransform();
+        }
+
+        // Pan and zoom controls
+        viewport.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartX = e.clientX - posX;
+            dragStartY = e.clientY - posY;
+            viewport.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            posX = e.clientX - dragStartX;
+            posY = e.clientY - dragStartY;
+            updateTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            viewport.style.cursor = 'grab';
+        });
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            
+            // Get mouse position relative to viewport
+            const rect = viewport.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Calculate new scale
+            const newScale = Math.max(0.1, Math.min(5, scale * delta));
+            
+            // Adjust position to zoom towards mouse
+            posX = mouseX - (mouseX - posX) * (newScale / scale);
+            posY = mouseY - (mouseY - posY) * (newScale / scale);
+            
+            scale = newScale;
+            updateTransform();
+        });
+
+        function updateTransform() {
+            container.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+        }
+
+        function zoomIn() {
+            scale = Math.min(5, scale * 1.2);
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale = Math.max(0.1, scale * 0.8);
+            updateTransform();
+        }
+
+        function resetView() {
+            scale = 1;
+            const viewportRect = viewport.getBoundingClientRect();
+            posX = (viewportRect.width - 2048) / 2;
+            posY = (viewportRect.height - 1167) / 2;
+            updateTransform();
+        }
+        
+        // Update hex grid when controls change
+        function updateHexGrid() {
+            createUnifiedHexGrid();
+        }
+        
+        // Toggle hex borders visibility
+        function toggleBorders() {
+            const showBorders = document.getElementById('showBorders').checked;
+            if (showBorders) {
+                hexGrid.classList.remove('hide-borders');
+            } else {
+                hexGrid.classList.add('hide-borders');
+            }
+        }
+
+        // Start when ready
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

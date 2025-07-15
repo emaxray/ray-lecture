@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Loading</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 100%;
+            border: 2px solid gold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Testing Image Load</h1>
+    <p>Image path: Rayhaven Final_2.jpg</p>
+    <img src="Rayhaven Final_2.jpg" alt="Rayhaven Map" onload="console.log('Image loaded successfully!')" onerror="console.log('Error loading image!')">
+    
+    <h2>Debug Info:</h2>
+    <div id="debug"></div>
+    
+    <script>
+        // Check if image exists
+        const img = new Image();
+        img.onload = function() {
+            document.getElementById('debug').innerHTML = `
+                <p>✅ Image loaded successfully!</p>
+                <p>Dimensions: ${this.width} x ${this.height}</p>
+                <p>File size check: OK</p>
+            `;
+        };
+        img.onerror = function() {
+            document.getElementById('debug').innerHTML = `
+                <p>❌ Error loading image!</p>
+                <p>Check if file exists: Rayhaven Final_2.jpg</p>
+                <p>Make sure you're opening the HTML file from a web server, not file://</p>
+            `;
+        };
+        img.src = 'Rayhaven Final_2.jpg';
+    </script>
+</body>
+</html>

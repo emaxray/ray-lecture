@@ -1756,6 +1756,7 @@
         <button class="save-btn undo-btn" onclick="undoLastAction()" disabled>↶ Undo</button>
         <button class="save-btn" onclick="saveData()">💾 Save</button>
         <button class="save-btn" onclick="resetData()">🔄 Reset</button>
+        <button class="save-btn" onclick="exportToCSV()" title="Export all student data to CSV">📜 Export</button>
     </div>
     
     <!-- Toast Notification -->
@@ -2619,6 +2620,72 @@
                 leftSidebar.classList.add('expanded');
                 document.getElementById('sidebarOverlay').classList.add('active');
             }
+        }
+        
+        // Export to CSV functionality
+        function exportToCSV() {
+            // Prepare CSV data
+            const csvRows = [];
+            
+            // Add header row
+            csvRows.push(['Name', 'Team', 'Classes', 'Points']);
+            
+            // Iterate through all teams and their students
+            Object.entries(teamData).forEach(([teamKey, team]) => {
+                team.students.forEach(student => {
+                    // Skip donation entries
+                    if (student.name !== 'Donation') {
+                        // Join multiple classes with semicolons
+                        const classes = student.classes && student.classes.length > 0 
+                            ? student.classes.join('; ') 
+                            : 'No classes';
+                        
+                        // Add student row
+                        csvRows.push([
+                            student.name,
+                            team.name,
+                            classes,
+                            student.points
+                        ]);
+                    }
+                });
+            });
+            
+            // Convert array to CSV string
+            const csvContent = csvRows.map(row => 
+                row.map(cell => {
+                    // Escape quotes and wrap in quotes if contains comma, semicolon, or quotes
+                    const cellStr = String(cell);
+                    if (cellStr.includes(',') || cellStr.includes(';') || cellStr.includes('"')) {
+                        return '"' + cellStr.replace(/"/g, '""') + '"';
+                    }
+                    return cellStr;
+                }).join(',')
+            ).join('\n');
+            
+            // Create blob and download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            // Set filename with current date
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + 
+                          String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                          String(now.getDate()).padStart(2, '0');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `conquest-of-rayhaven-${dateStr}.csv`);
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Clean up
+            URL.revokeObjectURL(url);
+            
+            // Show success message
+            showToast('📜 Student data exported successfully!');
         }
         
         // Initialize on load

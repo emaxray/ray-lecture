@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rayhaven Hex Map – Fixed Grid</title>
+<style>
+    :root {
+        --gold: #d4af37;
+    }
+
+    /* ---------- LAYOUT ---------- */
+    html,body{margin:0;height:100%;background:#000;font-family:Arial,Helvetica,sans-serif}
+    #viewport{width:100vw;height:100vh;overflow:hidden;cursor:grab;position:relative}
+    #map-container{position:absolute;width:2048px;height:1167px;transform-origin:0 0}
+    #map-image{width:100%;height:100%;position:absolute;user-select:none}
+
+    /* ---------- HEXES ---------- */
+    #hex-grid{position:absolute;inset:0}
+    .hex{position:absolute;pointer-events:none}      /* pointer switched on via SVG */
+    .hex svg{width:100%;height:100%;pointer-events:auto}
+    .hex polygon{
+        fill:transparent;
+        stroke:rgba(212,175,55,.3);
+        stroke-width:.4;
+        vector-effect:non-scaling-stroke;
+        transition:.2s;
+    }
+    .hex:hover{z-index:10}
+    .hex:hover polygon{fill:rgba(212,175,55,.1);stroke:rgba(212,175,55,.6);stroke-width:1}
+
+    /* hide/show borders */
+    .hide-borders .hex polygon{stroke:transparent}
+    .hide-borders .hex:hover polygon{stroke:rgba(212,175,55,.6)}
+
+    /* ---------- CONTROLS ---------- */
+    #controls{
+        position:fixed;top:10px;left:10px;z-index:100;
+        background:rgba(0,0,0,.82);color:var(--gold);
+        padding:15px 20px;border-radius:6px;line-height:1.3
+    }
+    #controls h3{margin:0 0 6px;font-size:1.15rem}
+    button{
+        background:var(--gold);border:none;border-radius:3px;
+        margin:4px 2px;padding:4px 10px;cursor:pointer
+    }
+    button:hover{background:#f4e4bc;color:#000}
+    label{font-size:.8rem}
+    input[type=number]{width:56px;margin-left:4px}
+</style>
+</head>
+<body>
+<div id="viewport">
+    <div id="map-container">
+        <img id="map-image" src="Rayhaven Final_2.jpg" alt="Map">
+        <div id="hex-grid"></div>
+    </div>
+</div>
+
+<!-- ---------- CONTROL PANEL ---------- -->
+<div id="controls">
+    <h3>Simple Hex Map</h3>
+    <button onclick="zoom(1.2)">Zoom In</button>
+    <button onclick="zoom(1/1.2)">Zoom Out</button>
+    <button onclick="resetView()">Reset</button><br>
+    <label>Hex X&nbsp;<input id="offsetX" type="number" value="22.5" step=".5" onchange="rebuild()"></label><br>
+    <label>Hex Y&nbsp;<input id="offsetY" type="number" value="20" step=".5" onchange="rebuild()"></label><br>
+    <label>Scale&nbsp;<input id="hexScale" type="number" value="1" step=".01" min=".9" max="1.1" onchange="rebuild()"></label><br>
+    <label>Rotate&nbsp;<input id="hexRotation" type="number" value="0" step=".1" min="-5" max="5" onchange="rebuild()">°</label><br>
+    <label><input id="showBorders" type="checkbox" checked onchange="toggleBorders()"> Show Borders</label><br>
+    <label><input id="showCoords"  type="checkbox"        onchange="rebuild()"> Show Coords</label>
+    <div id="status" style="margin-top:6px;font-size:.8rem">Ready</div>
+</div>
+
+<script>
+/* ======= CONSTANTS ======= */
+const SIDE  = 25.5;                 // edge length of base hex; change freely
+const MAP_W = 2048, MAP_H = 1167;   // underlying image size
+
+/* ======= STATE ======= */
+let scale = 1, posX = 0, posY = 0, dragging = false, dragX = 0, dragY = 0;
+
+/* ======= ELEMENTS ======= */
+const viewport  = document.getElementById('viewport');
+const container = document.getElementById('map-container');
+const gridEl    = document.getElementById('hex-grid');
+const statusEl  = document.getElementById('status');
+
+/* ======= BUILD GRID ======= */
+function buildGrid() {
+    const s     = SIDE * +hexScale.value;
+    const w     = Math.sqrt(3)*s;    // hex width
+    const h     = 2*s;               // hex height
+    const dx    = w;                 // distance between centers horizontally
+    const dy    = 1.5*s;             // vertical step
+
+    const startX = +offsetX.value;
+    const startY = +offsetY.value;
+    const rot    = +hexRotation.value;
+    const showC  = showCoords.checked;
+
+    const ROWS = 40, COLS = 55;
+    const vbW  = w, vbH = h;         // viewBox matches real size
+
+    let html = '';
+    for (let r=0;r<ROWS;r++){
+        for (let c=0;c<COLS;c++){
+            const cx = startX + c*dx + (r&1)*dx/2;
+            const cy = startY + r*dy;
+
+            // skip outside map+margin
+            if (cx < -w || cx > MAP_W + w || cy < -h || cy > MAP_H + h) continue;
+
+            const left   = cx - w/2;
+            const top    = cy - h/2;
+
+            html += `
+            <div class="hex" style="left:${left}px;top:${top}px;width:${w}px;height:${h}px">
+                <svg viewBox="0 0 ${vbW} ${vbH}" preserveAspectRatio="none">
+                    <g transform="rotate(${rot} ${vbW/2} ${vbH/2})">
+                        <polygon points="
+                            ${vbW/2},0  ${vbW},${h*.25}  ${vbW},${h*.75}
+                            ${vbW/2},${vbH}  0,${h*.75}  0,${h*.25}
+                        "/>
+                        ${showC?`<text x="${vbW/2}" y="${vbH/2+3}"
+                            text-anchor="middle" font-size="8"
+                            fill="white" stroke="black" stroke-width=".5">${c},${r}</text>`:''}
+                    </g>
+                </svg>
+            </div>`;
+        }
+    }
+    gridEl.innerHTML = html;
+    statusEl.textContent = `Grid: ${ROWS}×${COLS}`;
+}
+
+/* ======= VIEWPORT PAN & ZOOM ======= */
+function applyTransform(){container.style.transform=`translate(${posX}px,${posY}px) scale(${scale})`}
+
+viewport.addEventListener('mousedown',e=>{
+    dragging=true;dragX=e.clientX-posX;dragY=e.clientY-posY;viewport.style.cursor='grabbing';
+});
+window.addEventListener('mousemove',e=>{
+    if(!dragging)return;posX=e.clientX-dragX;posY=e.clientY-dragY;applyTransform();
+});
+window.addEventListener('mouseup',()=>{dragging=false;viewport.style.cursor='grab'});
+
+viewport.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const factor = e.deltaY>0?1/1.1:1.1;
+    const rect = viewport.getBoundingClientRect();
+    const mx = e.clientX-rect.left, my = e.clientY-rect.top;
+    const newScale = Math.min(5,Math.max(.1,scale*factor));
+    posX = mx-(mx-posX)*(newScale/scale);
+    posY = my-(my-posY)*(newScale/scale);
+    scale=newScale;applyTransform();
+});
+
+/* ======= CONTROL HELPERS ======= */
+function zoom(f){scale=Math.min(5,Math.max(.1,scale*f));applyTransform();}
+function resetView(){
+    scale=1;
+    const v=viewport.getBoundingClientRect();
+    posX=(v.width - MAP_W)/2;
+    posY=(v.height- MAP_H)/2;
+    applyTransform();
+}
+function rebuild(){buildGrid();}
+function toggleBorders(){
+    gridEl.classList.toggle('hide-borders',!showBorders.checked);
+}
+
+/* ======= INIT ======= */
+window.addEventListener('load',()=>{
+    buildGrid();
+    resetView();
+});
+</script>
+</body>
+</html>
