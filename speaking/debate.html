@@ -22,6 +22,282 @@ This page provides tools for structured debate practice including:
       rel="stylesheet"
     />
     <style>
+      /* Sidebar Styles from Template */
+      .sidebar-toggle {
+        position: fixed;
+        width: 50px;
+        height: 120px;
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border: 2px solid #8b6914;
+        color: #d4af37;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        z-index: 99;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .left-toggle {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+      }
+
+      .right-toggle {
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 10px 0 0 10px;
+        border-right: none;
+      }
+
+      .sidebar-toggle:hover {
+        background: linear-gradient(180deg, #3a2418 0%, #2a1810 100%);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        width: 60px;
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        z-index: 98;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
+      .right-sidebar {
+        width: 350px;
+        background: linear-gradient(180deg, #2a1810 0%, #1a0f0a 100%);
+        border-left: 2px solid #8b6914;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        z-index: 100;
+        transform: translateX(350px);
+      }
+
+      .right-sidebar.expanded {
+        transform: translateX(0);
+      }
+
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        border-bottom: 1px solid #8b6914;
+        position: relative;
+      }
+
+      .close-btn {
+        background: rgba(139, 105, 20, 0.3);
+        border: 1px solid #8b6914;
+        color: #d4af37;
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 24px;
+      }
+
+      .close-btn:hover {
+        background: rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .sidebar-content {
+        padding: 20px;
+      }
+
+      .points-title {
+        font-family: "Cinzel", serif;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #f4e4bc;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #8b6914;
+        padding-bottom: 15px;
+      }
+
+      .section-subtitle {
+        font-family: "Uncial Antiqua", cursive;
+        font-size: 16px;
+        color: #d4af37;
+        text-align: center;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        position: relative;
+        padding: 0 20px;
+      }
+
+      .add-section {
+        background: rgba(139, 105, 20, 0.2);
+        border: 1px solid #8b6914;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 0;
+      }
+
+      .dropdown-select {
+        width: 100%;
+        padding: 15px;
+        background: rgba(139, 105, 20, 0.3);
+        border: 2px solid #8b6914;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        min-height: 50px;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+        padding-right: 45px;
+      }
+
+      .add-student-to-daily {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(139, 32, 32, 0.2) 100%);
+        border: 2px solid #d4af37;
+        color: #f4e4bc;
+        font-family: "Cinzel", serif;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 55px;
+      }
+
+      .add-student-to-daily:hover {
+        background: rgba(212, 175, 55, 0.5);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      }
+
+      .student-item {
+        background: linear-gradient(135deg, rgba(42, 30, 20, 0.9) 0%, rgba(52, 38, 26, 0.9) 100%);
+        border: 2px solid #8b6914;
+        border-radius: 5px;
+        padding: 15px;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 10px;
+      }
+
+      .student-item:hover {
+        background: linear-gradient(135deg, rgba(60, 40, 25, 0.9) 0%, rgba(70, 48, 31, 0.9) 100%);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        border-color: #d4af37;
+        transform: translateX(-2px);
+      }
+
+      .student-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .student-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #f4e4bc;
+      }
+
+      .team-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+        border: 1px solid;
+        border-radius: 3px;
+        font-weight: normal;
+        animation: subtleGlow 2s ease-in-out infinite;
+      }
+
+      @keyframes subtleGlow {
+        0%, 100% { 
+          filter: brightness(1) drop-shadow(0 0 3px currentColor); 
+        }
+        50% { 
+          filter: brightness(1.2) drop-shadow(0 0 8px currentColor); 
+        }
+      }
+
+      #dailyStudentsList {
+        min-height: 200px;
+        margin-bottom: 20px;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #b8860b;
+        font-style: italic;
+        background: rgba(139, 105, 20, 0.1);
+        border-radius: 5px;
+        border: 1px dashed #8b6914;
+      }
+
+      .divider-ornament {
+        width: 100%;
+        height: 30px;
+        margin: 20px 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 Q50,5 100,15 T200,15' fill='none' stroke='%23d4af37' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='100' cy='15' r='3' fill='%23d4af37' opacity='0.5'/%3E%3Ccircle cx='80' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3Ccircle cx='120' cy='15' r='2' fill='%23d4af37' opacity='0.3'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 0.5;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+        color: #1a0f0a;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.6);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1001;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
       /* ======================
            📋 GLOBAL RESET & BASE STYLES
            ====================== */
@@ -651,6 +927,71 @@ This page provides tools for structured debate practice including:
     <!-- Back Button -->
     <button class="back-button" onclick="goBack()">Back</button>
 
+    <!-- Sidebar Toggle -->
+    <div class="sidebar-toggle right-toggle" onclick="toggleRightSidebar()">Treasury</div>
+    
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+
+    <!-- Right Sidebar (Student Management) -->
+    <div class="right-sidebar" id="rightSidebar">
+      <div class="sidebar-header">
+        <h2 class="points-title">Daily Treasury</h2>
+        <button class="close-btn" onclick="toggleRightSidebar()">×</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- Section Title for Class Selection -->
+        <h3 class="section-subtitle">Quick Add by Class</h3>
+
+        <!-- Class Selection Section -->
+        <div class="add-section add-class-section">
+          <select class="dropdown-select class-select" id="classSelect">
+            <option value="">Select a class...</option>
+            <option value="m1">Monday 1 (m1)</option>
+            <option value="m2">Monday 2 (m2)</option>
+            <option value="tu1">Tuesday 1 (tu1)</option>
+            <option value="tu2">Tuesday 2 (tu2)</option>
+            <option value="w1">Wednesday 1 (w1)</option>
+            <option value="w2">Wednesday 2 (w2)</option>
+            <option value="th1">Thursday 1 (th1)</option>
+            <option value="th2">Thursday 2 (th2)</option>
+            <option value="s1">Saturday 1 (s1)</option>
+            <option value="s2">Saturday 2 (s2)</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addClassToDaily()">
+            Add Entire Class
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Individual Students -->
+        <h3 class="section-subtitle">Add Individual Student</h3>
+
+        <!-- Individual Student Selection -->
+        <div class="add-section add-student-section">
+          <select class="dropdown-select student-select" id="studentSelect">
+            <option value="">Select a scholar...</option>
+          </select>
+          <button class="add-student-to-daily" onclick="addStudentToDaily()">
+            Add to Daily Points
+          </button>
+        </div>
+
+        <div class="divider-ornament"></div>
+
+        <!-- Section Title for Active Students -->
+        <h3 class="section-subtitle">Today's Scholars</h3>
+
+        <!-- Daily Students List -->
+        <div id="dailyStudentsList">
+          <div class="empty-state">
+            No scholars in today's class yet.<br />Add students from the options above.
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="main-content">
       <!-- Title Section -->
@@ -685,6 +1026,9 @@ This page provides tools for structured debate practice including:
           <!-- Leaderboard items will be added here -->
         </div>
       </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
       <!-- Debate Topic & Timer Controls -->
       <div class="debate-controls">
@@ -946,14 +1290,216 @@ This page provides tools for structured debate practice including:
         }
       }
 
+      // Daily treasury management from template
+      let dailyStudents = JSON.parse(localStorage.getItem("dailyStudents") || "[]");
+      let dailyTreasury = JSON.parse(localStorage.getItem("dailyTreasury") || "{}");
+
+      // Team information
+      const teamInfo = {
+        jiggleBoggle: { name: "Jiggle Boggle", color: "#81c784" },
+        pinkie: { name: "Pinkie", color: "#f06292" },
+        handsomeJoon: { name: "Handsome Joon", color: "#ff6b6b" },
+        bomi: { name: "Bomi", color: "#ffd54f" },
+        geniusIrene: { name: "Genius Irene", color: "#4fc3f7" },
+        prettyEggplant: { name: "Pretty Eggplant", color: "#ba68c8" },
+      };
+
+      // Load all students from Conquest data
+      function loadAllStudentsFromConquest() {
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (conquestData) {
+          const teamData = JSON.parse(conquestData);
+          const students = [];
+
+          Object.entries(teamData).forEach(([teamKey, team]) => {
+            team.students.forEach((student) => {
+              if (student.name !== "Donation") {
+                students.push({
+                  name: student.name,
+                  team: teamKey,
+                  classes: student.classes || [],
+                });
+              }
+            });
+          });
+
+          return students.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        return [];
+      }
+
+      // Toggle right sidebar
+      function toggleRightSidebar() {
+        const sidebar = document.getElementById("rightSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const isExpanded = sidebar.classList.contains("expanded");
+
+        if (isExpanded) {
+          sidebar.classList.remove("expanded");
+          overlay.classList.remove("active");
+        } else {
+          sidebar.classList.add("expanded");
+          overlay.classList.add("active");
+        }
+      }
+
+      // Close sidebars
+      function closeSidebars() {
+        document.getElementById("rightSidebar").classList.remove("expanded");
+        document.getElementById("sidebarOverlay").classList.remove("active");
+      }
+
+      // Populate student dropdown
+      function populateStudentDropdown() {
+        const select = document.getElementById("studentSelect");
+        select.innerHTML = '<option value="">Select a scholar...</option>';
+
+        const allStudents = loadAllStudentsFromConquest();
+
+        allStudents.forEach((student) => {
+          if (!dailyStudents.includes(student.name)) {
+            const option = document.createElement("option");
+            option.value = student.name;
+            option.dataset.team = student.team;
+            option.textContent = student.name;
+            select.appendChild(option);
+          }
+        });
+      }
+
+      // Add student to daily treasury
+      function addStudentToDaily() {
+        const select = document.getElementById("studentSelect");
+        const studentName = select.value;
+
+        if (studentName && !dailyStudents.includes(studentName)) {
+          dailyStudents.push(studentName);
+          dailyTreasury[studentName] = dailyTreasury[studentName] || 0;
+
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+
+          renderDailyStudents();
+          populateStudentDropdown();
+          select.value = "";
+        }
+      }
+
+      // Add entire class to daily list
+      function addClassToDaily() {
+        const select = document.getElementById("classSelect");
+        const className = select.value;
+
+        if (!className) {
+          showToast("Please select a class first!");
+          return;
+        }
+
+        const conquestData = localStorage.getItem("conquestTeamData");
+        if (!conquestData) {
+          showToast("No student data found!");
+          return;
+        }
+
+        const teamData = JSON.parse(conquestData);
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        Object.entries(teamData).forEach(([teamKey, team]) => {
+          if (!team.students) return;
+
+          team.students.forEach((student) => {
+            if (!student.classes) return;
+
+            const isInClass = student.classes.some((c) => {
+              return c.toLowerCase() === className.toLowerCase();
+            });
+
+            if (isInClass && student.name !== "Donation") {
+              if (!dailyStudents.includes(student.name)) {
+                dailyStudents.push(student.name);
+                dailyTreasury[student.name] = dailyTreasury[student.name] || 0;
+                addedCount++;
+              } else {
+                skippedCount++;
+              }
+            }
+          });
+        });
+
+        if (addedCount > 0) {
+          localStorage.setItem("dailyStudents", JSON.stringify(dailyStudents));
+          localStorage.setItem("dailyTreasury", JSON.stringify(dailyTreasury));
+          renderDailyStudents();
+          populateStudentDropdown();
+        }
+
+        select.value = "";
+
+        if (addedCount > 0 && skippedCount > 0) {
+          showToast(`✨ Added ${addedCount} students! (${skippedCount} already in class)`);
+        } else if (addedCount > 0) {
+          showToast(`✨ Added ${addedCount} students to today's class!`);
+        } else if (skippedCount > 0) {
+          showToast("All students from this class are already added!");
+        } else {
+          showToast(`No students found for ${className.toUpperCase()}`);
+        }
+      }
+
+      // Get student's team
+      function getStudentTeam(studentName) {
+        const allStudents = loadAllStudentsFromConquest();
+        const student = allStudents.find((s) => s.name === studentName);
+        return student ? student.team : null;
+      }
+
+      // Render daily students
+      function renderDailyStudents() {
+        const container = document.getElementById("dailyStudentsList");
+        container.innerHTML = "";
+
+        if (dailyStudents.length === 0) {
+          container.innerHTML = '<div class="empty-state">No scholars in today\'s class yet.<br>Add students from the dropdown above.</div>';
+          return;
+        }
+
+        dailyStudents.forEach((studentName) => {
+          const teamKey = getStudentTeam(studentName);
+          const team = teamInfo[teamKey];
+
+          const item = document.createElement("div");
+          item.className = "student-item";
+
+          item.innerHTML = `
+            <div class="student-info">
+              <span class="student-name">${studentName}</span>
+              ${team ? `<span class="team-badge" style="color: ${team.color}; border-color: ${team.color};">${team.name}</span>` : ""}
+            </div>
+          `;
+
+          container.appendChild(item);
+        });
+      }
+
+      // Show toast notification
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
       // Load students from daily treasury
       function loadStudentsFromTreasury() {
-        // Try to get students from localStorage (simulating daily treasury)
-        const storedStudents = localStorage.getItem('dailyTreasuryStudents');
+        // Get students from daily treasury
+        const dailyStudentsList = JSON.parse(localStorage.getItem("dailyStudents") || "[]");
         
-        if (storedStudents) {
-          const students = JSON.parse(storedStudents);
-          speakers = students.map((name, index) => ({
+        if (dailyStudentsList.length > 0) {
+          speakers = dailyStudentsList.map((name, index) => ({
             id: index + 1,
             name: name,
             order: null,
@@ -964,23 +1510,9 @@ This page provides tools for structured debate practice including:
             },
             totalScore: 0
           }));
+          showToast(`Loaded ${speakers.length} students from treasury!`);
         } else {
-          // Default students if no treasury data
-          const defaultStudents = [
-            'Student 1', 'Student 2', 'Student 3', 'Student 4',
-            'Student 5', 'Student 6', 'Student 7', 'Student 8'
-          ];
-          speakers = defaultStudents.map((name, index) => ({
-            id: index + 1,
-            name: name,
-            order: null,
-            scores: {
-              argument: 0,
-              delivery: 0,
-              rebuttal: 0
-            },
-            totalScore: 0
-          }));
+          showToast("No students in daily treasury. Add students from the sidebar!");
         }
         
         renderSpeakers();
@@ -1111,6 +1643,13 @@ This page provides tools for structured debate practice including:
         createParticles();
         renderArguments('pro');
         renderArguments('con');
+        
+        // Initialize daily treasury
+        dailyStudents = JSON.parse(localStorage.getItem("dailyStudents") || "[]");
+        dailyTreasury = JSON.parse(localStorage.getItem("dailyTreasury") || "{}");
+        
+        populateStudentDropdown();
+        renderDailyStudents();
         loadStudentsFromTreasury();
       });
     </script>
